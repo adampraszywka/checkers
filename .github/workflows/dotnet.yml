@@ -5,11 +5,10 @@ name: .NET
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "*" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "*" ]
   workflow_dispatch:
-
 
 permissions:
   contents: read
@@ -17,7 +16,7 @@ permissions:
   checks: write
 
 jobs:
-  net8:
+  backend-test:
     runs-on: ["ubuntu-latest"]
     container: 
       image: mcr.microsoft.com/dotnet/sdk:8.0
