@@ -45,6 +45,9 @@ jobs:
     steps:
       - name: Git chechout
         uses: actions/checkout@v4
+      - name: Ls
+        run: ls -l
+        working-directory: ./UserInterface
       - name: Restore dependencies
         run: npm run install
         working-directory: ./UserInterface
