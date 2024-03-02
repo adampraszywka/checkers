@@ -23,8 +23,6 @@ jobs:
     steps:
     - name: Git chechout
       uses: actions/checkout@v4
-    - name: List files       # Probably connected with users and privileges in sdk container
-      run: ls -l
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
@@ -40,3 +38,16 @@ jobs:
         name: Tests                # Name of the check run which will be created
         path: test_result/*.trx    # Path to test results
         reporter: dotnet-trx       # Format of test results
+  ui-test:
+    runs-on: ["ubuntu-latest"]
+    container:
+      image: timbru31/node-chrome:iron
+    steps:
+      - name: Git chechout
+        uses: actions/checkout@v4
+      - name: Restore dependencies
+        run: npm run install
+        working-directory: UserInterface
+      - name: Test
+        run: npm run citest
+        working-directory: UserInterface
