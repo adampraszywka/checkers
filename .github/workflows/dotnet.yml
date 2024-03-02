@@ -42,7 +42,6 @@ jobs:
     runs-on: ["ubuntu-latest"]
     container:
       image: timbru31/node-chrome:iron
-      options: --user node
     steps:
       - name: Git checkout
         uses: actions/checkout@v4
