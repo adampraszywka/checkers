@@ -4,10 +4,12 @@ namespace DomainTests;
 
 public class EmptyBoard8X8Tests
 {
-    private class EmptyBoardConfiguration() : Configuration
+    private class EmptyBoardConfiguration : Configuration
     {
         public int BoardSize => 8;
-        public IEnumerable<Func<string, (Piece, Position)>> PiecesPositions => Enumerable.Empty<Func<string, (Piece, Position)>>();
+        public int PlayerWhiteUpgradeRow => 7;
+        public int PlayerBlackUpgradeRow => 0;
+        public IEnumerable<(Piece, Position)> PiecesPositions => Enumerable.Empty<(Piece, Position)>();
     }
     
     [Test]
@@ -15,7 +17,7 @@ public class EmptyBoard8X8Tests
     {
         var board = new Board(new EmptyBoardConfiguration());
 
-        var boardSnapshot = board.Snapshot();
+        var boardSnapshot = board.Snapshot;
         var boardSnapshotNames = boardSnapshot.Select(x => (x.Key, x.Value.Select(s => s.Name))).ToDictionary();
         var expected = new Dictionary<int, string[]>
         {
