@@ -42,6 +42,8 @@ jobs:
     runs-on: ["ubuntu-latest"]
     container:
       image: node:20
+      env:
+        JEST_JUNIT_OUTPUT_DIR: test-results
     steps:
       - name: Git checkout
         uses: actions/checkout@v4

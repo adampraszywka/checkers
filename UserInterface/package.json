@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "citest": "ng test --reporter"
+    "citest": "ng test --reporters=jest-junit"
   },
   "private": true,
   "dependencies": {
