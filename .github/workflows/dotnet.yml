@@ -35,13 +35,13 @@ jobs:
       uses: dorny/test-reporter@v1
       if: success() || failure()    # run this step even if previous step failed
       with:
-        name: Tests                # Name of the check run which will be created
+        name: API Tests                # Name of the check run which will be created
         path: test_result/*.trx    # Path to test results
         reporter: dotnet-trx       # Format of test results
   ui-test:
     runs-on: ["ubuntu-latest"]
     container:
-      image: timbru31/node-chrome:iron
+      image: node:20-alpine3.18
     steps:
       - name: Git checkout
         uses: actions/checkout@v4
@@ -51,3 +51,10 @@ jobs:
       - name: Test
         run: npm run citest
         working-directory: ./UserInterface
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: UI Tests              # Name of the check run which will be created
+          path: test-results/*.xml  # Path to test results
+          reporter: jest-junit       # Format of test results
