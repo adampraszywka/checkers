@@ -41,7 +41,7 @@ jobs:
   ui-test:
     runs-on: ["ubuntu-latest"]
     container:
-      image: node:20-alpine3.18
+      image: node:20
     steps:
       - name: Git checkout
         uses: actions/checkout@v4
