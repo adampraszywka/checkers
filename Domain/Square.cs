@@ -6,19 +6,22 @@ namespace Domain;
 public class Square
 {
     private Piece? _piece = null;
-    private readonly string _id;
 
     public static Square FromCoordinates(int row, int column)
     {
-        return new($"{MapColumn(column)}{row + 1}");
+        return new($"{MapColumn(column)}{row + 1}", row, column);
     }
     
-    private Square(string id)
+    private Square(string id, int row, int column)
     {
-        _id = id;
+        Id = id;
+        Row = row;
+        Column = column;
     }
 
-    public string Id => _id;
+    public string Id { get; }
+    public int Column { get; }
+    public int Row { get; }
    
     public bool IsOccupied => _piece is not null;
 
@@ -39,6 +42,7 @@ public class Square
             return Result.Fail(new SquareOccupied());
         }
         
+        piece.Attach(this);
         _piece = piece;
         return Result.Ok();
     }
@@ -50,6 +54,7 @@ public class Square
             return Result.Fail(new SquareEmpty());
         }
 
+        _piece.Remove();
         _piece = null;
         return Result.Ok();
     }

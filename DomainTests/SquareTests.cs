@@ -1,17 +1,11 @@
 ﻿using Domain;
 using Domain.Errors;
+using Domain.Pieces;
 
 namespace DomainTests;
 
 public class SquareTests
 {
-    private class DummyPiece(string id, Color color) : Piece
-    {
-        public string Id => id;
-        public Color Color => color;
-        public string Type => "dummy";
-    }
-    
     [Test]
     [TestCase(0, 0, "A1")]
     [TestCase(0, 1, "B1")]
@@ -84,6 +78,9 @@ public class SquareTests
         var square = Square.FromCoordinates(row, column);
         
         Assert.That(square.Id, Is.EqualTo(expectedId));
+        Assert.That(square.Column, Is.EqualTo(column));
+        Assert.That(square.Row, Is.EqualTo(row));
+        Assert.That(square.IsOccupied, Is.False);
     }
 
     [Test]
@@ -106,26 +103,26 @@ public class SquareTests
     public void MovePiece()
     {
         var square = Square.FromCoordinates(0, 0);
-        var piece = new DummyPiece("1", Color.Black);
+        var piece = new Man("1", Color.Black);
         
         square.Move(piece);
         
-        Assert.IsTrue(square.IsOccupied);
+        Assert.That(square.IsOccupied, Is.True);
     }
     
     [Test]
     public void MovePieceToOccupiedSquare()
     {
         var square = Square.FromCoordinates(0, 0);
-        var piece1 = new DummyPiece("1", Color.Black);
-        var piece2 = new DummyPiece("2", Color.Black);
+        var piece1 = new Man("1", Color.Black);
+        var piece2 = new Man("2", Color.Black);
         
         var result1 = square.Move(piece1);
         var result2 = square.Move(piece2);
         
-        Assert.IsTrue(square.IsOccupied);
-        Assert.IsTrue(result1.IsSuccess);
-        Assert.IsTrue(result2.HasError<SquareOccupied>());
+        Assert.That(square.IsOccupied, Is.True);
+        Assert.That(result1.IsSuccess, Is.True);
+        Assert.That(result2.HasError<SquareOccupied>(), Is.True);
     }
     
     [Test]
@@ -135,21 +132,21 @@ public class SquareTests
 
         var result = square.RemovePiece();
 
-        Assert.IsTrue(result.HasError<SquareEmpty>());
+        Assert.That(result.HasError<SquareEmpty>(), Is.True);
     }
     
     [Test]
     public void RemovePiece()
     {
         var square = Square.FromCoordinates(0, 0);
-        var piece = new DummyPiece("1", Color.Black);
+        var piece = new Man("1", Color.Black);
         
         var moveResult = square.Move(piece);
-        Assert.IsTrue(moveResult.IsSuccess);
+        Assert.That(moveResult.IsSuccess, Is.True);
 
         var removeResult = square.RemovePiece();
             
-        Assert.IsTrue(removeResult.IsSuccess);
-        Assert.IsFalse(square.IsOccupied);
+        Assert.That(removeResult.IsSuccess, Is.True);
+        Assert.That(square.IsOccupied, Is.False);
     }
 }
