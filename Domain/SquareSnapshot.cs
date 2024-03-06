@@ -2,15 +2,15 @@
 
 public record SquareSnapshot
 {
-    public string Name { get; }
+    public string Id { get; }
     public Piece? Piece { get; }
     
     public static SquareSnapshot Occupied(string name, Piece piece) => new(name, piece);
     public static SquareSnapshot Unoccupied(string name) => new(name, null);
 
-    private SquareSnapshot(string name, Piece? piece)
+    private SquareSnapshot(string id, Piece? piece)
     {
-        Name = name;
+        Id = id;
         Piece = piece;
     }
 }

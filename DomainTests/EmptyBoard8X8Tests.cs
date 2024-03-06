@@ -18,7 +18,7 @@ public class EmptyBoard8X8Tests
         var board = new Board(new EmptyBoardConfiguration());
 
         var boardSnapshot = board.Snapshot;
-        var boardSnapshotNames = boardSnapshot.Select(x => (x.Key, x.Value.Select(s => s.Name))).ToDictionary();
+        var boardSnapshotNames = boardSnapshot.Select(x => (x.Key, x.Value.Select(s => s.Id))).ToDictionary();
         var expected = new Dictionary<int, string[]>
         {
             {1, ["A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1"]},
