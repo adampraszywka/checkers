@@ -42,7 +42,7 @@ public class Square
             return Result.Fail(new SquareOccupied());
         }
         
-        // piece.Attach(this);
+        piece.Attach(this);
         _piece = piece;
         return Result.Ok();
     }
@@ -54,7 +54,7 @@ public class Square
             return Result.Fail(new SquareEmpty());
         }
 
-        // _piece.Remove();
+        _piece.Remove();
         _piece = null;
         return Result.Ok();
     }
