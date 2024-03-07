@@ -26,7 +26,7 @@ public class Board8X8Tests
             { WhiteMan, Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty}
         };
 
-        BoardAssert.IsEquivalentTo(expected, snapshot);
+        BoardAssert.ReversedRowsEqualTo(expected, snapshot);
     }
     
     [Test]
@@ -49,6 +49,6 @@ public class Board8X8Tests
             { WhiteMan, Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty}
         };
         
-        BoardAssert.IsEquivalentTo(expected, snapshot);
+        BoardAssert.ReversedRowsEqualTo(expected, snapshot);
     }
 }
