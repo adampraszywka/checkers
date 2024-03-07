@@ -1,6 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿namespace Domain;
 
-namespace Domain;
-
-public class BoardSnapshot(IDictionary<int, IEnumerable<SquareSnapshot>> dictionary)
-    : ReadOnlyDictionary<int, IEnumerable<SquareSnapshot>>(dictionary);
+public record BoardSnapshot(SquareSnapshot[,] Squares)
+{
+    public int Rows => Squares.GetLength(0);
+    public int Columns => Squares.GetLength(1);
+}
