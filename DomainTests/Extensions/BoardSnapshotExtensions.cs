@@ -4,10 +4,18 @@ namespace DomainTests.Extensions;
 
 public static class BoardSnapshotExtensions
 {
-    public static Dictionary<int, TestSquare[]> ToTestSquares(this BoardSnapshot snapshot)
+    public static TestSquare[,] ToTestSquares(this BoardSnapshot snapshot)
     {
-        return snapshot.Select(x => (x.Key, x.Value.Select(TestSquare.FromSquare).ToArray()))
-            .OrderByDescending(x => x.Key)
-            .ToDictionary();
+        var output = new TestSquare[snapshot.Rows, snapshot.Columns];
+        
+        for (var row = 0; row < snapshot.Rows; row++)
+        {
+            for (var column = 0; column < snapshot.Columns; column++)
+            {
+                output[row, column] = TestSquare.FromSquare(snapshot.Squares[row, column]);
+            }
+        }
+
+        return output;
     }
 }

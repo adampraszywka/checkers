@@ -1,4 +1,6 @@
-﻿namespace Domain;
+﻿using Extension;
+
+namespace Domain;
 
 public class Board
 {
@@ -43,22 +45,6 @@ public class Board
         }
     }
     
-    private BoardSnapshot GenerateSnapshot()
-    {
-        var tmp = new Dictionary<int, IEnumerable<SquareSnapshot>>();
-        
-        for (var row = 0; row < _boardSize; row++)
-        {
-            var rowSquares = new List<SquareSnapshot>();
-            for (var column = 0; column < _boardSize; column++)
-            {
-                rowSquares.Add(_squares[row, column].Snapshot());
-            }
-
-            tmp[row + 1] = rowSquares;
-        }
-
-        return new(tmp.AsReadOnly());
-    }
+    private BoardSnapshot GenerateSnapshot() => new(_squares.Transform(s => s.Snapshot()));
 }
 
