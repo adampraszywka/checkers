@@ -1,6 +1,5 @@
-﻿using Domain.Errors;
+﻿using Domain.Exceptions;
 using Domain.Pieces;
-using FluentResults;
 
 namespace Domain;
 
@@ -23,6 +22,7 @@ public class Square
     public string Id { get; }
     public int Column { get; }
     public int Row { get; }
+    public (int Column, int Row) Coordinates => (Column, Row);
    
     public bool IsOccupied => _piece is not null;
 
@@ -36,28 +36,26 @@ public class Square
         return SquareSnapshot.Unoccupied(Id);
     }
     
-    public Result Move(Piece piece)
+    public void Move(Piece piece)
     {
         if (_piece is not null)
         {
-            return Result.Fail(new SquareOccupied());
+            throw InvalidBoardState.SquareIsNotEmpty;
         }
         
         piece.Attach(this);
         _piece = piece;
-        return Result.Ok();
     }
 
-    public Result RemovePiece()
+    public void RemovePiece()
     {
         if (_piece is null)
         {
-            return Result.Fail(new SquareEmpty());
+            throw InvalidBoardState.SquareIsEmpty;
         }
 
         _piece.Remove();
         _piece = null;
-        return Result.Ok();
     }
     
     private static char MapColumn(int columnNumber)
