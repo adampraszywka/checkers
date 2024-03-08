@@ -8,7 +8,7 @@ public class Board
     private readonly int _boardSize;
     
     private readonly Square[,] _squares;
-    private readonly List<ObservablePiece> _pieces;
+    private readonly List<Piece> _pieces;
 
     public BoardSnapshot Snapshot => GenerateSnapshot();
     
@@ -16,7 +16,7 @@ public class Board
     {
         _boardSize = configuration.BoardSize;
         _squares = new Square[_boardSize, _boardSize];
-        _pieces = new List<ObservablePiece>();
+        _pieces = new List<Piece>();
         
         for (var row = 0; row < _boardSize; row++)
         {
