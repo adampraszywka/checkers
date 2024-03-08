@@ -1,5 +1,5 @@
 ﻿using Domain;
-using Domain.Errors;
+using Domain.Exceptions;
 using Domain.Pieces;
 
 namespace DomainTests;
@@ -80,6 +80,7 @@ public class SquareTests
         Assert.That(square.Id, Is.EqualTo(expectedId));
         Assert.That(square.Column, Is.EqualTo(column));
         Assert.That(square.Row, Is.EqualTo(row));
+        Assert.That(square.Coordinates, Is.EqualTo((column, row)));
         Assert.That(square.IsOccupied, Is.False);
     }
 
@@ -117,12 +118,10 @@ public class SquareTests
         var piece1 = new Man("1", Color.Black);
         var piece2 = new Man("2", Color.Black);
         
-        var result1 = square.Move(piece1);
-        var result2 = square.Move(piece2);
+        square.Move(piece1);
         
         Assert.That(square.IsOccupied, Is.True);
-        Assert.That(result1.IsSuccess, Is.True);
-        Assert.That(result2.HasError<SquareOccupied>(), Is.True);
+        Assert.Throws<InvalidBoardState>(() => square.Move(piece2));
     }
     
     [Test]
@@ -130,9 +129,7 @@ public class SquareTests
     {
         var square = Square.FromCoordinates(0, 0);
 
-        var result = square.RemovePiece();
-
-        Assert.That(result.HasError<SquareEmpty>(), Is.True);
+        Assert.Throws<InvalidBoardState>(() => square.RemovePiece());
     }
     
     [Test]
@@ -141,12 +138,9 @@ public class SquareTests
         var square = Square.FromCoordinates(0, 0);
         var piece = new Man("1", Color.Black);
         
-        var moveResult = square.Move(piece);
-        Assert.That(moveResult.IsSuccess, Is.True);
-
-        var removeResult = square.RemovePiece();
+        square.Move(piece);
+        square.RemovePiece();
             
-        Assert.That(removeResult.IsSuccess, Is.True);
         Assert.That(square.IsOccupied, Is.False);
     }
 }

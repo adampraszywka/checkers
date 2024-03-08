@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Configurations;
+using Domain.Errors.Board;
 using DomainTests.Extensions;
 using static DomainTests.Extensions.TestSquare;
 
@@ -28,15 +29,51 @@ public class Board8X8Tests
 
         BoardAssert.ReversedRowsEqualTo(expected, snapshot);
     }
+
+    [Test]
+    [TestCase(-100, -100)]
+    [TestCase(-1, -1)]
+    [TestCase(0, 8)]
+    [TestCase(0, 9)]
+    [TestCase(8, 0)]
+    [TestCase(9, 0)]
+    [TestCase(100, 100)]
+    public void MoveOutOfBoard(int row, int column)
+    {
+        var configuration = new Checkers8X8();
+        var board = new Board(configuration);
+
+        var result = board.Move("A2", new Position(row, column));
+        
+        Assert.That(result.HasError<PositionOutOfBoard>());
+    }
+
+    [Test]
+    [TestCase("")]
+    [TestCase(" ")]
+    [TestCase("test")]
+    [TestCase("doesNotExist")]
+    public void PieceNotFound(string pieceId)
+    {
+        var configuration = new Checkers8X8();
+        var board = new Board(configuration);
+
+        var result = board.Move("A2", new Position(Position.R1, Position.A));
+        
+        Assert.That(result.HasError<PieceNotFound>());
+    }
     
     [Test]
     public void FirstMove()
     {
         var configuration = new Checkers8X8();
         var board = new Board(configuration);
+
+        var result = board.Move("B2", new Position(Position.R3, Position.A));
+        
+        Assert.That(result.IsSuccess);
         
         var snapshot = board.Snapshot.ToTestSquares();
-            
         var expected = new[,]
         {
             { Empty, 	BlackMan, 	Empty, 		BlackMan, 	Empty, 		BlackMan, 	Empty, 		BlackMan},
@@ -44,8 +81,8 @@ public class Board8X8Tests
             { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
             { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
             { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
-            { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
-            { Empty, 	WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan},
+            { WhiteMan, Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
+            { Empty, 	Empty, 	    Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan},
             { WhiteMan, Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty}
         };
         
