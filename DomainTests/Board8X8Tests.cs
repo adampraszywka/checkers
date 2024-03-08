@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Domain.Configurations;
 using DomainTests.Extensions;
+using Extension;
 using static DomainTests.Extensions.TestSquare;
 
 namespace DomainTests;

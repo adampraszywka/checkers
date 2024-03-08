@@ -1,4 +1,6 @@
-﻿namespace Domain;
+﻿using Domain.Pieces;
+
+namespace Domain;
 
 public interface Configuration
 {

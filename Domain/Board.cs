@@ -1,4 +1,5 @@
-﻿using Extension;
+﻿using Domain.Pieces;
+using Extension;
 
 namespace Domain;
 
@@ -7,7 +8,7 @@ public class Board
     private readonly int _boardSize;
     
     private readonly Square[,] _squares;
-    private readonly List<Piece> _pieces;
+    private readonly List<ObservablePiece> _pieces;
 
     public BoardSnapshot Snapshot => GenerateSnapshot();
     
@@ -15,7 +16,7 @@ public class Board
     {
         _boardSize = configuration.BoardSize;
         _squares = new Square[_boardSize, _boardSize];
-        _pieces = new List<Piece>();
+        _pieces = new List<ObservablePiece>();
         
         for (var row = 0; row < _boardSize; row++)
         {

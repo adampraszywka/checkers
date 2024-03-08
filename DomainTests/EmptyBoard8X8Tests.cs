@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.Pieces;
 using DomainTests.Extensions;
 using Extension;
 
