@@ -1,17 +1,17 @@
 ﻿using Domain;
-using Domain.Configurations;
+using Domain.Configurations.Classic;
 using Domain.Errors.Board;
 using DomainTests.Extensions;
 using static DomainTests.Extensions.TestSquare;
 
 namespace DomainTests;
 
-public class Board8X8Tests
+public class ClassicTests
 {
     [Test]
     public void NewBoard()
     {
-        var configuration = new Checkers8X8();
+        var configuration = ClassicConfiguration.NewBoard();
         var board = new Board(configuration);
 
         var snapshot = board.Snapshot.ToTestSquares(); 
@@ -19,10 +19,10 @@ public class Board8X8Tests
         {
             { Empty, 	BlackMan, 	Empty, 		BlackMan, 	Empty, 		BlackMan, 	Empty, 		BlackMan},
             { BlackMan, Empty, 		BlackMan, 	Empty, 		BlackMan, 	Empty, 		BlackMan, 	Empty},
+            { Empty, 	BlackMan, 	Empty, 		BlackMan, 	Empty, 		BlackMan, 	Empty, 		BlackMan},
             { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
             { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
-            { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
-            { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
+            { WhiteMan,	Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty},
             { Empty, 	WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan},
             { WhiteMan, Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty}
         };
@@ -40,7 +40,7 @@ public class Board8X8Tests
     [TestCase(100, 100)]
     public void MoveOutOfBoard(int row, int column)
     {
-        var configuration = new Checkers8X8();
+        var configuration = ClassicConfiguration.NewBoard();
         var board = new Board(configuration);
 
         var result = board.Move("A2", new Position(row, column));
@@ -55,7 +55,7 @@ public class Board8X8Tests
     [TestCase("doesNotExist")]
     public void PieceNotFound(string pieceId)
     {
-        var configuration = new Checkers8X8();
+        var configuration = ClassicConfiguration.NewBoard();
         var board = new Board(configuration);
 
         var result = board.Move("A2", new Position(Position.R1, Position.A));
@@ -66,10 +66,10 @@ public class Board8X8Tests
     [Test]
     public void FirstMove()
     {
-        var configuration = new Checkers8X8();
+        var configuration = ClassicConfiguration.NewBoard();
         var board = new Board(configuration);
 
-        var result = board.Move("B2", new Position(Position.R3, Position.A));
+        var result = board.Move("A3", new Position(Position.R4, Position.B));
         
         Assert.That(result.IsSuccess);
         
@@ -78,11 +78,11 @@ public class Board8X8Tests
         {
             { Empty, 	BlackMan, 	Empty, 		BlackMan, 	Empty, 		BlackMan, 	Empty, 		BlackMan},
             { BlackMan, Empty, 		BlackMan, 	Empty, 		BlackMan, 	Empty, 		BlackMan, 	Empty},
+            { Empty, 	BlackMan, 	Empty, 		BlackMan, 	Empty, 		BlackMan,	Empty, 		BlackMan},
             { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
-            { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
-            { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
-            { WhiteMan, Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
-            { Empty, 	Empty, 	    Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan},
+            { Empty, 	WhiteMan, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
+            { Empty,    Empty, 		WhiteMan, 	Empty, 		WhiteMan,	Empty, 		WhiteMan, 	Empty},
+            { Empty, 	WhiteMan, 	    Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan},
             { WhiteMan, Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty}
         };
         
