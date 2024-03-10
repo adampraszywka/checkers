@@ -4,9 +4,10 @@ public interface ObservablePiece
 {
     public string Id { get; }
     public Color Color { get; }
-    public string Type { get; }
-    
-    // public IEnumerable<PossibleMove> PossibleMoves()
+    public Type Type { get; }
 }
 
-public record PossibleMove(int CapturedPieces, Square Target);
+public enum Type
+{
+    Man, King
+}

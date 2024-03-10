@@ -9,7 +9,8 @@ public record TestSquare(string? PieceType, Color? PieceColor)
     {
         if (snapshot.Piece is not null)
         {
-            return new(snapshot.Piece.Type, snapshot.Piece.Color);
+            var type = snapshot.Piece.Type.ToString().ToLower();
+            return new(type, snapshot.Piece.Color);
         }
             
         return new(null, null);
