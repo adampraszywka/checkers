@@ -22,7 +22,7 @@ public class Square
     public string Id { get; }
     public int Column { get; }
     public int Row { get; }
-    public (int Column, int Row) Coordinates => (Column, Row);
+    public Position Position => new(Row, Column);
    
     public bool IsOccupied => _piece is not null;
 

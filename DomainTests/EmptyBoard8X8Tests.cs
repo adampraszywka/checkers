@@ -1,5 +1,7 @@
 ﻿using Domain;
 using Domain.Configurations;
+using Domain.PieceMoves;
+using Domain.PieceMoves.Classic;
 using Domain.Pieces;
 using DomainTests.Extensions;
 using Extension;
@@ -12,6 +14,7 @@ public class EmptyBoard8X8Tests
     {
         public int BoardSize => 8;
         public IEnumerable<(Piece, Position)> PiecesPositions => Enumerable.Empty<(Piece, Position)>();
+        public PieceMoveFactory MoveFactory { get; } = new ClassicPieceMoveFactory();
     }
     
     [Test]

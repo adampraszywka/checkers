@@ -82,7 +82,7 @@ public class ClassicTests
             { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
             { Empty, 	WhiteMan, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
             { Empty,    Empty, 		WhiteMan, 	Empty, 		WhiteMan,	Empty, 		WhiteMan, 	Empty},
-            { Empty, 	WhiteMan, 	    Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan},
+            { Empty, 	WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan},
             { WhiteMan, Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty}
         };
         
