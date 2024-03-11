@@ -23,4 +23,8 @@
       <ProjectReference Include="..\Extension\Extension.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Configuration\Classsic\" />
+    </ItemGroup>
+
 </Project>

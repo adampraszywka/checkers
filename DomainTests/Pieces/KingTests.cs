@@ -39,4 +39,6 @@ public class KingTests
         
         Assert.Null(king.Square);
     }
+    
+    
 }

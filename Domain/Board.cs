@@ -1,6 +1,7 @@
 ﻿using Domain.Configurations;
 using Domain.Errors.Board;
 using Domain.Exceptions;
+using Domain.PieceMoves;
 using Domain.Pieces;
 using Extension;
 using FluentResults;
@@ -10,16 +11,18 @@ namespace Domain;
 public class Board
 {
     private readonly int _boardSize;
+    private readonly PieceMoveFactory _pieceMoveFactory;
     
     private readonly Square[,] _squares;
     private readonly List<Piece> _pieces;
-    private readonly RuleFactory _ruleFactory;
     
     public BoardSnapshot Snapshot => GenerateSnapshot();
     
     public Board(Configuration configuration)
     {
         _boardSize = configuration.BoardSize;
+        _pieceMoveFactory = configuration.MoveFactory;
+        
         _squares = new Square[_boardSize, _boardSize];
         _pieces = new List<Piece>();
         
@@ -65,6 +68,21 @@ public class Board
             throw InvalidBoardState.BrokenPieceSquareConnection;
         }
 
+        var pieceMove = _pieceMoveFactory.For(piece);
+
+        var possibleMoves = pieceMove.PossibleMoves(square.Position, Snapshot);
+        var move = possibleMoves.FirstOrDefault(x => x.To == position);
+
+        if (move is null)
+        {
+            throw new NotImplementedException();
+        }
+
+        foreach (var affectedSquare in move.AffectedSquares)
+        {
+            // capture if necessary
+        }
+        
         var newSquare = _squares[position.Row, position.Column];
 
         square.RemovePiece();

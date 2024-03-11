@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.Configurations.Classic;
 using Domain.Pieces;
 
 namespace DomainTests.Pieces;
@@ -39,4 +40,5 @@ public class ManTests
         
         Assert.Null(man.Square);
     }
+
 }

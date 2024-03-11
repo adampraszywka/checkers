@@ -80,7 +80,7 @@ public class SquareTests
         Assert.That(square.Id, Is.EqualTo(expectedId));
         Assert.That(square.Column, Is.EqualTo(column));
         Assert.That(square.Row, Is.EqualTo(row));
-        Assert.That(square.Coordinates, Is.EqualTo((column, row)));
+        Assert.That(square.Position, Is.EqualTo(new Position(row, column)));
         Assert.That(square.IsOccupied, Is.False);
     }
 

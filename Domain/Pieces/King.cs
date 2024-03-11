@@ -1,4 +1,6 @@
-﻿namespace Domain.Pieces;
+﻿using Domain.PieceMoves;
+
+namespace Domain.Pieces;
 
 public class King(string id, Color color) : Piece
 {
@@ -14,5 +16,10 @@ public class King(string id, Color color) : Piece
     public void Remove()
     {
         Square = null;
+    }
+
+    public IEnumerable<Move> PossibleMoves(BoardSnapshot snapshot)
+    {
+        throw new NotImplementedException();
     }
 }
