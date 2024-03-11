@@ -15,4 +15,9 @@ public class King(string id, Color color) : Piece
     {
         Square = null;
     }
+
+    public IEnumerable<Move> PossibleMoves()
+    {
+        throw new NotImplementedException();
+    }
 }

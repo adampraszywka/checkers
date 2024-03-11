@@ -5,7 +5,6 @@ namespace Domain.Configurations.Classic;
 public class ClassicConfiguration : Configuration
 {
     public int BoardSize => 8;
-    public RuleFactory RuleFactory { get; } = new ClassicRuleFactory();
     public IEnumerable<(Piece, Position)> PiecesPositions { get; }
 
     public static ClassicConfiguration NewBoard() => new(NewGamePieces);

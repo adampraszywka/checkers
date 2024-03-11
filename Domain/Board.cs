@@ -13,7 +13,6 @@ public class Board
     
     private readonly Square[,] _squares;
     private readonly List<Piece> _pieces;
-    private readonly RuleFactory _ruleFactory;
     
     public BoardSnapshot Snapshot => GenerateSnapshot();
     

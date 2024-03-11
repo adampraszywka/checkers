@@ -14,4 +14,8 @@
       <ProjectReference Include="..\Extension\Extension.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Configurations\Classic\" />
+    </ItemGroup>
+
 </Project>
