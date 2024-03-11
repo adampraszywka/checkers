@@ -1,6 +1,4 @@
-﻿
-
-using Domain;
+﻿using Domain;
 using Domain.Configurations;
 using Domain.Pieces;
 using DomainTests.Extensions;
@@ -10,10 +8,9 @@ namespace DomainTests;
 
 public class EmptyBoard8X8Tests
 {
-    private class EmptyBoardConfiguration : Domain.Configurations.Configuration
+    private class EmptyBoardConfiguration : Configuration
     {
         public int BoardSize => 8;
-        public RuleFactory RuleFactory => throw new NotImplementedException();
         public IEnumerable<(Piece, Position)> PiecesPositions => Enumerable.Empty<(Piece, Position)>();
     }
     

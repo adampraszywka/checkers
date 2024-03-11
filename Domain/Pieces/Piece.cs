@@ -6,7 +6,7 @@ public interface Piece : ObservablePiece
     public void Attach(Square square);
     public void Remove();
 
-    public IEnumerable<Move> PossibleMoves();
+    public IEnumerable<Move> PossibleMoves(BoardSnapshot boardSnapshot);
 }
 
 public record Move(Position To, IEnumerable<Position> AffectedSquares, int CapturedPieces);
