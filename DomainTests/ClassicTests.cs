@@ -58,7 +58,7 @@ public class ClassicTests
         var configuration = ClassicConfiguration.NewBoard();
         var board = new Board(configuration);
 
-        var result = board.Move("A2", new Position(Position.R1, Position.A));
+        var result = board.Move(pieceId, new Position(Position.R1, Position.A));
         
         Assert.That(result.HasError<PieceNotFound>());
     }
