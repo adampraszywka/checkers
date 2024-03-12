@@ -11,7 +11,7 @@ public class ClassicBlackManMovesTests
 {
     [Test]
     [TestCaseSource(typeof(BlackManMovesForward))]
-    public void PossibleMovesNoOtherPieceInteractions(TestCase testCase)
+    public void PossibleMovesNoOtherPieceInteractions(MoveForwardTestCase testCase)
     {
         var piece = new Man("ID", Color.White);
         var configuration = ClassicConfiguration.FromSnapshot(new[] {((Piece) piece, SourceP: testCase.Source)});
