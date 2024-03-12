@@ -31,36 +31,37 @@ public class ClassicTests
     }
 
     [Test]
-    [TestCase(-100, -100)]
-    [TestCase(-1, -1)]
-    [TestCase(0, 8)]
-    [TestCase(0, 9)]
-    [TestCase(8, 0)]
-    [TestCase(9, 0)]
-    [TestCase(100, 100)]
-    public void MoveOutOfBoard(int row, int column)
+    [TestCase(Position.R3, Position.A, -100, -100)]
+    [TestCase(Position.R3, Position.A, -1, -1)]
+    [TestCase(Position.R3, Position.A, 0, 8)]
+    [TestCase(Position.R3, Position.A, 0, 9)]
+    [TestCase(Position.R3, Position.A, 8, 0)]
+    [TestCase(Position.R3, Position.A, 9, 0)]
+    [TestCase(Position.R3, Position.A, 100, 100)]
+    [TestCase(-1, -1, Position.R1, Position.A)]
+    [TestCase(100, 100, Position.R1, Position.A)]
+    [TestCase(9, 9, Position.R1, Position.A)]
+    [TestCase(8, 7, Position.R1, Position.A)]
+    [TestCase(7, 8, Position.R1, Position.A)]
+    public void MoveOutOfBoard(int sourceRow, int sourceColumn, int targetRow, int targetColumn)
     {
         var configuration = ClassicConfiguration.NewBoard();
         var board = new Board(configuration);
 
-        var result = board.Move("A2", new Position(row, column));
+        var result = board.Move(new Position(sourceRow, sourceColumn), new Position(targetRow, targetColumn));
         
         Assert.That(result.HasError<PositionOutOfBoard>());
     }
 
     [Test]
-    [TestCase("")]
-    [TestCase(" ")]
-    [TestCase("test")]
-    [TestCase("doesNotExist")]
-    public void PieceNotFound(string pieceId)
+    public void SquareEmpty()
     {
         var configuration = ClassicConfiguration.NewBoard();
         var board = new Board(configuration);
 
-        var result = board.Move(pieceId, new Position(Position.R1, Position.A));
+        var result = board.Move(new Position(Position.R1, Position.B), new Position(Position.R1, Position.A));
         
-        Assert.That(result.HasError<PieceNotFound>());
+        Assert.That(result.HasError<EmptySquare>());
     }
 
     [Test]
@@ -69,7 +70,7 @@ public class ClassicTests
         var configuration = ClassicConfiguration.NewBoard();
         var board = new Board(configuration);
 
-        var result = board.Move("A1", new Position(Position.R8, Position.H));
+        var result = board.Move(new Position(Position.R1, Position.A), new Position(Position.R8, Position.H));
         
         Assert.That(result.HasError<MoveNotAllowed>());
     }
@@ -80,7 +81,7 @@ public class ClassicTests
         var configuration = ClassicConfiguration.NewBoard();
         var board = new Board(configuration);
 
-        var result = board.Move("A3", new Position(Position.R4, Position.B));
+        var result = board.Move(new Position(Position.R3, Position.A), new Position(Position.R4, Position.B));
         
         Assert.That(result.IsSuccess);
         

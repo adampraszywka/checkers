@@ -98,6 +98,7 @@ public class SquareTests
         var square = Square.FromCoordinates(0, 0);
         
         Assert.IsFalse(square.IsOccupied);
+        Assert.Throws<InvalidOperationException>(() =>  _ = square.Piece);
     }
     
     [Test]
@@ -109,6 +110,7 @@ public class SquareTests
         square.Move(piece);
         
         Assert.That(square.IsOccupied, Is.True);
+        Assert.That(square.Piece, Is.SameAs(piece));
     }
     
     [Test]
@@ -142,5 +144,6 @@ public class SquareTests
         square.RemovePiece();
             
         Assert.That(square.IsOccupied, Is.False);
+        Assert.Throws<InvalidOperationException>(() => _ = square.Piece);
     }
 }
