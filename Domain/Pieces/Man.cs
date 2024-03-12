@@ -1,7 +1,4 @@
-﻿using Domain.Exceptions;
-using Domain.PieceMoves;
-
-namespace Domain.Pieces;
+﻿namespace Domain.Pieces;
 
 public class Man(string id, Color color) : Piece
 {

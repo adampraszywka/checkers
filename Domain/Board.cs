@@ -75,7 +75,7 @@ public class Board
 
         if (move is null)
         {
-            throw new NotImplementedException();
+            return Result.Fail(new MoveNotAllowed());
         }
 
         foreach (var affectedSquare in move.AffectedSquares)
