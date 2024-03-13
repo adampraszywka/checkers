@@ -5,12 +5,12 @@ namespace Domain;
 public record SquareSnapshot
 {
     public string Id { get; }
-    public ObservablePiece? Piece { get; }
+    public Piece? Piece { get; }
     
-    public static SquareSnapshot Occupied(string name, ObservablePiece observablePiece) => new(name, observablePiece);
+    public static SquareSnapshot Occupied(string name, Piece observablePiece) => new(name, observablePiece);
     public static SquareSnapshot Unoccupied(string name) => new(name, null);
 
-    private SquareSnapshot(string id, ObservablePiece? piece)
+    private SquareSnapshot(string id, Piece? piece)
     {
         Id = id;
         Piece = piece;

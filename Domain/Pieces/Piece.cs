@@ -1,8 +1,13 @@
 ﻿namespace Domain.Pieces;
 
-public interface Piece : ObservablePiece
+public interface Piece
 {
-    public Square? Square { get; }
-    public void Attach(Square square);
-    public void Remove();
+    public string Id { get; }
+    public Color Color { get; }
+    public Type Type { get; }
+}
+
+public enum Type
+{
+    Man, King
 }

@@ -36,7 +36,7 @@ public class Board
 
         foreach (var (piece, position) in configuration.PiecesPositions)
         {
-            if (position.Column > _boardSize || position.Row > _boardSize)
+            if (!position.IsWithinBoard(_boardSize))
             {
                 //TODO: Catch an error and throw it in exception?
                 throw new NotImplementedException();
@@ -49,29 +49,29 @@ public class Board
         }
     }
 
-    public Result Move(string pieceId, Position position)
+    public Result Move(Position source, Position target)
     {
-        if (!position.IsWithinBoard(_boardSize))
+        if (!source.IsWithinBoard(_boardSize))
         {
-            return Result.Fail(new PositionOutOfBoard(position));
+            return Result.Fail(new PositionOutOfBoard(source));
         }
         
-        var piece = _pieces.FirstOrDefault(x => x.Id == pieceId);
-        if (piece is null)
+        if (!target.IsWithinBoard(_boardSize))
         {
-            return Result.Fail(new PieceNotFound(pieceId));
+            return Result.Fail(new PositionOutOfBoard(target));
+        }
+        
+        var square = _squares[source.Row, source.Column];
+        if (!square.IsOccupied)
+        {
+            return Result.Fail(new EmptySquare(source));
         }
 
-        var square = piece.Square;
-        if (square is null)
-        {
-            throw InvalidBoardState.BrokenPieceSquareConnection;
-        }
-
+        var piece = square.Piece;
         var pieceMove = _pieceMoveFactory.For(piece);
 
         var possibleMoves = pieceMove.PossibleMoves(square.Position, Snapshot);
-        var move = possibleMoves.FirstOrDefault(x => x.To == position);
+        var move = possibleMoves.FirstOrDefault(x => x.To == target);
 
         if (move is null)
         {
@@ -83,7 +83,7 @@ public class Board
             // capture if necessary
         }
         
-        var newSquare = _squares[position.Row, position.Column];
+        var newSquare = _squares[target.Row, target.Column];
 
         square.RemovePiece();
         newSquare.Move(piece);

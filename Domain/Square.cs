@@ -5,6 +5,7 @@ namespace Domain;
 
 public class Square
 {
+    
     private Piece? _piece = null;
 
     public static Square FromCoordinates(int row, int column)
@@ -22,8 +23,9 @@ public class Square
     public string Id { get; }
     public int Column { get; }
     public int Row { get; }
+    
     public Position Position => new(Row, Column);
-   
+    public Piece Piece => _piece ?? throw new InvalidOperationException();
     public bool IsOccupied => _piece is not null;
 
     public SquareSnapshot Snapshot()
@@ -43,7 +45,6 @@ public class Square
             throw InvalidBoardState.SquareIsNotEmpty;
         }
         
-        piece.Attach(this);
         _piece = piece;
     }
 
@@ -54,7 +55,6 @@ public class Square
             throw InvalidBoardState.SquareIsEmpty;
         }
 
-        _piece.Remove();
         _piece = null;
     }
     
