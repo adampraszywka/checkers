@@ -2,6 +2,7 @@
 
 public class ClassicWhiteManMoves : PieceMove
 {
+    // To be refactored later
     public IEnumerable<Move> PossibleMoves(Position currentPosition, BoardSnapshot boardSnapshot)
     {
         var column = currentPosition.Column;
@@ -14,37 +15,51 @@ public class ClassicWhiteManMoves : PieceMove
         
         if (column == Position.A)
         {
-            return SingleMoveRight(row, column);
+            var newPosition = new Position(row + 1, column + 1);
+            var newSquare = boardSnapshot.Squares[newPosition.Row, newPosition.Column];
+
+            if (newSquare.Piece is not null)
+            {
+                return Enumerable.Empty<Move>();
+            }
+
+            var move = new Move(newPosition, new[] {newPosition}, 0);
+            return new[] {move};
         }
 
         if (column == boardSnapshot.Columns - 1)
         {
-            return SingleMoveLeft(row, column);
-        }
-        
-        return TwoMovesLeftAndRight(row, column);
-
-        static IEnumerable<Move> SingleMoveLeft(int row, int column)
-        {
             var newPosition = new Position(row + 1, column - 1);
+            var newSquare = boardSnapshot.Squares[newPosition.Row, newPosition.Column];
+
+            if (newSquare.Piece is not null)
+            {
+                return Enumerable.Empty<Move>();
+            }
+            
             var move = new Move(newPosition, new[] {newPosition}, 0);
             return new[] {move};
         }
+
+        var moves = new List<Move>();
         
-        static IEnumerable<Move> SingleMoveRight(int row, int column)
+        var newPosition1 = new Position(row + 1, column - 1);
+        var newPosition2 = new Position(row + 1, column + 1);
+
+        var newSquare1 = boardSnapshot.Squares[newPosition1.Row, newPosition1.Column];
+        var newSquare2 = boardSnapshot.Squares[newPosition2.Row, newPosition2.Column];
+
+        if (newSquare1.Piece is null)
         {
-            var newPosition = new Position(row + 1, column + 1);
-            var move = new Move(newPosition, new[] {newPosition}, 0);
-            return new[] {move};
+            moves.Add(new Move(newPosition1, new[] {newPosition1}, 0));
         }
-        
-        static IEnumerable<Move> TwoMovesLeftAndRight(int row, int column)
+
+        if (newSquare2.Piece is null)
         {
-            var newPosition1 = new Position(row + 1, column - 1);
-            var newPosition2 = new Position(row + 1, column + 1);
-            var move1 = new Move(newPosition1, new[] {newPosition1}, 0);
-            var move2 = new Move(newPosition2, new[] {newPosition2}, 0);
-            return new[] {move1, move2};
+            moves.Add(new Move(newPosition2, new[] {newPosition2}, 0));
+
         }
+
+        return moves;
     }
 }
