@@ -2,6 +2,7 @@
 
 public class ClassicWhiteManMoves : PieceMove
 {
+    // To be refactored later
     public IEnumerable<Move> PossibleMoves(Position currentPosition, BoardSnapshot boardSnapshot)
     {
         var column = currentPosition.Column;

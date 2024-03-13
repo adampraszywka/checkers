@@ -8,7 +8,7 @@ public class WhiteManMovesForward : IEnumerable<MoveForwardTestCase>
 {
     public IEnumerator<MoveForwardTestCase> GetEnumerator()
     {
-            // Row1
+        // Row1
         yield return new MoveForwardTestCase
         {
             Source = new P(P.R1, P.A),
