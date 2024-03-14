@@ -22,4 +22,22 @@ public class ClassicBlackManMovesTests
         
         Assert.That(JsonSerializer.Serialize(moves), Is.EqualTo(JsonSerializer.Serialize(testCase.Moves)));
     }
+    
+    [Test]
+    [TestCaseSource(typeof(BlackManMovesForwardBlockingMoves))]
+    public void AnotherWhitePieceBlocks(BlockedMoveForwardTestCase testCase)
+    {
+        var piece1 = (Piece) new Man("ID", Color.Black);
+        var pieces = new List<(Piece Piece, Position Position)> {(piece1, testCase.SourcePiece)};
+        var blockingPieces = testCase.BlockingPieces
+            .Select(x => ((Piece) new Man("ID", Color.Black), x));
+        
+        var configuration = ClassicConfiguration.FromSnapshot(pieces.Union(blockingPieces));
+        var board = new Board(configuration);
+        var pieceMoves = new ClassicBlackManMoves();
+        
+        var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
+        
+        Assert.That(JsonSerializer.Serialize(moves), Is.EqualTo(JsonSerializer.Serialize(testCase.Moves)));
+    }
 }
