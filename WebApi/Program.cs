@@ -1,3 +1,5 @@
+using Domain;
+using Microsoft.AspNetCore.Mvc;
 using WebApi.Dto;
 using WebApi.Repository;
 
@@ -23,6 +25,26 @@ app.MapGet("/board", async (BoardRepository repository) =>
     var snapshot = board.Snapshot;
     return new BoardDto(snapshot);
 });
+
+app.MapPost("/move", async (BoardRepository repo, [FromBody] MoveDto request) =>
+{
+    var board = await repo.Get();
+
+    var from = new Position(request.From.Row, request.From.Column);
+    var to = new Position(request.To.Row, request.To.Column);
+
+    var result = board.Move(from, to);
+
+    if (result.IsFailed)
+    {
+        throw new Exception();
+    }
+    
+    repo.Save(board);
+
+    return new BoardDto(board.Snapshot);
+});
+    
 
 app.UseCors(devCors);
 

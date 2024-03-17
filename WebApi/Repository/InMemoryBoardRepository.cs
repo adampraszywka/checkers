@@ -17,4 +17,9 @@ public class InMemoryBoardRepository : BoardRepository
     {
         return Task.FromResult(_board);
     }
+
+    public void Save(Board board)
+    {
+        
+    }
 }
