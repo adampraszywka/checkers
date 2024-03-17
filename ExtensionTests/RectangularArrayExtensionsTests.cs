@@ -59,4 +59,17 @@ public class RectangularArrayExtensionsTests
         
         Assert.That(result.Flatten(), Is.EquivalentTo(expectedOutput.Flatten()));
     }
+
+
+    [Test]
+    public void ReversedRowsListOfLists()
+    {
+        var input = new[,] {{1, 2}, {3, 4}};
+        var expectedOutput = new List<List<int>> {new() {3, 4}, new() {1, 2}};
+        
+        var processed = input.ReversedRowsListOfLists();
+        
+        Assert.That(expectedOutput, Is.EqualTo(processed));
+    }
+    
 }

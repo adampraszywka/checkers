@@ -1,1 +1,5 @@
-<p>board works!</p>
+<div class="container" *ngIf="board !== null">
+  <div *ngFor="let squares of board.squares; let row = index" class="row g-0">
+    <app-square *ngFor="let square of squares; let column = index" class="col" [square]="square" [row]="row" [column]="column"></app-square>
+  </div>
+</div>
