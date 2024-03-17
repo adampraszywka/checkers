@@ -1,1 +1,3 @@
-<p>square works!</p>
+<div [ngClass]="isBlackSquare() ? 'black' : 'white'" class="square">
+  <app-piece *ngIf="square.piece !== null" [piece]="square.piece"></app-piece>
+</div>
