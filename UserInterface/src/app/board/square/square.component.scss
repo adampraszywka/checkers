@@ -1,11 +1,11 @@
 :host {
   display: flex;
-  width: 100%;
 }
 
 .square {
   width: 100%;
-  height: 5rem;
+  height: 0;
+  padding-bottom: 100%;
 }
 
 .white {
