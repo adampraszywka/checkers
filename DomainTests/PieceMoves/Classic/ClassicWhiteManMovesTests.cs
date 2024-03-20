@@ -81,6 +81,12 @@ public class ClassicWhiteManMovesTests
                     new Move(new Position(Position.R3, Position.E), new[] {new Position(Position.R2, Position.D)}, 1),
                 }
             };
+            
+            yield return new SinglePieceCaptureTestCase
+            {
+                SourcePiece = new Position(Position.R1, Position.G), CapturedPiece = new Position(Position.R2, Position.H),
+                Moves = Array.Empty<Move>()
+            };
         }
     }
     
