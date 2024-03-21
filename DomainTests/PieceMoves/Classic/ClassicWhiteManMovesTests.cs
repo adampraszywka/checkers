@@ -42,12 +42,12 @@ public class ClassicWhiteManMovesTests
     }
     
     [TestCaseSource(typeof(WhitePieceCapturesSingleBlackPieceTestCases))]
-    public void WhitePieceCapturesSingleBlackPiece(SinglePieceCaptureTestCase testCase)
+    public void WhitePieceCapturesSingleBlackPieces(SinglePieceCaptureTestCase testCase)
     {
         var white = (Piece) new Man("W", Color.White);
         var black = (Piece) new Man("B", Color.Black);
         var piece = new List<(Piece Piece, Position Position)> {(white, testCase.SourcePiece)};
-        var capturedPieces = new List<(Piece Piece, Position Position)> {(black, testCase.CapturedPiece)};
+        var capturedPieces = testCase.CapturedPieces.Select(x => (black, x));
 
         var configuration = ClassicConfiguration.FromSnapshot(piece.Union(capturedPieces));
         var board = new Board(configuration);
