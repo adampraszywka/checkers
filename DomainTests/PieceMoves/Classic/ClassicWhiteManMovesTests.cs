@@ -57,26 +57,4 @@ public class ClassicWhiteManMovesTests
 
         Assert.That(JsonSerializer.Serialize(moves), Is.EqualTo(JsonSerializer.Serialize(testCase.Moves)));
     }
-
-    // [Test]
-    // public void SingleBlackPieceCapture()
-    // {
-    //     var whiteMan = (Piece) new Man("W", Color.White);
-    //     var blackMan = (Piece) new Man("B", Color.Black);
-    //     var source = new Position(Position.R1, Position.A);
-    //     
-    //     var configuration = ClassicConfiguration.FromSnapshot(new[]
-    //     {
-    //         (whiteMan, source),
-    //         (blackMan, new Position(Position.R2, Position.B)),
-    //     });
-    //     var board = new Board(configuration);
-    //     var pieceMoves = new ClassicWhiteManMoves();
-    //     
-    //     var moves = pieceMoves.PossibleMoves(source, board.Snapshot);
-    //     
-    //     
-    //     
-    //     Assert.That(JsonSerializer.Serialize(moves), Is.EqualTo(JsonSerializer.Serialize(testCase.Moves)));
-    // }
 }

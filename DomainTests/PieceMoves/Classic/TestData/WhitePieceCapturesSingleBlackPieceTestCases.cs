@@ -12,212 +12,212 @@ public class WhitePieceCapturesSingleBlackPieceTestCases : IEnumerable
         //Row1
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R1, Position.A), CapturedPiece = new P(Position.R2, Position.B),
-            Moves = new[] {new Move(new P(Position.R3, Position.C), new[] {new P(Position.R2, Position.B)}, 1)}
+            SourcePiece = new P(P.R1, P.A), CapturedPiece = new P(P.R2, P.B),
+            Moves = new[] {new Move(new P(P.R3, P.C), new[] {new P(P.R2, P.B)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R1, Position.C), CapturedPiece = new P(Position.R2, Position.D),
-            Moves = new[] {new Move(new P(Position.R3, Position.E), new[] {new P(Position.R2, Position.D)}, 1)}
+            SourcePiece = new P(P.R1, P.C), CapturedPiece = new P(P.R2, P.D),
+            Moves = new[] {new Move(new P(P.R3, P.E), new[] {new P(P.R2, P.D)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R1, Position.C), CapturedPiece = new P(Position.R2, Position.B),
-            Moves = new[] {new Move(new P(Position.R3, Position.A), new[] {new P(Position.R2, Position.B)}, 1)}
+            SourcePiece = new P(P.R1, P.C), CapturedPiece = new P(P.R2, P.B),
+            Moves = new[] {new Move(new P(P.R3, P.A), new[] {new P(P.R2, P.B)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R1, Position.E), CapturedPiece = new P(Position.R2, Position.D),
-            Moves = new[] {new Move(new P(Position.R3, Position.C), new[] {new P(Position.R2, Position.D)}, 1)}
+            SourcePiece = new P(P.R1, P.E), CapturedPiece = new P(P.R2, P.D),
+            Moves = new[] {new Move(new P(P.R3, P.C), new[] {new P(P.R2, P.D)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R1, Position.E), CapturedPiece = new P(Position.R2, Position.F),
-            Moves = new[] {new Move(new P(Position.R3, Position.G), new[] {new P(Position.R2, Position.F)}, 1)}
+            SourcePiece = new P(P.R1, P.E), CapturedPiece = new P(P.R2, P.F),
+            Moves = new[] {new Move(new P(P.R3, P.G), new[] {new P(P.R2, P.F)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R1, Position.G), CapturedPiece = new P(Position.R2, Position.F),
-            Moves = new[] {new Move(new P(Position.R3, Position.E), new[] {new P(Position.R2, Position.F)}, 1)}
+            SourcePiece = new P(P.R1, P.G), CapturedPiece = new P(P.R2, P.F),
+            Moves = new[] {new Move(new P(P.R3, P.E), new[] {new P(P.R2, P.F)}, 1)}
         };
         
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R2, Position.B), CapturedPiece = new P(Position.R3, Position.C),
-            Moves = new[] {new Move(new P(Position.R4, Position.D), new[] {new P(Position.R3, Position.C)}, 1)}
+            SourcePiece = new P(P.R2, P.B), CapturedPiece = new P(P.R3, P.C),
+            Moves = new[] {new Move(new P(P.R4, P.D), new[] {new P(P.R3, P.C)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R2, Position.D), CapturedPiece = new P(Position.R3, Position.C),
-            Moves = new[] {new Move(new P(Position.R4, Position.B), new[] {new P(Position.R3, Position.C)}, 1)}
+            SourcePiece = new P(P.R2, P.D), CapturedPiece = new P(P.R3, P.C),
+            Moves = new[] {new Move(new P(P.R4, P.B), new[] {new P(P.R3, P.C)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R2, Position.D), CapturedPiece = new P(Position.R3, Position.E),
-            Moves = new[] {new Move(new P(Position.R4, Position.F), new[] {new P(Position.R3, Position.E)}, 1)}
+            SourcePiece = new P(P.R2, P.D), CapturedPiece = new P(P.R3, P.E),
+            Moves = new[] {new Move(new P(P.R4, P.F), new[] {new P(P.R3, P.E)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R2, Position.F), CapturedPiece = new P(Position.R3, Position.E),
-            Moves = new[] {new Move(new P(Position.R4, Position.D), new[] {new P(Position.R3, Position.E)}, 1)}
+            SourcePiece = new P(P.R2, P.F), CapturedPiece = new P(P.R3, P.E),
+            Moves = new[] {new Move(new P(P.R4, P.D), new[] {new P(P.R3, P.E)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R2, Position.F), CapturedPiece = new P(Position.R3, Position.G),
-            Moves = new[] {new Move(new P(Position.R4, Position.H), new[] {new P(Position.R3, Position.G)}, 1)}
+            SourcePiece = new P(P.R2, P.F), CapturedPiece = new P(P.R3, P.G),
+            Moves = new[] {new Move(new P(P.R4, P.H), new[] {new P(P.R3, P.G)}, 1)}
         };
         
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R2, Position.H), CapturedPiece = new P(Position.R3, Position.G),
-            Moves = new[] {new Move(new P(Position.R4, Position.F), new[] {new P(Position.R3, Position.G)}, 1)}
+            SourcePiece = new P(P.R2, P.H), CapturedPiece = new P(P.R3, P.G),
+            Moves = new[] {new Move(new P(P.R4, P.F), new[] {new P(P.R3, P.G)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R3, Position.A), CapturedPiece = new P(Position.R4, Position.B),
-            Moves = new[] {new Move(new P(Position.R5, Position.C), new[] {new P(Position.R4, Position.B)}, 1)}
+            SourcePiece = new P(P.R3, P.A), CapturedPiece = new P(P.R4, P.B),
+            Moves = new[] {new Move(new P(P.R5, P.C), new[] {new P(P.R4, P.B)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R3, Position.C), CapturedPiece = new P(Position.R4, Position.B),
-            Moves = new[] {new Move(new P(Position.R5, Position.A), new[] {new P(Position.R4, Position.B)}, 1)}
+            SourcePiece = new P(P.R3, P.C), CapturedPiece = new P(P.R4, P.B),
+            Moves = new[] {new Move(new P(P.R5, P.A), new[] {new P(P.R4, P.B)}, 1)}
         };
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R3, Position.C), CapturedPiece = new P(Position.R4, Position.D),
-            Moves = new[] {new Move(new P(Position.R5, Position.E), new[] {new P(Position.R4, Position.D)}, 1)}
+            SourcePiece = new P(P.R3, P.C), CapturedPiece = new P(P.R4, P.D),
+            Moves = new[] {new Move(new P(P.R5, P.E), new[] {new P(P.R4, P.D)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R3, Position.E), CapturedPiece = new P(Position.R4, Position.D),
-            Moves = new[] {new Move(new P(Position.R5, Position.C), new[] {new P(Position.R4, Position.D)}, 1)}
+            SourcePiece = new P(P.R3, P.E), CapturedPiece = new P(P.R4, P.D),
+            Moves = new[] {new Move(new P(P.R5, P.C), new[] {new P(P.R4, P.D)}, 1)}
         };
         
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R3, Position.E), CapturedPiece = new P(Position.R4, Position.F),
-            Moves = new[] {new Move(new P(Position.R5, Position.G), new[] {new P(Position.R4, Position.F)}, 1)}
+            SourcePiece = new P(P.R3, P.E), CapturedPiece = new P(P.R4, P.F),
+            Moves = new[] {new Move(new P(P.R5, P.G), new[] {new P(P.R4, P.F)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R3, Position.G), CapturedPiece = new P(Position.R4, Position.F),
-            Moves = new[] {new Move(new P(Position.R5, Position.E), new[] {new P(Position.R4, Position.F)}, 1)}
+            SourcePiece = new P(P.R3, P.G), CapturedPiece = new P(P.R4, P.F),
+            Moves = new[] {new Move(new P(P.R5, P.E), new[] {new P(P.R4, P.F)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R4, Position.B), CapturedPiece = new P(Position.R5, Position.C),
-            Moves = new[] {new Move(new P(Position.R6, Position.D), new[] {new P(Position.R5, Position.C)}, 1)}
+            SourcePiece = new P(P.R4, P.B), CapturedPiece = new P(P.R5, P.C),
+            Moves = new[] {new Move(new P(P.R6, P.D), new[] {new P(P.R5, P.C)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R4, Position.D), CapturedPiece = new P(Position.R5, Position.C),
-            Moves = new[] {new Move(new P(Position.R6, Position.B), new[] {new P(Position.R5, Position.C)}, 1)}
+            SourcePiece = new P(P.R4, P.D), CapturedPiece = new P(P.R5, P.C),
+            Moves = new[] {new Move(new P(P.R6, P.B), new[] {new P(P.R5, P.C)}, 1)}
         };
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R4, Position.D), CapturedPiece = new P(Position.R5, Position.E),
-            Moves = new[] {new Move(new P(Position.R6, Position.F), new[] {new P(Position.R5, Position.E)}, 1)}
+            SourcePiece = new P(P.R4, P.D), CapturedPiece = new P(P.R5, P.E),
+            Moves = new[] {new Move(new P(P.R6, P.F), new[] {new P(P.R5, P.E)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R4, Position.F), CapturedPiece = new P(Position.R5, Position.E),
-            Moves = new[] {new Move(new P(Position.R6, Position.D), new[] {new P(Position.R5, Position.E)}, 1)}
+            SourcePiece = new P(P.R4, P.F), CapturedPiece = new P(P.R5, P.E),
+            Moves = new[] {new Move(new P(P.R6, P.D), new[] {new P(P.R5, P.E)}, 1)}
         };
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R4, Position.F), CapturedPiece = new P(Position.R5, Position.G),
-            Moves = new[] {new Move(new P(Position.R6, Position.H), new[] {new P(Position.R5, Position.G)}, 1)}
+            SourcePiece = new P(P.R4, P.F), CapturedPiece = new P(P.R5, P.G),
+            Moves = new[] {new Move(new P(P.R6, P.H), new[] {new P(P.R5, P.G)}, 1)}
         };
         
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R4, Position.H), CapturedPiece = new P(Position.R5, Position.G),
-            Moves = new[] {new Move(new P(Position.R6, Position.F), new[] {new P(Position.R5, Position.G)}, 1)}
+            SourcePiece = new P(P.R4, P.H), CapturedPiece = new P(P.R5, P.G),
+            Moves = new[] {new Move(new P(P.R6, P.F), new[] {new P(P.R5, P.G)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R5, Position.A), CapturedPiece = new P(Position.R6, Position.B),
-            Moves = new[] {new Move(new P(Position.R7, Position.C), new[] {new P(Position.R6, Position.B)}, 1)}
+            SourcePiece = new P(P.R5, P.A), CapturedPiece = new P(P.R6, P.B),
+            Moves = new[] {new Move(new P(P.R7, P.C), new[] {new P(P.R6, P.B)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R5, Position.C), CapturedPiece = new P(Position.R6, Position.B),
-            Moves = new[] {new Move(new P(Position.R7, Position.A), new[] {new P(Position.R6, Position.B)}, 1)}
+            SourcePiece = new P(P.R5, P.C), CapturedPiece = new P(P.R6, P.B),
+            Moves = new[] {new Move(new P(P.R7, P.A), new[] {new P(P.R6, P.B)}, 1)}
         };
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R5, Position.C), CapturedPiece = new P(Position.R6, Position.D),
-            Moves = new[] {new Move(new P(Position.R7, Position.E), new[] {new P(Position.R6, Position.D)}, 1)}
+            SourcePiece = new P(P.R5, P.C), CapturedPiece = new P(P.R6, P.D),
+            Moves = new[] {new Move(new P(P.R7, P.E), new[] {new P(P.R6, P.D)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R5, Position.E), CapturedPiece = new P(Position.R6, Position.D),
-            Moves = new[] {new Move(new P(Position.R7, Position.C), new[] {new P(Position.R6, Position.D)}, 1)}
+            SourcePiece = new P(P.R5, P.E), CapturedPiece = new P(P.R6, P.D),
+            Moves = new[] {new Move(new P(P.R7, P.C), new[] {new P(P.R6, P.D)}, 1)}
         };
         
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R5, Position.E), CapturedPiece = new P(Position.R6, Position.F),
-            Moves = new[] {new Move(new P(Position.R7, Position.G), new[] {new P(Position.R6, Position.F)}, 1)}
+            SourcePiece = new P(P.R5, P.E), CapturedPiece = new P(P.R6, P.F),
+            Moves = new[] {new Move(new P(P.R7, P.G), new[] {new P(P.R6, P.F)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R5, Position.G), CapturedPiece = new P(Position.R6, Position.F),
-            Moves = new[] {new Move(new P(Position.R7, Position.E), new[] {new P(Position.R6, Position.F)}, 1)}
+            SourcePiece = new P(P.R5, P.G), CapturedPiece = new P(P.R6, P.F),
+            Moves = new[] {new Move(new P(P.R7, P.E), new[] {new P(P.R6, P.F)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R6, Position.B), CapturedPiece = new P(Position.R7, Position.C),
-            Moves = new[] {new Move(new P(Position.R8, Position.D), new[] {new P(Position.R7, Position.C)}, 1)}
+            SourcePiece = new P(P.R6, P.B), CapturedPiece = new P(P.R7, P.C),
+            Moves = new[] {new Move(new P(P.R8, P.D), new[] {new P(P.R7, P.C)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R6, Position.D), CapturedPiece = new P(Position.R7, Position.C),
-            Moves = new[] {new Move(new P(Position.R8, Position.B), new[] {new P(Position.R7, Position.C)}, 1)}
+            SourcePiece = new P(P.R6, P.D), CapturedPiece = new P(P.R7, P.C),
+            Moves = new[] {new Move(new P(P.R8, P.B), new[] {new P(P.R7, P.C)}, 1)}
         };
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R6, Position.D), CapturedPiece = new P(Position.R7, Position.E),
-            Moves = new[] {new Move(new P(Position.R8, Position.F), new[] {new P(Position.R7, Position.E)}, 1)}
+            SourcePiece = new P(P.R6, P.D), CapturedPiece = new P(P.R7, P.E),
+            Moves = new[] {new Move(new P(P.R8, P.F), new[] {new P(P.R7, P.E)}, 1)}
         };
 
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R6, Position.F), CapturedPiece = new P(Position.R7, Position.E),
-            Moves = new[] {new Move(new P(Position.R8, Position.D), new[] {new P(Position.R7, Position.E)}, 1)}
+            SourcePiece = new P(P.R6, P.F), CapturedPiece = new P(P.R7, P.E),
+            Moves = new[] {new Move(new P(P.R8, P.D), new[] {new P(P.R7, P.E)}, 1)}
         };
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R6, Position.F), CapturedPiece = new P(Position.R7, Position.G),
-            Moves = new[] {new Move(new P(Position.R8, Position.H), new[] {new P(Position.R7, Position.G)}, 1)}
+            SourcePiece = new P(P.R6, P.F), CapturedPiece = new P(P.R7, P.G),
+            Moves = new[] {new Move(new P(P.R8, P.H), new[] {new P(P.R7, P.G)}, 1)}
         };
         
         yield return new SinglePieceCaptureTestCase
         {
-            SourcePiece = new P(Position.R6, Position.H), CapturedPiece = new P(Position.R7, Position.G),
-            Moves = new[] {new Move(new P(Position.R8, Position.F), new[] {new P(Position.R7, Position.G)}, 1)}
+            SourcePiece = new P(P.R6, P.H), CapturedPiece = new P(P.R7, P.G),
+            Moves = new[] {new Move(new P(P.R8, P.F), new[] {new P(P.R7, P.G)}, 1)}
         };
     }
 }
