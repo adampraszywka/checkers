@@ -41,8 +41,8 @@ public class ClassicWhiteManMovesTests
         Assert.That(JsonSerializer.Serialize(moves), Is.EqualTo(JsonSerializer.Serialize(testCase.Moves)));
     }
     
-    [TestCaseSource(typeof(WhitePieceCapturesSingleBlackPieceTestCases))]
-    public void WhitePieceCapturesSingleBlackPieces(SinglePieceCaptureTestCase testCase)
+    [TestCaseSource(typeof(WhitePieceCapturesBlackPiecesTestCases))]
+    public void WhitePieceCapturesBlackPieces(SinglePieceCaptureTestCase testCase)
     {
         var white = (Piece) new Man("W", Color.White);
         var black = (Piece) new Man("B", Color.Black);
