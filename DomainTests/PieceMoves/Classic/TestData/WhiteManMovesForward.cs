@@ -4,9 +4,9 @@ using P = Domain.Position;
 
 namespace DomainTests.PieceMoves.Classic.TestData;
 
-public class WhiteManMovesForward : IEnumerable<MoveForwardTestCase>
+public class WhiteManMovesForward : IEnumerable
 {
-    public IEnumerator<MoveForwardTestCase> GetEnumerator()
+    public IEnumerator GetEnumerator()
     {
         // Row1
         yield return new MoveForwardTestCase
@@ -168,6 +168,4 @@ public class WhiteManMovesForward : IEnumerable<MoveForwardTestCase>
         yield return new MoveForwardTestCase { Source = new P(P.R8, P.F), Moves = new List<Move>() };
         yield return new MoveForwardTestCase { Source = new P(P.R8, P.H), Moves = new List<Move>() };
     }
-
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

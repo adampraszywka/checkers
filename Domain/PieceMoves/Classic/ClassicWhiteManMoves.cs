@@ -7,110 +7,107 @@ public class ClassicWhiteManMoves : PieceMove
     // To be refactored later
     public IEnumerable<Move> PossibleMoves(Position currentPosition, BoardSnapshot boardSnapshot)
     {
-        var column = currentPosition.Column;
-        var row = currentPosition.Row;
-
-        
-        if (row == boardSnapshot.Rows - 1)
+        if (currentPosition.Row == boardSnapshot.BoardSize.Rows - 1)
         {
             return Enumerable.Empty<Move>();
         }
-        
-        if (column == Position.A)
-        {
-            var newPosition = currentPosition.RightForward();
-            var newSquare = boardSnapshot.Squares[newPosition.Row, newPosition.Column];
 
-            if (newSquare.Piece is not null && newSquare.Piece.Color == Color.Black)
-            {
-                var newPositionAfterCapture = newPosition.RightForward();
-                var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
-                if (newSquareAfterCapture.Piece is not null)
-                {
-                    //TODO: Square is already occupied
-                }
-
-                return new[] {new Move(newPositionAfterCapture, new[] {newPosition}, 1)};
-            }
-            
-            if (newSquare.Piece is not null)
-            {
-                return Enumerable.Empty<Move>();
-            }
-            
-            return new[] {new Move(newPosition, new[] {newPosition}, 0)};
-        }
-
-        if (column == boardSnapshot.Columns - 1)
-        {
-            var newPosition = currentPosition.LeftForward();
-            var newSquare = boardSnapshot.Squares[newPosition.Row, newPosition.Column];
-
-            if (newSquare.Piece is not null && newSquare.Piece.Color == Color.Black)
-            {
-                var newPositionAfterCapture = newPosition.LeftForward();
-                var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
-                if (newSquareAfterCapture.Piece is not null)
-                {
-                    //TODO: Square is already occupied
-                }
-
-                return new[] {new Move(newPositionAfterCapture, new[] {newPosition}, 1)};
-            }
-            
-            if (newSquare.Piece is not null)
-            {
-                return Enumerable.Empty<Move>();
-            }
-            
-            return new[] {new Move(newPosition, new[] {newPosition}, 0)};
-        }
-
-        var maxCapturedPieces = 0;
         var moves = new List<Move>();
+
+
+        var rightBackward = currentPosition.RightBackward();
+        if (rightBackward.IsWithinBoard(boardSnapshot.BoardSize))
+        {
+            var newSquare = boardSnapshot.Squares[rightBackward.Row, rightBackward.Column];
+            if (newSquare.Piece is not null && newSquare.Piece.Color == Color.Black)
+            {
+                var newPositionAfterCapture = rightBackward.RightBackward();
+                if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize))
+                {
+                    var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
+                    if (newSquareAfterCapture.Piece is not null)
+                    {
+                        //TODO: Square is already occupied
+                    }
+
+                    moves.Add(new Move(newPositionAfterCapture, new[] {rightBackward}, 1));
+                }
+            }
+        }
+        
+        var leftBackward = currentPosition.LeftBackward();
+        if (leftBackward.IsWithinBoard(boardSnapshot.BoardSize))
+        {
+            var newSquare = boardSnapshot.Squares[leftBackward.Row, leftBackward.Column];
+            if (newSquare.Piece is not null && newSquare.Piece.Color == Color.Black)
+            {
+                var newPositionAfterCapture = leftBackward.LeftBackward();
+                if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize))
+                {
+                    var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
+                    if (newSquareAfterCapture.Piece is not null)
+                    {
+                        //TODO: Square is already occupied
+                    }
+
+                    moves.Add(new Move(newPositionAfterCapture, new[] {leftBackward}, 1));
+                }
+            }
+        }
         
         // To the left
-        var newPosition1 = currentPosition.LeftForward();
-        var newSquare1 = boardSnapshot.Squares[newPosition1.Row, newPosition1.Column];
-        if (newSquare1.Piece is not null && newSquare1.Piece.Color == Color.Black)
+        var leftForward = currentPosition.LeftForward();
+        if (leftForward.IsWithinBoard(boardSnapshot.BoardSize))
         {
-            var newPositionAfterCapture = newPosition1.LeftForward();
-            var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
-            if (newSquareAfterCapture.Piece is not null)
+            var newSquare = boardSnapshot.Squares[leftForward.Row, leftForward.Column];
+            if (newSquare.Piece is not null && newSquare.Piece.Color == Color.Black)
             {
-                //TODO: Square is already occupied
-            }
+                var newPositionAfterCapture = leftForward.LeftForward();
+                if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize))
+                {
+                    var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
+                    if (newSquareAfterCapture.Piece is not null)
+                    {
+                        //TODO: Square is already occupied
+                    }
 
-            maxCapturedPieces = 1;
-            moves.Add(new Move(newPositionAfterCapture, new[] {newPosition1}, 1));
+                    moves.Add(new Move(newPositionAfterCapture, new[] {leftForward}, 1));
+                }
+            }
+            else if (newSquare.Piece is null)
+            {
+                moves.Add(new Move(leftForward, new[] {leftForward}, 0));
+            }
         }
         
         //To the right
-        var newPosition2 = currentPosition.RightForward();
-        var newSquare2 = boardSnapshot.Squares[newPosition2.Row, newPosition2.Column];
-        if (newSquare2.Piece is not null && newSquare2.Piece.Color == Color.Black)
+        var rightForward = currentPosition.RightForward();
+        if (rightForward.IsWithinBoard(boardSnapshot.BoardSize))
         {
-            var newPositionAfterCapture = newPosition2.RightForward();
-            var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
-            if (newSquareAfterCapture.Piece is not null)
+            var newSquare = boardSnapshot.Squares[rightForward.Row, rightForward.Column];
+            if (newSquare.Piece is not null && newSquare.Piece.Color == Color.Black)
             {
-                //TODO: Square is already occupied
+                var newPositionAfterCapture = rightForward.RightForward();
+                if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize))
+                {
+                    var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
+                    if (newSquareAfterCapture.Piece is not null)
+                    {
+                        //TODO: Square is already occupied
+                    }
+
+                    moves.Add(new Move(newPositionAfterCapture, new[] {rightForward}, 1));
+                }
             }
+            else if (newSquare.Piece is null)
+            {
+                moves.Add(new Move(rightForward, new[] {rightForward}, 0));
 
-            maxCapturedPieces = 1;
-            moves.Add(new Move(newPositionAfterCapture, new[] {newPosition2}, 1));
-        }
-        
-        if (newSquare1.Piece is null && maxCapturedPieces == 0)
-        {
-            moves.Add(new Move(newPosition1, new[] {newPosition1}, 0));
-        }
-        
-        if (newSquare2.Piece is null && maxCapturedPieces == 0)
-        {
-            moves.Add(new Move(newPosition2, new[] {newPosition2}, 0));
+            }
         }
 
-        return moves;
+        return moves.Count > 0 ? moves.Where(x => x.CapturedPieces == moves.Max(x => x.CapturedPieces)) : moves;
     }
+
+    public bool UpdateRequired(Position currentPosition) => currentPosition.Row == Position.R8;
 }

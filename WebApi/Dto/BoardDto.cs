@@ -11,8 +11,8 @@ public record BoardDto
     
     public BoardDto(BoardSnapshot snapshot)
     {
-        Columns = snapshot.Columns;
-        Rows = snapshot.Rows;
+        Columns = snapshot.BoardSize.Columns;
+        Rows = snapshot.BoardSize.Rows;
         Squares = snapshot.Squares.ReversedRowsListOfLists();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Domain.Exceptions;
 using Domain.Pieces;
+using Domain.Pieces.Classic;
 
 namespace DomainTests;
 
@@ -75,11 +76,9 @@ public class SquareTests
     [TestCase(0, 25, "Z1")]
     public void FromCoordinatesMapping(int row, int column, string expectedId)
     {
-        var square = Square.FromCoordinates(row, column);
+        var square = Square.FromCoordinates(new Position(row, column));
         
         Assert.That(square.Id, Is.EqualTo(expectedId));
-        Assert.That(square.Column, Is.EqualTo(column));
-        Assert.That(square.Row, Is.EqualTo(row));
         Assert.That(square.Position, Is.EqualTo(new Position(row, column)));
         Assert.That(square.IsOccupied, Is.False);
     }
@@ -89,13 +88,13 @@ public class SquareTests
     [TestCase(0, 27)]
     public void FromCoordinatesMappingOutOfRange(int row, int column)
     {
-        Assert.Throws<ArgumentException>(() => Square.FromCoordinates(row, column));
+        Assert.Throws<ArgumentException>(() => Square.FromCoordinates(new Position(row, column)));
     }
     
     [Test]
     public void EmptySquare()
     {
-        var square = Square.FromCoordinates(0, 0);
+        var square = Square.FromCoordinates(new Position(0, 0));
         
         Assert.IsFalse(square.IsOccupied);
         Assert.Throws<InvalidOperationException>(() =>  _ = square.Piece);
@@ -104,7 +103,7 @@ public class SquareTests
     [Test]
     public void MovePiece()
     {
-        var square = Square.FromCoordinates(0, 0);
+        var square = Square.FromCoordinates(new Position(0, 0));
         var piece = new Man("1", Color.Black);
         
         square.Move(piece);
@@ -116,7 +115,7 @@ public class SquareTests
     [Test]
     public void MovePieceToOccupiedSquare()
     {
-        var square = Square.FromCoordinates(0, 0);
+        var square = Square.FromCoordinates(new Position(0, 0));
         var piece1 = new Man("1", Color.Black);
         var piece2 = new Man("2", Color.Black);
         
@@ -129,7 +128,7 @@ public class SquareTests
     [Test]
     public void RemovePieceFromEmptySquare()
     {
-        var square = Square.FromCoordinates(0, 0);
+        var square = Square.FromCoordinates(new Position(0, 0));
 
         Assert.Throws<InvalidBoardState>(() => square.RemovePiece());
     }
@@ -137,7 +136,7 @@ public class SquareTests
     [Test]
     public void RemovePiece()
     {
-        var square = Square.FromCoordinates(0, 0);
+        var square = Square.FromCoordinates(new Position(0, 0));
         var piece = new Man("1", Color.Black);
         
         square.Move(piece);
@@ -145,5 +144,17 @@ public class SquareTests
             
         Assert.That(square.IsOccupied, Is.False);
         Assert.Throws<InvalidOperationException>(() => _ = square.Piece);
+    }
+
+    [Test]
+    public void SnapshotOfUnoccupiedSquare()
+    {
+        var square = Square.FromCoordinates(new Position(0, 0));
+        var snapshot = square.Snapshot();
+        
+        Assert.That(snapshot.Id, Is.EqualTo("A1"));
+        Assert.That(snapshot.Position.Column, Is.EqualTo(0));
+        Assert.That(snapshot.Position.Row, Is.EqualTo(0));
+        Assert.That(snapshot.Piece, Is.Null);
     }
 }

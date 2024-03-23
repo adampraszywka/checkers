@@ -5,26 +5,21 @@ namespace Domain;
 
 public class Square
 {
-    
     private Piece? _piece = null;
 
-    public static Square FromCoordinates(int row, int column)
+    public static Square FromCoordinates(Position position)
     {
-        return new($"{MapColumn(column)}{row + 1}", row, column);
+        return new($"{MapColumn(position.Column)}{position.Row + 1}", position);
     }
     
-    private Square(string id, int row, int column)
+    private Square(string id, Position position)
     {
         Id = id;
-        Row = row;
-        Column = column;
+        Position = position;
     }
 
     public string Id { get; }
-    public int Column { get; }
-    public int Row { get; }
-    
-    public Position Position => new(Row, Column);
+    public Position Position { get; }
     public Piece Piece => _piece ?? throw new InvalidOperationException();
     public bool IsOccupied => _piece is not null;
 
@@ -32,10 +27,10 @@ public class Square
     {
         if (IsOccupied)
         {
-            return SquareSnapshot.Occupied(Id, _piece!);
+            return SquareSnapshot.Occupied(Id, Position, _piece!);
         }
 
-        return SquareSnapshot.Unoccupied(Id);
+        return SquareSnapshot.Unoccupied(Id, Position);
     }
     
     public void Move(Piece piece)

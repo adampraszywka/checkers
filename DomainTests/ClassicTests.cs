@@ -1,6 +1,8 @@
 ﻿using Domain;
 using Domain.Configurations.Classic;
 using Domain.Errors.Board;
+using Domain.Pieces;
+using Domain.Pieces.Classic;
 using DomainTests.Extensions;
 using static DomainTests.Extensions.TestSquare;
 
@@ -96,6 +98,120 @@ public class ClassicTests
             { Empty,    Empty, 		WhiteMan, 	Empty, 		WhiteMan,	Empty, 		WhiteMan, 	Empty},
             { Empty, 	WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan},
             { WhiteMan, Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty, 		WhiteMan, 	Empty}
+        };
+        
+        BoardAssert.ReversedRowsEqualTo(expected, snapshot);
+    }
+
+    [Test]
+    public void WhiteUpgradesToKingOnceOppositeSideOfBoardReachedByMove()
+    {
+        var white = new Man("W", Color.White);
+        
+        var configuration = ClassicConfiguration.FromSnapshot(new []{((Piece) white, Position.E7)});
+        var board = new Board(configuration);
+
+        var result = board.Move(Position.E7, Position.D8);
+        
+        Assert.That(result.IsSuccess);
+        
+        var snapshot = board.Snapshot.ToTestSquares();
+        var expected = new[,]
+        {
+            { Empty, 	Empty, 	    Empty, 		WhiteKing,  Empty, 		Empty, 	    Empty, 		Empty},
+            { Empty,    Empty, 	    Empty, 	    Empty, 		Empty, 	    Empty, 		Empty, 	    Empty},
+            { Empty, 	Empty, 	    Empty, 		Empty, 	    Empty, 		Empty,	    Empty, 		Empty},
+            { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
+            { Empty, 	Empty, 	    Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
+            { Empty,    Empty, 		Empty, 	    Empty, 		Empty,	    Empty, 		Empty, 	    Empty},
+            { Empty, 	Empty, 	    Empty, 		Empty, 	    Empty, 		Empty, 	    Empty, 		Empty},
+            { Empty,    Empty, 		Empty, 	    Empty, 		Empty, 	    Empty, 		Empty, 	    Empty}
+        };
+        
+        BoardAssert.ReversedRowsEqualTo(expected, snapshot);
+    }
+    
+    [Test]
+    public void WhiteUpgradesToKingOnceOppositeSideOfBoardReachedByCapture()
+    {
+        var white = new Man("A1", Color.White);
+        var black = new Man("A2", Color.Black);
+        
+        var configuration = ClassicConfiguration.FromSnapshot(new [] {((Piece) black, Position.E7), ((Piece) white, Position.F6)});
+        var board = new Board(configuration);
+
+        var result = board.Move(Position.F6, Position.D8);
+        
+        Assert.That(result.IsSuccess);
+        
+        var snapshot = board.Snapshot.ToTestSquares();
+        var expected = new[,]
+        {
+            { Empty, 	Empty, 	    Empty, 		WhiteKing,  Empty, 		Empty, 	    Empty, 		Empty},
+            { Empty,    Empty, 	    Empty, 	    Empty, 		Empty, 	    Empty, 		Empty, 	    Empty},
+            { Empty, 	Empty, 	    Empty, 		Empty, 	    Empty, 		Empty,	    Empty, 		Empty},
+            { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
+            { Empty, 	Empty, 	    Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
+            { Empty,    Empty, 		Empty, 	    Empty, 		Empty,	    Empty, 		Empty, 	    Empty},
+            { Empty, 	Empty, 	    Empty, 		Empty, 	    Empty, 		Empty, 	    Empty, 		Empty},
+            { Empty,    Empty, 		Empty, 	    Empty, 		Empty, 	    Empty, 		Empty, 	    Empty}
+        };
+        
+        BoardAssert.ReversedRowsEqualTo(expected, snapshot);
+    }
+    
+    [Test]
+    public void BlackUpgradesToKingOnceOppositeSideOfBoardReachedByMove()
+    {
+        var black = new Man("W", Color.Black);
+        
+        var configuration = ClassicConfiguration.FromSnapshot(new []{((Piece) black, Position.D2)});
+        var board = new Board(configuration);
+
+        var result = board.Move(Position.D2, Position.C1);
+        
+        Assert.That(result.IsSuccess);
+        
+        var snapshot = board.Snapshot.ToTestSquares();
+        var expected = new[,]
+        {
+            { Empty, 	Empty, 	    Empty, 		Empty,      Empty, 		Empty, 	    Empty, 		Empty},
+            { Empty,    Empty, 	    Empty, 	    Empty, 		Empty, 	    Empty, 		Empty, 	    Empty},
+            { Empty, 	Empty, 	    Empty, 		Empty, 	    Empty, 		Empty,	    Empty, 		Empty},
+            { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
+            { Empty, 	Empty, 	    Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
+            { Empty,    Empty, 		Empty, 	    Empty, 		Empty,	    Empty, 		Empty, 	    Empty},
+            { Empty, 	Empty, 	    Empty, 		Empty, 	    Empty, 		Empty, 	    Empty, 		Empty},
+            { Empty,    Empty, 		BlackKing,  Empty, 		Empty, 	    Empty, 		Empty, 	    Empty}
+        };
+        
+        BoardAssert.ReversedRowsEqualTo(expected, snapshot);
+    }
+    
+    [Test]
+    public void BlackUpgradesToKingOnceOppositeSideOfBoardReachedByCapture()
+    {
+        var white = new Man("A1", Color.White);
+        var black = new Man("A2", Color.Black);
+        
+        var configuration = ClassicConfiguration.FromSnapshot(new [] {((Piece) black, Position.C3), ((Piece) white, Position.D2)});
+        var board = new Board(configuration);
+
+        var result = board.Move(Position.C3, Position.E1);
+        
+        Assert.That(result.IsSuccess);
+        
+        var snapshot = board.Snapshot.ToTestSquares();
+        var expected = new[,]
+        {
+            { Empty, 	Empty, 	    Empty, 		Empty,      Empty, 		Empty, 	    Empty, 		Empty},
+            { Empty,    Empty, 	    Empty, 	    Empty, 		Empty, 	    Empty, 		Empty, 	    Empty},
+            { Empty, 	Empty, 	    Empty, 		Empty, 	    Empty, 		Empty,	    Empty, 		Empty},
+            { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
+            { Empty, 	Empty, 	    Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
+            { Empty,    Empty, 		Empty, 	    Empty, 		Empty,	    Empty, 		Empty, 	    Empty},
+            { Empty, 	Empty, 	    Empty, 		Empty, 	    Empty, 		Empty, 	    Empty, 		Empty},
+            { Empty,    Empty, 		Empty, 	    Empty, 		BlackKing,  Empty, 		Empty, 	    Empty}
         };
         
         BoardAssert.ReversedRowsEqualTo(expected, snapshot);

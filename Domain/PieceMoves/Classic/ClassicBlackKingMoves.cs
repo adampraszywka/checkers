@@ -6,4 +6,9 @@ public class ClassicBlackKingMoves : PieceMove
     {
         return Enumerable.Empty<Move>();
     }
+
+    public bool UpdateRequired(Position currentPosition)
+    {
+        throw new NotImplementedException();
+    }
 }
