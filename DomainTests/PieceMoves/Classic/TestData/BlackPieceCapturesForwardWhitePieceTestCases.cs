@@ -4,7 +4,7 @@ using P = Domain.Position;
 
 namespace DomainTests.PieceMoves.Classic.TestData;
 
-public class BlackPieceCapturesWhitePieceTestCases : IEnumerable
+public class BlackPieceCapturesForwardWhitePieceTestCases : IEnumerable
 {
     public IEnumerator GetEnumerator()
     {
