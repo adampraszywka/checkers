@@ -4,9 +4,9 @@ using Domain.PieceMoves;
 using P = Domain.Position;
 namespace DomainTests.PieceMoves.Classic.TestData;
 
-public class BlackManMovesForwardBlockingMoves : IEnumerable<BlockedMoveForwardTestCase>
+public class BlackManMovesForwardBlockingMoves : IEnumerable
 {
-    public IEnumerator<BlockedMoveForwardTestCase> GetEnumerator()
+    public IEnumerator GetEnumerator()
     {
         // Piece on B8, completely blocked by pieces on A7 and C7
         yield return new BlockedMoveForwardTestCase
@@ -525,6 +525,4 @@ public class BlackManMovesForwardBlockingMoves : IEnumerable<BlockedMoveForwardT
             Moves = new List<Move> {new (new P(P.R1, P.E), new List<Position> {new(P.R1, P.E)}, 0)}
         };
     }
-
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

@@ -3,7 +3,7 @@ using Domain.PieceMoves;
 
 namespace DomainTests.PieceMoves.Classic.TestData;
 
-public class SinglePieceCaptureTestCase
+public class PieceCaptureTestCase
 {
     public required Position SourcePiece { get; init; }
     public required IEnumerable<Position> CapturedPieces { get; init; }

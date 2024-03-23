@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Domain;
 using Domain.PieceMoves;
 using P = Domain.Position;
 
@@ -9,7 +8,7 @@ public class WhitePieceCapturesBackwardBlackPiecesTestCases : IEnumerable
 {
     public IEnumerator GetEnumerator()
     {
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R3, P.C), CapturedPieces = new[] {new P(P.R2, P.B), new P(P.R2, P.D)},
             Moves = new[]
@@ -19,7 +18,7 @@ public class WhitePieceCapturesBackwardBlackPiecesTestCases : IEnumerable
             }
         };
         
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R3, P.E), CapturedPieces = new[] {new P(P.R2, P.D), new P(P.R2, P.F)},
             Moves = new[]
@@ -29,7 +28,7 @@ public class WhitePieceCapturesBackwardBlackPiecesTestCases : IEnumerable
             }
         };
         
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R3, P.G), CapturedPieces = new[] {new P(P.R2, P.F), new P(P.R2, P.H)},
             Moves = new[]
@@ -38,13 +37,13 @@ public class WhitePieceCapturesBackwardBlackPiecesTestCases : IEnumerable
             }
         };
         
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R4, P.B), CapturedPieces = new[] {new P(P.R3, P.A), new P(P.R3, P.C)},
             Moves = new[] {new Move(new P(P.R2, P.D), new[] {new P(P.R3, P.C)}, 1)}
         };
 
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R4, P.D), CapturedPieces = new[] {new P(P.R3, P.C), new P(P.R3, P.E)},
             Moves = new[]
@@ -54,7 +53,7 @@ public class WhitePieceCapturesBackwardBlackPiecesTestCases : IEnumerable
             }
         };
 
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R4, P.F), CapturedPieces = new[] {new P(P.R3, P.E), new P(P.R3, P.G)},
             Moves = new[]
@@ -64,19 +63,19 @@ public class WhitePieceCapturesBackwardBlackPiecesTestCases : IEnumerable
             }
         };
 
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R4, P.H), CapturedPieces = new[] {new P(P.R3, P.G)},
             Moves = new[] {new Move(new P(P.R2, P.F), new[] {new P(P.R3, P.G)}, 1)}
         };
         
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R5, P.A), CapturedPieces = new[] {new P(P.R4, P.B)},
             Moves = new[] {new Move(new P(P.R3, P.C), new[] {new P(P.R4, P.B)}, 1)}
         };
         
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R5, P.C), CapturedPieces = new[] {new P(P.R4, P.B), new P(P.R4, P.D)},
             Moves = new[]
@@ -86,7 +85,7 @@ public class WhitePieceCapturesBackwardBlackPiecesTestCases : IEnumerable
             }
         };
 
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R5, P.E), CapturedPieces = new[] {new P(P.R4, P.D), new P(P.R4, P.F)},
             Moves = new[]
@@ -96,7 +95,7 @@ public class WhitePieceCapturesBackwardBlackPiecesTestCases : IEnumerable
             }
         };
 
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R5, P.G), CapturedPieces = new[] {new P(P.R4, P.F), new P(P.R4, P.H)},
             Moves = new[]
@@ -105,13 +104,13 @@ public class WhitePieceCapturesBackwardBlackPiecesTestCases : IEnumerable
             }
         };
         
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R6, P.B), CapturedPieces = new[] {new P(P.R5, P.A), new P(P.R5, P.C)},
             Moves = new[] {new Move(new P(P.R4, P.D), new[] {new P(P.R5, P.C)}, 1)}
         };
 
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R6, P.D), CapturedPieces = new[] {new P(P.R5, P.C), new P(P.R5, P.E)},
             Moves = new[]
@@ -121,7 +120,7 @@ public class WhitePieceCapturesBackwardBlackPiecesTestCases : IEnumerable
             }
         };
 
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R6, P.F), CapturedPieces = new[] {new P(P.R5, P.E), new P(P.R5, P.G)},
             Moves = new[]
@@ -131,19 +130,19 @@ public class WhitePieceCapturesBackwardBlackPiecesTestCases : IEnumerable
             }
         };
 
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R6, P.H), CapturedPieces = new[] {new P(P.R5, P.G)},
             Moves = new[] {new Move(new P(P.R4, P.F), new[] {new P(P.R5, P.G)}, 1)}
         };
         
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R7, P.A), CapturedPieces = new[] {new P(P.R6, P.B)},
             Moves = new[] {new Move(new P(P.R5, P.C), new[] {new P(P.R6, P.B)}, 1)}
         };
         
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R7, P.C), CapturedPieces = new[] {new P(P.R6, P.B), new P(P.R6, P.D)},
             Moves = new[]
@@ -153,7 +152,7 @@ public class WhitePieceCapturesBackwardBlackPiecesTestCases : IEnumerable
             }
         };
 
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R7, P.E), CapturedPieces = new[] {new P(P.R6, P.D), new P(P.R6, P.F)},
             Moves = new[]
@@ -163,7 +162,7 @@ public class WhitePieceCapturesBackwardBlackPiecesTestCases : IEnumerable
             }
         };
 
-        yield return new SinglePieceCaptureTestCase
+        yield return new PieceCaptureTestCase
         {
             SourcePiece = new P(P.R7, P.G), CapturedPieces = new[] {new P(P.R6, P.F), new P(P.R6, P.H)},
             Moves = new[]

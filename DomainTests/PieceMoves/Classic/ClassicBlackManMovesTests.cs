@@ -42,7 +42,7 @@ public class ClassicBlackManMovesTests
     }
     
     [TestCaseSource(typeof(BlackPieceCapturesSingleWhitePieceTestCases))]
-    public void BlackPieceCapturesBlackPieces(SinglePieceCaptureTestCase testCase)
+    public void BlackPieceCapturesBlackPieces(PieceCaptureTestCase testCase)
     {
         var white = (Piece) new Man("W", Color.White);
         var black = (Piece) new Man("B", Color.Black);

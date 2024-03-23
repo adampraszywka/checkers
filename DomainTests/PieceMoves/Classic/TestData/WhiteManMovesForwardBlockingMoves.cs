@@ -5,9 +5,9 @@ using P = Domain.Position;
 
 namespace DomainTests.PieceMoves.Classic.TestData;
 
-public class WhiteManMovesForwardBlockingMoves : IEnumerable<BlockedMoveForwardTestCase>
+public class WhiteManMovesForwardBlockingMoves : IEnumerable
 {
-    public IEnumerator<BlockedMoveForwardTestCase> GetEnumerator()
+    public IEnumerator GetEnumerator()
     {
          // Piece on A1, can move to B2 (no blocker scenario for A1 as it's the edge)
         yield return new BlockedMoveForwardTestCase
@@ -500,6 +500,4 @@ public class WhiteManMovesForwardBlockingMoves : IEnumerable<BlockedMoveForwardT
             Moves = new List<Move> {new (new P(P.R8, P.F), new List<Position> {new(P.R8, P.F)}, 0)}
         };
     }
-
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
