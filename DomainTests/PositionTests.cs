@@ -39,4 +39,13 @@ public class PositionTests
         
         Assert.That(newPosition, Is.EqualTo(new Position(Position.R4, Position.B)));
     }
+
+    [Test]
+    public void PositionEqualsByValue()
+    {
+        var pos1 = new Position(Position.R1, Position.B);
+        var pos2 = new Position(Position.R1, Position.B);
+        
+        Assert.That(pos1, Is.EqualTo(pos2));
+    }
 }
