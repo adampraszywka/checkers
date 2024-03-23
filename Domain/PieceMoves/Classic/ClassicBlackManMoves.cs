@@ -42,7 +42,7 @@ public class ClassicBlackManMoves : PieceMove
             return new[] {new Move(newPosition, new[] {newPosition}, 0)};
         }
 
-        if (column == boardSnapshot.Columns - 1)
+        if (column == boardSnapshot.BoardSize.Columns - 1)
         {
             var newPosition = currentPosition.LeftBackward();
             var newSquare = boardSnapshot.Squares[newPosition.Row, newPosition.Column];

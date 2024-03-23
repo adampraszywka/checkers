@@ -11,7 +11,7 @@ public class ClassicWhiteManMoves : PieceMove
         var row = currentPosition.Row;
 
         
-        if (row == boardSnapshot.Rows - 1)
+        if (row == boardSnapshot.BoardSize.Rows - 1)
         {
             return Enumerable.Empty<Move>();
         }
@@ -41,7 +41,7 @@ public class ClassicWhiteManMoves : PieceMove
             return new[] {new Move(newPosition, new[] {newPosition}, 0)};
         }
 
-        if (column == boardSnapshot.Columns - 1)
+        if (column == boardSnapshot.BoardSize.Columns - 1)
         {
             var newPosition = currentPosition.LeftForward();
             var newSquare = boardSnapshot.Squares[newPosition.Row, newPosition.Column];

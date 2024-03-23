@@ -10,7 +10,7 @@ namespace Domain;
 
 public class Board
 {
-    private readonly int _boardSize;
+    private readonly BoardSize _boardSize;
     private readonly PieceMoveFactory _pieceMoveFactory;
     
     private readonly Square[,] _squares;
@@ -23,12 +23,12 @@ public class Board
         _boardSize = configuration.BoardSize;
         _pieceMoveFactory = configuration.MoveFactory;
         
-        _squares = new Square[_boardSize, _boardSize];
+        _squares = new Square[_boardSize.Rows, _boardSize.Columns];
         _pieces = new List<Piece>();
         
-        for (var row = 0; row < _boardSize; row++)
+        for (var row = 0; row < _boardSize.Rows; row++)
         {
-            for (var column = 0; column < _boardSize; column++)
+            for (var column = 0; column < _boardSize.Columns; column++)
             {
                 _squares[row, column] = Square.FromCoordinates(row, column);
             }
@@ -91,5 +91,5 @@ public class Board
         return Result.Ok();
     }
     
-    private BoardSnapshot GenerateSnapshot() => new(_squares.Transform(s => s.Snapshot()));
+    private BoardSnapshot GenerateSnapshot() => new(_boardSize, _squares.Transform(s => s.Snapshot()));
 }

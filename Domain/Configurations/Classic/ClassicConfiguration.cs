@@ -6,7 +6,7 @@ namespace Domain.Configurations.Classic;
 
 public class ClassicConfiguration : Configuration
 {
-    public int BoardSize => 8;
+    public BoardSize BoardSize => new(8, 8);
     public IEnumerable<(Piece, Position)> PiecesPositions { get; }
     public PieceMoveFactory MoveFactory { get; }
 

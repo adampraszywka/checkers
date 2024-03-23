@@ -1,7 +1,5 @@
-﻿namespace Domain;
+﻿using Domain.Configurations;
 
-public record BoardSnapshot(SquareSnapshot[,] Squares)
-{
-    public int Rows => Squares.GetLength(0);
-    public int Columns => Squares.GetLength(1);
-}
+namespace Domain;
+
+public record BoardSnapshot(BoardSize BoardSize, SquareSnapshot[,] Squares);

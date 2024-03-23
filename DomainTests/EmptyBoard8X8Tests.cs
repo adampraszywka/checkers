@@ -12,7 +12,7 @@ public class EmptyBoard8X8Tests
 {
     private class EmptyBoardConfiguration : Configuration
     {
-        public int BoardSize => 8;
+        public BoardSize BoardSize => new(8, 8);
         public IEnumerable<(Piece, Position)> PiecesPositions => Enumerable.Empty<(Piece, Position)>();
         public PieceMoveFactory MoveFactory { get; } = new ClassicPieceMoveFactory();
     }
