@@ -30,7 +30,7 @@ public class Board
         {
             for (var column = 0; column < _boardSize.Columns; column++)
             {
-                _squares[row, column] = Square.FromCoordinates(row, column);
+                _squares[row, column] = Square.FromCoordinates(new Position(row, column));
             }
         }
 
