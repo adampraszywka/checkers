@@ -1,8 +1,7 @@
-﻿using Domain;
-using Domain.Configurations.Classic;
-using Domain.Pieces;
+﻿using Domain.Pieces;
+using Domain.Pieces.Classic;
 
-namespace DomainTests.Pieces;
+namespace DomainTests.Pieces.Classic;
 
 public class ManTests
 {

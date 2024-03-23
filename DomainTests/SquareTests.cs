@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Domain.Exceptions;
 using Domain.Pieces;
+using Domain.Pieces.Classic;
 
 namespace DomainTests;
 

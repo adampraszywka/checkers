@@ -1,4 +1,4 @@
-﻿namespace Domain.Pieces;
+﻿namespace Domain.Pieces.Classic;
 
 public class Man(string id, Color color) : Piece
 {

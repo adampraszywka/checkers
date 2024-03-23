@@ -1,6 +1,7 @@
 ﻿using Domain.PieceMoves;
 using Domain.PieceMoves.Classic;
 using Domain.Pieces;
+using Domain.Pieces.Classic;
 
 namespace Domain.Configurations.Classic;
 
@@ -9,6 +10,7 @@ public class ClassicConfiguration : Configuration
     public BoardSize BoardSize => new(8, 8);
     public IEnumerable<(Piece, Position)> PiecesPositions { get; }
     public PieceMoveFactory MoveFactory { get; }
+    public PieceFactory PieceFactory { get; }
 
     public static ClassicConfiguration NewBoard() => new(NewGamePieces);
     public static ClassicConfiguration FromSnapshot(IEnumerable<(Piece, Position)> snapshot) => new(snapshot);
@@ -17,6 +19,7 @@ public class ClassicConfiguration : Configuration
     {
         PiecesPositions = pieces;
         MoveFactory = new ClassicPieceMoveFactory();
+        PieceFactory = new ClassicPieceFactory();
     }
     
     private static IEnumerable<(Piece, Position)> NewGamePieces 

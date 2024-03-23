@@ -1,6 +1,5 @@
 ﻿using Domain.Configurations;
 using Domain.Errors.Board;
-using Domain.Exceptions;
 using Domain.PieceMoves;
 using Domain.Pieces;
 using Extension;
@@ -12,9 +11,8 @@ public class Board
 {
     private readonly BoardSize _boardSize;
     private readonly PieceMoveFactory _pieceMoveFactory;
-    
+    private readonly PieceFactory _pieceFactory;
     private readonly Square[,] _squares;
-    private readonly List<Piece> _pieces;
     
     public BoardSnapshot Snapshot => GenerateSnapshot();
     
@@ -22,9 +20,8 @@ public class Board
     {
         _boardSize = configuration.BoardSize;
         _pieceMoveFactory = configuration.MoveFactory;
-        
+        _pieceFactory = configuration.PieceFactory;
         _squares = new Square[_boardSize.Rows, _boardSize.Columns];
-        _pieces = new List<Piece>();
         
         for (var row = 0; row < _boardSize.Rows; row++)
         {
@@ -44,8 +41,6 @@ public class Board
             
             var square = _squares[position.Row, position.Column];
             square.Move(piece);
-            
-            _pieces.Add(piece);
         }
     }
 
@@ -78,16 +73,29 @@ public class Board
             return Result.Fail(new MoveNotAllowed());
         }
 
-        foreach (var affectedSquare in move.AffectedSquares)
+        foreach (var affectedSquarePosition in move.AffectedSquares)
         {
-            // capture if necessary
+            var affectedSquare = _squares[affectedSquarePosition.Row, affectedSquarePosition.Column];
+            if (affectedSquare.IsOccupied)
+            {
+                affectedSquare.RemovePiece();
+            }
+        }
+
+        var newSquare = _squares[target.Row, target.Column];
+        
+        if (pieceMove.UpdateRequired(target))
+        {
+            var upgradedPiece = _pieceFactory.ReplacementFor(piece);
+            square.RemovePiece();
+            newSquare.Move(upgradedPiece);
+        }
+        else
+        {
+            square.RemovePiece();
+            newSquare.Move(piece);    
         }
         
-        var newSquare = _squares[target.Row, target.Column];
-
-        square.RemovePiece();
-        newSquare.Move(piece);
-
         return Result.Ok();
     }
     

@@ -1,6 +1,4 @@
-﻿using Domain.PieceMoves;
-
-namespace Domain.Pieces;
+﻿namespace Domain.Pieces.Classic;
 
 public class King(string id, Color color) : Piece
 {

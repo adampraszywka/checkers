@@ -2,6 +2,7 @@
 using Domain.Configurations.Classic;
 using Domain.PieceMoves.Classic;
 using Domain.Pieces;
+using Domain.Pieces.Classic;
 using DomainTests.Extensions;
 using DomainTests.PieceMoves.Classic.TestData;
 
