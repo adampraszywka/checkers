@@ -19,6 +19,6 @@ public static class MoveAssert
         var expectedString = JsonSerializer.Serialize(orderedExpected);
         var actualString = JsonSerializer.Serialize(orderedActual);
         
-        Assert.That(expectedString, Is.EqualTo(actualString));
+        Assert.That(actualString, Is.EqualTo(expectedString));
     }
 }

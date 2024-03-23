@@ -3,6 +3,7 @@ using Domain;
 using Domain.Configurations.Classic;
 using Domain.PieceMoves.Classic;
 using Domain.Pieces;
+using DomainTests.Extensions;
 using DomainTests.PieceMoves.Classic.TestData;
 
 namespace DomainTests.PieceMoves.Classic;
@@ -20,7 +21,7 @@ public class ClassicBlackManMovesTests
         
         var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
         
-        Assert.That(JsonSerializer.Serialize(moves), Is.EqualTo(JsonSerializer.Serialize(testCase.Moves)));
+        MoveAssert.AreEqual(testCase.Moves, moves);
     }
     
     [Test]
@@ -38,10 +39,11 @@ public class ClassicBlackManMovesTests
         
         var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
         
-        Assert.That(JsonSerializer.Serialize(moves), Is.EqualTo(JsonSerializer.Serialize(testCase.Moves)));
+        MoveAssert.AreEqual(testCase.Moves, moves);
     }
     
     [TestCaseSource(typeof(BlackPieceCapturesForwardWhitePieceTestCases))]
+    [TestCaseSource(typeof(BlackPieceCapturesBackwardWhitePieceTestCases))]
     public void BlackPieceCapturesBlackPieces(PieceCaptureTestCase testCase)
     {
         var white = (Piece) new Man("W", Color.White);
@@ -55,6 +57,6 @@ public class ClassicBlackManMovesTests
 
         var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
 
-        Assert.That(JsonSerializer.Serialize(moves), Is.EqualTo(JsonSerializer.Serialize(testCase.Moves)));
+        MoveAssert.AreEqual(testCase.Moves, moves);
     }
 }
