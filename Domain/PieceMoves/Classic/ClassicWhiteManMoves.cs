@@ -11,17 +11,17 @@ public class ClassicWhiteManMoves : PieceMove
         {
             return Enumerable.Empty<Move>();
         }
-        
+
         var moves = new List<Move>();
-        
-        // To the left
-        var newPosition1 = currentPosition.LeftForward();
-        if (newPosition1.IsWithinBoard(boardSnapshot.BoardSize))
+
+
+        var rightBackward = currentPosition.RightBackward();
+        if (rightBackward.IsWithinBoard(boardSnapshot.BoardSize))
         {
-            var newSquare1 = boardSnapshot.Squares[newPosition1.Row, newPosition1.Column];
-            if (newSquare1.Piece is not null && newSquare1.Piece.Color == Color.Black)
+            var newSquare = boardSnapshot.Squares[rightBackward.Row, rightBackward.Column];
+            if (newSquare.Piece is not null && newSquare.Piece.Color == Color.Black)
             {
-                var newPositionAfterCapture = newPosition1.LeftForward();
+                var newPositionAfterCapture = rightBackward.RightBackward();
                 if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize))
                 {
                     var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
@@ -30,23 +30,64 @@ public class ClassicWhiteManMoves : PieceMove
                         //TODO: Square is already occupied
                     }
 
-                    moves.Add(new Move(newPositionAfterCapture, new[] {newPosition1}, 1));
+                    moves.Add(new Move(newPositionAfterCapture, new[] {rightBackward}, 1));
                 }
             }
-            else if (newSquare1.Piece is null)
+        }
+        
+        var leftBackward = currentPosition.LeftBackward();
+        if (leftBackward.IsWithinBoard(boardSnapshot.BoardSize))
+        {
+            var newSquare = boardSnapshot.Squares[leftBackward.Row, leftBackward.Column];
+            if (newSquare.Piece is not null && newSquare.Piece.Color == Color.Black)
             {
-                moves.Add(new Move(newPosition1, new[] {newPosition1}, 0));
+                var newPositionAfterCapture = leftBackward.LeftBackward();
+                if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize))
+                {
+                    var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
+                    if (newSquareAfterCapture.Piece is not null)
+                    {
+                        //TODO: Square is already occupied
+                    }
+
+                    moves.Add(new Move(newPositionAfterCapture, new[] {leftBackward}, 1));
+                }
+            }
+        }
+        
+        // To the left
+        var leftForward = currentPosition.LeftForward();
+        if (leftForward.IsWithinBoard(boardSnapshot.BoardSize))
+        {
+            var newSquare = boardSnapshot.Squares[leftForward.Row, leftForward.Column];
+            if (newSquare.Piece is not null && newSquare.Piece.Color == Color.Black)
+            {
+                var newPositionAfterCapture = leftForward.LeftForward();
+                if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize))
+                {
+                    var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
+                    if (newSquareAfterCapture.Piece is not null)
+                    {
+                        //TODO: Square is already occupied
+                    }
+
+                    moves.Add(new Move(newPositionAfterCapture, new[] {leftForward}, 1));
+                }
+            }
+            else if (newSquare.Piece is null)
+            {
+                moves.Add(new Move(leftForward, new[] {leftForward}, 0));
             }
         }
         
         //To the right
-        var newPosition2 = currentPosition.RightForward();
-        if (newPosition2.IsWithinBoard(boardSnapshot.BoardSize))
+        var rightForward = currentPosition.RightForward();
+        if (rightForward.IsWithinBoard(boardSnapshot.BoardSize))
         {
-            var newSquare2 = boardSnapshot.Squares[newPosition2.Row, newPosition2.Column];
-            if (newSquare2.Piece is not null && newSquare2.Piece.Color == Color.Black)
+            var newSquare = boardSnapshot.Squares[rightForward.Row, rightForward.Column];
+            if (newSquare.Piece is not null && newSquare.Piece.Color == Color.Black)
             {
-                var newPositionAfterCapture = newPosition2.RightForward();
+                var newPositionAfterCapture = rightForward.RightForward();
                 if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize))
                 {
                     var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
@@ -55,12 +96,12 @@ public class ClassicWhiteManMoves : PieceMove
                         //TODO: Square is already occupied
                     }
 
-                    moves.Add(new Move(newPositionAfterCapture, new[] {newPosition2}, 1));
+                    moves.Add(new Move(newPositionAfterCapture, new[] {rightForward}, 1));
                 }
             }
-            else if (newSquare2.Piece is null)
+            else if (newSquare.Piece is null)
             {
-                moves.Add(new Move(newPosition2, new[] {newPosition2}, 0));
+                moves.Add(new Move(rightForward, new[] {rightForward}, 0));
 
             }
         }

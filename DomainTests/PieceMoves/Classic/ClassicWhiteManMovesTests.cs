@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Domain;
+﻿using Domain;
 using Domain.Configurations.Classic;
 using Domain.PieceMoves.Classic;
 using Domain.Pieces;
@@ -43,6 +42,7 @@ public class ClassicWhiteManMovesTests
     }
     
     [TestCaseSource(typeof(WhitePieceCapturesForwardBlackPiecesTestCases))]
+    [TestCaseSource(typeof(WhitePieceCapturesBackwardBlackPiecesTestCases))]
     public void WhitePieceCapturesBlackPieces(SinglePieceCaptureTestCase testCase)
     {
         var white = (Piece) new Man("W", Color.White);
