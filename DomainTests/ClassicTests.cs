@@ -33,18 +33,18 @@ public class ClassicTests
     }
 
     [Test]
-    [TestCase(Position.R3, Position.A, -100, -100)]
-    [TestCase(Position.R3, Position.A, -1, -1)]
-    [TestCase(Position.R3, Position.A, 0, 8)]
-    [TestCase(Position.R3, Position.A, 0, 9)]
-    [TestCase(Position.R3, Position.A, 8, 0)]
-    [TestCase(Position.R3, Position.A, 9, 0)]
-    [TestCase(Position.R3, Position.A, 100, 100)]
-    [TestCase(-1, -1, Position.R1, Position.A)]
-    [TestCase(100, 100, Position.R1, Position.A)]
-    [TestCase(9, 9, Position.R1, Position.A)]
-    [TestCase(8, 7, Position.R1, Position.A)]
-    [TestCase(7, 8, Position.R1, Position.A)]
+    [TestCase(4, 0, -100, -100)]
+    [TestCase(4, 0, -1, -1)]
+    [TestCase(4, 0, 0, 8)]
+    [TestCase(4, 0, 0, 9)]
+    [TestCase(4, 0, 8, 0)]
+    [TestCase(4, 0, 9, 0)]
+    [TestCase(4, 0, 100, 100)]
+    [TestCase(-1, -1, 0, 0)]
+    [TestCase(100, 100, 0, 0)]
+    [TestCase(9, 9,     0, 0)]
+    [TestCase(8, 7, 0, 0)]
+    [TestCase(7, 8, 0, 0)]
     public void MoveOutOfBoard(int sourceRow, int sourceColumn, int targetRow, int targetColumn)
     {
         var configuration = ClassicConfiguration.NewBoard();
@@ -61,7 +61,7 @@ public class ClassicTests
         var configuration = ClassicConfiguration.NewBoard();
         var board = new Board(configuration);
 
-        var result = board.Move(new Position(Position.R1, Position.B), new Position(Position.R1, Position.A));
+        var result = board.Move(Position.B4, Position.C5);
         
         Assert.That(result.HasError<EmptySquare>());
     }
@@ -72,7 +72,7 @@ public class ClassicTests
         var configuration = ClassicConfiguration.NewBoard();
         var board = new Board(configuration);
 
-        var result = board.Move(new Position(Position.R1, Position.A), new Position(Position.R8, Position.H));
+        var result = board.Move(Position.A1, Position.H8);
         
         Assert.That(result.HasError<MoveNotAllowed>());
     }
@@ -83,7 +83,7 @@ public class ClassicTests
         var configuration = ClassicConfiguration.NewBoard();
         var board = new Board(configuration);
 
-        var result = board.Move(new Position(Position.R3, Position.A), new Position(Position.R4, Position.B));
+        var result = board.Move(Position.A3, Position.B4);
         
         Assert.That(result.IsSuccess);
         
