@@ -42,6 +42,7 @@ public class ClassicWhiteManMovesTests
         MoveAssert.AreEqual(testCase.Moves, moves);
     }
     
+    [Test]
     [TestCaseSource(typeof(WhitePieceCapturesForwardBlackPiecesTestCases))]
     [TestCaseSource(typeof(WhitePieceCapturesBackwardBlackPiecesTestCases))]
     public void WhitePieceCapturesBlackPieces(PieceCaptureTestCase testCase)
@@ -60,6 +61,26 @@ public class ClassicWhiteManMovesTests
         MoveAssert.AreEqual(testCase.Moves, moves);
     }
 
+    [Test]
+    [TestCaseSource(typeof(WhitePieceCaptureBlockedByAnotherPiece))]
+    public void WhitePieceCaptureBlockedByDifferentPiece(PieceCaptureBlockTestCase testCase)
+    {
+        var white = (Piece) new Man("W", Color.White);
+        var black = (Piece) new Man("B", Color.Black);
+        var blockingPiece = (Piece) new Man("B", Color.Black);
+        var piece = new List<(Piece Piece, Position Position)> {(white, testCase.SourcePiece)};
+        var capturedPieces = testCase.CapturedPieces.Select(x => (black, x));
+        var blockingPieces = testCase.BlockingPieces.Select(x => (blockingPiece, x));
+
+        var configuration = ClassicConfiguration.FromSnapshot(piece.Union(capturedPieces).Union(blockingPieces));
+        var board = new Board(configuration);
+        var pieceMoves = new ClassicWhiteManMoves();
+
+        var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
+     
+        Assert.That(moves, Is.Empty);
+    }
+    
     [Test]
     [TestCase(Position.R8, Position.B)]
     [TestCase(Position.R8, Position.D)]
