@@ -66,12 +66,10 @@ public class ClassicWhiteManMoves : PieceMove
                 if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize))
                 {
                     var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
-                    if (newSquareAfterCapture.Piece is not null)
+                    if (newSquareAfterCapture.Piece is null)
                     {
-                        //TODO: Square is already occupied
+                        moves.Add(new Move(newPositionAfterCapture, new[] {leftForward}, 1));
                     }
-
-                    moves.Add(new Move(newPositionAfterCapture, new[] {leftForward}, 1));
                 }
             }
             else if (newSquare.Piece is null)
@@ -91,12 +89,10 @@ public class ClassicWhiteManMoves : PieceMove
                 if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize))
                 {
                     var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
-                    if (newSquareAfterCapture.Piece is not null)
+                    if (newSquareAfterCapture.Piece is null)
                     {
-                        //TODO: Square is already occupied
+                        moves.Add(new Move(newPositionAfterCapture, new[] {rightForward}, 1));
                     }
-
-                    moves.Add(new Move(newPositionAfterCapture, new[] {rightForward}, 1));
                 }
             }
             else if (newSquare.Piece is null)
