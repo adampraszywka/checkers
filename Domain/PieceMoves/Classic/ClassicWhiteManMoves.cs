@@ -29,7 +29,6 @@ public class ClassicWhiteManMoves : PieceMove
                     {
                         moves.Add(new Move(newPositionAfterCapture, new[] {rightBackward}, 1));
                     }
-
                 }
             }
         }
@@ -48,7 +47,6 @@ public class ClassicWhiteManMoves : PieceMove
                     {
                         moves.Add(new Move(newPositionAfterCapture, new[] {leftBackward}, 1));
                     }
-
                 }
             }
         }
@@ -96,7 +94,6 @@ public class ClassicWhiteManMoves : PieceMove
             else if (newSquare.Piece is null)
             {
                 moves.Add(new Move(rightForward, new[] {rightForward}, 0));
-
             }
         }
 

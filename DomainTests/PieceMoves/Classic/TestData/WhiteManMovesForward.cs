@@ -49,11 +49,7 @@ public class WhiteManMovesForward : IEnumerable
         yield return new MoveForwardTestCase {Source = P.A7, Moves = new List<Move> {new(P.B8, new[] {P.B8}, 0)}};
         yield return new MoveForwardTestCase {Source = P.C7, Moves = new List<Move> {new(P.B8, new[] {P.B8}, 0), new(P.D8, new[] {P.D8}, 0)}};
         yield return new MoveForwardTestCase {Source = P.E7, Moves = new List<Move> {new(P.D8, new[] {P.D8}, 0), new(P.F8, new[] {P.F8}, 0)}};
-        yield return new MoveForwardTestCase
-        {
-            Source = P.G7,
-            Moves = new List<Move> {new(P.F8, new[] {P.F8}, 0), new(P.H8, new[] {P.H8}, 0)}
-        };
+        yield return new MoveForwardTestCase {Source = P.G7, Moves = new List<Move> {new(P.F8, new[] {P.F8}, 0), new(P.H8, new[] {P.H8}, 0)}};
         
         //Row8
         yield return new MoveForwardTestCase { Source = P.B8, Moves = new List<Move>() };

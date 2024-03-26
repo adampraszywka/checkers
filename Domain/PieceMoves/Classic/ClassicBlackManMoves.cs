@@ -21,12 +21,11 @@ public class ClassicBlackManMoves : PieceMove
                 if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize))
                 {
                     var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
-                    if (newSquareAfterCapture.Piece is not null)
+                    if (newSquareAfterCapture.Piece is null)
                     {
-                        //TODO: Square is already occupied
+                        moves.Add(new Move(newPositionAfterCapture, new[] {rightForward}, 1));
                     }
 
-                    moves.Add(new Move(newPositionAfterCapture, new[] {rightForward}, 1));
                 }
             }
         }
@@ -41,12 +40,11 @@ public class ClassicBlackManMoves : PieceMove
                 if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize))
                 {
                     var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
-                    if (newSquareAfterCapture.Piece is not null)
+                    if (newSquareAfterCapture.Piece is null)
                     {
-                        //TODO: Square is already occupied
+                        moves.Add(new Move(newPositionAfterCapture, new[] {leftForward}, 1));
                     }
 
-                    moves.Add(new Move(newPositionAfterCapture, new[] {leftForward}, 1));
                 }
             }
         }
@@ -56,16 +54,17 @@ public class ClassicBlackManMoves : PieceMove
         if (leftBackward.IsWithinBoard(boardSnapshot.BoardSize))
         {
             var newSquare1 = boardSnapshot.Squares[leftBackward.Row, leftBackward.Column];
-            if (newSquare1.Piece is not null && leftBackward.Column > 0 && newSquare1.Piece.Color == Color.White)
+            if (newSquare1.Piece is not null && newSquare1.Piece.Color == Color.White)
             {
                 var newPositionAfterCapture = leftBackward.LeftBackward();
-                var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
-                if (newSquareAfterCapture.Piece is not null)
+                if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize))
                 {
-                    //TODO: Square is already occupied
+                    var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
+                    if (newSquareAfterCapture.Piece is null)
+                    {
+                        moves.Add(new Move(newPositionAfterCapture, new[] {leftBackward}, 1));
+                    } 
                 }
-
-                moves.Add(new Move(newPositionAfterCapture, new[] {leftBackward}, 1));
             }
             else if (newSquare1.Piece is null)
             {
@@ -81,13 +80,14 @@ public class ClassicBlackManMoves : PieceMove
             if (newSquare2.Piece is not null && newSquare2.Piece.Color == Color.White)
             {
                 var newPositionAfterCapture = rightBackward.RightBackward();
-                var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
-                if (newSquareAfterCapture.Piece is not null)
+                if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize))
                 {
-                    //TODO: Square is already occupied
+                    var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
+                    if (newSquareAfterCapture.Piece is null)
+                    {
+                        moves.Add(new Move(newPositionAfterCapture, new[] {rightBackward}, 1));
+                    } 
                 }
-                
-                moves.Add(new Move(newPositionAfterCapture, new[] {rightBackward}, 1));
             }
             else if (newSquare2.Piece is null)
             {
