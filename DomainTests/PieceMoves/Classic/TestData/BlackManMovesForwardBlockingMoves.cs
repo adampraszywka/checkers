@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Domain;
 using Domain.PieceMoves;
+using DomainTests.PieceMoves.Classic.TestData.Dto;
 using P = Domain.Position;
 namespace DomainTests.PieceMoves.Classic.TestData;
 

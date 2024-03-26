@@ -6,6 +6,7 @@ using Domain.Pieces;
 using Domain.Pieces.Classic;
 using DomainTests.Extensions;
 using DomainTests.PieceMoves.Classic.TestData;
+using DomainTests.PieceMoves.Classic.TestData.Dto;
 
 namespace DomainTests.PieceMoves.Classic;
 
