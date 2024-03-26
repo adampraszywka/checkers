@@ -19,7 +19,7 @@ describe('SquareComponent', () => {
   });
 
   it('should create', () => {
-    component.square = {id: 'ID', piece: null};
+    component.square = {id: 'ID', piece: null, position: {row: 0, column: 0}};
     component.row = 0;
     component.column = 0;
 
@@ -54,7 +54,7 @@ describe('SquareComponent', () => {
   ]
 
   it.each(squareColorCases)('square background color', ({row, column, expected}) => {
-    component.square = {id: 'ID', piece: null};
+    component.square = {id: 'ID', piece: null, position: {row: 0, column: 0}};
     component.row = row;
     component.column = column;
 

@@ -1,7 +1,7 @@
 ﻿using Domain;
 using Domain.PieceMoves;
 
-namespace DomainTests.PieceMoves.Classic.TestData;
+namespace DomainTests.PieceMoves.Classic.TestData.Dto;
 
 public class MoveForwardTestCase
 {

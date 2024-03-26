@@ -1,9 +1,8 @@
 ﻿using Domain;
-using Domain.PieceMoves;
 
-namespace DomainTests.PieceMoves.Classic.TestData;
+namespace DomainTests.PieceMoves.Classic.TestData.Dto;
 
-public class PieceCaptureBlockTestCase
+public class PieceForwardCaptureBlockTestCase
 {
     public required Position SourcePiece { get; init; }
     public required IEnumerable<Position> CapturedPieces { get; init; }

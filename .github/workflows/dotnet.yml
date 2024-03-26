@@ -55,6 +55,7 @@ jobs:
         working-directory: ./UserInterface
       - name: Git workaround        # Probably connected with users and privileges in sdk container
         run: git config --global --add safe.directory '*'
+        if: success() || failure()    # run this step even if previous step failed
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()    # run this step even if previous step failed
