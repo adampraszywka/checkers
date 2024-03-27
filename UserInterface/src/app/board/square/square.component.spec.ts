@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SquareComponent } from './square.component';
-import {Square} from "../dto/square.interface";
 import {By} from "@angular/platform-browser";
 
 describe('SquareComponent', () => {
