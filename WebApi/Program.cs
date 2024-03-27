@@ -12,7 +12,10 @@ builder.Services.AddSingleton<BoardRepository, InMemoryBoardRepository>();
 // For PoC development. Needs to be reworked later
 builder.Services.AddCors(o =>
 {
-    o.AddPolicy(devCors, p => p.WithOrigins("http://localhost:4200"));
+    o.AddPolicy(devCors, p =>
+    {
+        p.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowAnyHeader();
+    });
 });
 
 var app = builder.Build();
@@ -26,6 +29,20 @@ app.MapGet("/board", async (BoardRepository repository) =>
     return new BoardDto(snapshot);
 });
 
+app.MapGet("/possiblemove/{row}/{column}", async (int row, int column, BoardRepository repo) =>
+{
+    var board = await repo.Get();
+    var position = new Position(row, column);
+
+    var moves = board.PossibleMoves(position);
+    if (moves.IsFailed)
+    {
+        throw new Exception(moves.Errors.First().Message);
+    }
+
+    return moves.Value;
+});
+
 app.MapPost("/move", async (BoardRepository repo, [FromBody] MoveDto request) =>
 {
     var board = await repo.Get();
@@ -37,7 +54,7 @@ app.MapPost("/move", async (BoardRepository repo, [FromBody] MoveDto request) =>
 
     if (result.IsFailed)
     {
-        throw new Exception();
+        throw new Exception(result.Errors.First().Message);
     }
     
     repo.Save(board);

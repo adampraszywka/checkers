@@ -44,6 +44,25 @@ public class Board
         }
     }
 
+    public Result<IEnumerable<Move>> PossibleMoves(Position source)
+    {
+        if (!source.IsWithinBoard(_boardSize))
+        {
+            return Result.Fail(new PositionOutOfBoard(source));
+        }
+        
+        var square = _squares[source.Row, source.Column];
+        if (!square.IsOccupied)
+        {
+            return Result.Fail(new EmptySquare(source));
+        }
+
+        var piece = square.Piece;
+        var pieceMove = _pieceMoveFactory.For(piece);
+        var possibleMoves = pieceMove.PossibleMoves(square.Position, Snapshot);
+        return Result.Ok(possibleMoves);
+    }
+    
     public Result Move(Position source, Position target)
     {
         if (!source.IsWithinBoard(_boardSize))
