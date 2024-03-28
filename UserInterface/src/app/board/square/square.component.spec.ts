@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SquareComponent } from './square.component';
-import {Square} from "../dto/square.interface";
 import {By} from "@angular/platform-browser";
+import {BoardService} from "../board/board.service";
+import {HttpClientModule} from "@angular/common/http";
+import {BoardApiConfiguration} from "../../app.config";
 
 describe('SquareComponent', () => {
   let component: SquareComponent;
@@ -10,7 +12,8 @@ describe('SquareComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SquareComponent]
+      imports: [SquareComponent, HttpClientModule],
+      providers: [BoardService, {provide: BoardApiConfiguration, useValue: {baseUrl: ''}}]
     })
     .compileComponents();
 

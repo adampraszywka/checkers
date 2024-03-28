@@ -1,3 +1,3 @@
-<div [ngClass]="isBlackSquare() ? 'black' : 'white'" class="square">
+<div (click)="onClick()" [ngClass]="getCssClass()" class="square">
   <app-piece *ngIf="square.piece !== null" [piece]="square.piece"></app-piece>
 </div>
