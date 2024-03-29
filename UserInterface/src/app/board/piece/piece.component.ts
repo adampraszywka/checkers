@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Color, Piece} from "../dto/piece.interface";
+import {Color, Piece, Type} from "../dto/piece.interface";
 import {NgClass} from "@angular/common";
 
 @Component({
@@ -14,4 +14,14 @@ import {NgClass} from "@angular/common";
 export class PieceComponent {
   @Input() piece!: Piece;
   protected readonly Color = Color;
+
+  public get cssClasses(): string {
+    const color = this.piece.color === Color.Black ? 'black' : 'white';
+
+    if (this.piece.type === Type.Man) {
+      return `${color} man`
+    }
+
+    return `${color} king`
+  }
 }
