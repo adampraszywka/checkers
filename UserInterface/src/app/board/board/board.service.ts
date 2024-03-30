@@ -6,11 +6,13 @@ import {ApiClientService} from "../services/api-client.service";
 import {Board} from "../dto/board.interface";
 import {HighlightRequested} from "../events/highlight-requested.interface";
 import {Highlight} from "../square/highlight.enum";
+import {PossibleMove} from "../dto/possiblemove.interface";
 
 @Injectable()
 export class BoardService {
 
   private selectedSquare: Square|null = null;
+  private possibleMoves: PossibleMove[]|null = null;
 
   private readonly boardUpdatedSource: Subject<Board> = new Subject<Board>();
   private readonly squareHighlightChangeRequestedSource: Subject<HighlightRequested> = new Subject<HighlightRequested>();
@@ -26,11 +28,23 @@ export class BoardService {
   }
 
   public select(square: Square) {
-    if (this.selectedSquare === null && square.piece !== null) {
+    if (square.piece !== null) {
+      if (this.selectedSquare !== null) {
+        this.squareHighlightChangeRequestedSource.next({position: this.selectedSquare.position, type: Highlight.None});
+      }
+
+      if (this.possibleMoves !== null) {
+        for(const move of this.possibleMoves) {
+          this.squareHighlightChangeRequestedSource.next({position: move.to, type: Highlight.None});
+        }
+      }
+
+
       this.selectedSquare = square;
       this.squareHighlightChangeRequestedSource.next({position: square.position, type: Highlight.Selected});
 
       this.apiClient.possibleMoves(square.position).subscribe(x => {
+        this.possibleMoves = x;
         for(const move of x) {
           this.squareHighlightChangeRequestedSource.next({position: move.to, type: Highlight.Target});
         }
