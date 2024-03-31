@@ -1,9 +1,11 @@
 ﻿using Domain;
 using Domain.Configurations.Classic;
 using Domain.Errors.Board;
+using Domain.PieceMoves;
 using Domain.Pieces;
 using Domain.Pieces.Classic;
 using DomainTests.Extensions;
+using NSubstitute;
 using static DomainTests.Extensions.TestSquare;
 
 namespace DomainTests;
@@ -32,6 +34,50 @@ public class ClassicTests
         BoardAssert.ReversedRowsEqualTo(expected, snapshot);
     }
 
+    [Test]
+    [TestCase(-1, -1)]
+    [TestCase(100, 100)]
+    [TestCase(9, 9)]
+    public void PossibleMovesOutOfBoard(int sourceRow, int sourceColumn)
+    {
+        var configuration = ClassicConfiguration.NewBoard();
+        var board = new Board(configuration);
+        var result = board.PossibleMoves(new Position(sourceRow, sourceColumn));
+        
+        Assert.That(result.HasError<PositionOutOfBoard>());
+    }
+    
+    [Test]
+    public void PossibleMovesSourceEmpty()
+    {
+        var configuration = ClassicConfiguration.NewBoard();
+        var board = new Board(configuration);
+
+        var result = board.PossibleMoves(Position.B4);
+        
+        Assert.That(result.HasError<EmptySquare>());
+    }
+
+    [Test]
+    public void PossibleMoves()
+    {
+        var possibleMoves = new[] {new Move(Position.B4, new[] {Position.B4}, 1)};
+        
+        var piece = Substitute.For<Piece>();
+        var pieceMoves = Substitute.For<PieceMove>();
+        pieceMoves.PossibleMoves(Position.A1, Arg.Any<BoardSnapshot>()).Returns(possibleMoves);
+        var pieceMoveFactory = Substitute.For<PieceMoveFactory>();
+        pieceMoveFactory.For(piece).Returns(pieceMoves);
+        var pieceFactory = Substitute.For<PieceFactory>();
+
+        var configuration = new TestConfiguration(pieceMoveFactory, pieceFactory, new[] {(piece, Position.A1)});
+        var board = new Board(configuration);
+        var result = board.PossibleMoves(Position.A1);
+
+        Assert.That(result.IsSuccess);
+        Assert.That(result.Value, Is.EqualTo(possibleMoves));
+    }
+    
     [Test]
     [TestCase(4, 0, -100, -100)]
     [TestCase(4, 0, -1, -1)]
