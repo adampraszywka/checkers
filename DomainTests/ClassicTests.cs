@@ -61,7 +61,7 @@ public class ClassicTests
     [Test]
     public void PossibleMoves()
     {
-        var possibleMoves = new[] {new Move(Position.B4, new[] {Position.B4}, 1)};
+        var possibleMoves = new[] {new PossibleMove(Position.B4, new[] {Position.B4}, 1)};
         
         var piece = Substitute.For<Piece>();
         var pieceMoves = Substitute.For<PieceMove>();

@@ -5,14 +5,14 @@ namespace Domain.PieceMoves.Classic;
 public class ClassicWhiteManMoves : PieceMove
 {
     // To be refactored later
-    public IEnumerable<Move> PossibleMoves(Position currentPosition, BoardSnapshot boardSnapshot)
+    public IEnumerable<PossibleMove> PossibleMoves(Position currentPosition, BoardSnapshot boardSnapshot)
     {
         if (currentPosition.Row == boardSnapshot.BoardSize.Rows - 1)
         {
-            return Enumerable.Empty<Move>();
+            return Enumerable.Empty<PossibleMove>();
         }
 
-        var moves = new List<Move>();
+        var moves = new List<PossibleMove>();
 
 
         var rightBackward = currentPosition.RightBackward();
@@ -27,7 +27,7 @@ public class ClassicWhiteManMoves : PieceMove
                     var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
                     if (newSquareAfterCapture.Piece is null)
                     {
-                        moves.Add(new Move(newPositionAfterCapture, new[] {rightBackward}, 1));
+                        moves.Add(new PossibleMove(newPositionAfterCapture, new[] {rightBackward}, 1));
                     }
                 }
             }
@@ -45,7 +45,7 @@ public class ClassicWhiteManMoves : PieceMove
                     var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
                     if (newSquareAfterCapture.Piece is null)
                     {
-                        moves.Add(new Move(newPositionAfterCapture, new[] {leftBackward}, 1));
+                        moves.Add(new PossibleMove(newPositionAfterCapture, new[] {leftBackward}, 1));
                     }
                 }
             }
@@ -64,13 +64,13 @@ public class ClassicWhiteManMoves : PieceMove
                     var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
                     if (newSquareAfterCapture.Piece is null)
                     {
-                        moves.Add(new Move(newPositionAfterCapture, new[] {leftForward}, 1));
+                        moves.Add(new PossibleMove(newPositionAfterCapture, new[] {leftForward}, 1));
                     }
                 }
             }
             else if (newSquare.Piece is null)
             {
-                moves.Add(new Move(leftForward, new[] {leftForward}, 0));
+                moves.Add(new PossibleMove(leftForward, new[] {leftForward}, 0));
             }
         }
         
@@ -87,13 +87,13 @@ public class ClassicWhiteManMoves : PieceMove
                     var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
                     if (newSquareAfterCapture.Piece is null)
                     {
-                        moves.Add(new Move(newPositionAfterCapture, new[] {rightForward}, 1));
+                        moves.Add(new PossibleMove(newPositionAfterCapture, new[] {rightForward}, 1));
                     }
                 }
             }
             else if (newSquare.Piece is null)
             {
-                moves.Add(new Move(rightForward, new[] {rightForward}, 0));
+                moves.Add(new PossibleMove(rightForward, new[] {rightForward}, 0));
             }
         }
 

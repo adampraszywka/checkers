@@ -2,9 +2,9 @@
 
 public class ClassicBlackKingMoves : PieceMove
 {
-    public IEnumerable<Move> PossibleMoves(Position currentPosition, BoardSnapshot boardSnapshot)
+    public IEnumerable<PossibleMove> PossibleMoves(Position currentPosition, BoardSnapshot boardSnapshot)
     {
-        return Enumerable.Empty<Move>();
+        return Enumerable.Empty<PossibleMove>();
     }
 
     public bool UpdateRequired(Position currentPosition)

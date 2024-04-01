@@ -7,5 +7,5 @@ public class PieceCaptureTestCase
 {
     public required Position SourcePiece { get; init; }
     public required IEnumerable<Position> CapturedPieces { get; init; }
-    public required IEnumerable<Move> Moves { get; init; }
+    public required IEnumerable<PossibleMove> Moves { get; init; }
 }
