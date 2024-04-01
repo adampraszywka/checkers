@@ -5,7 +5,7 @@ namespace DomainTests.Extensions;
 
 public static class MoveAssert
 {
-    public static void AreEqual(IEnumerable<Move> expected, IEnumerable<Move> actual)
+    public static void AreEqual(IEnumerable<PossibleMove> expected, IEnumerable<PossibleMove> actual)
     {
         var orderedExpected = expected
             .OrderBy(x => x.To.Row)

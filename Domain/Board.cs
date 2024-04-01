@@ -44,7 +44,7 @@ public class Board
         }
     }
 
-    public Result<IEnumerable<Move>> PossibleMoves(Position source)
+    public Result<IEnumerable<PossibleMove>> PossibleMoves(Position source)
     {
         if (!source.IsWithinBoard(_boardSize))
         {
