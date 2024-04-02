@@ -4,17 +4,12 @@
 name: Build and deploy WebAPI to Azure Web App - checkers100
 
 on:
-  push:
-    branches:
-      - day33
-  workflow_dispatch:
-
-#  workflow_run:
-#    workflows: [ "Tests" ]
-#    branches: 
-#      - main
-#    types:
-#      - completed
+  workflow_run:
+    workflows: [ "Tests" ]
+    branches: 
+      - main
+    types:
+      - completed
 
 jobs:
   build:

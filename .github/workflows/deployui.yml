@@ -4,12 +4,18 @@
 name: Build and deploy UI to Azure Blob Storage
 
 on:
-  workflow_run:
-    workflows: [ "Tests" ]
-    branches: 
-      - main
-    types:
-      - completed
+  
+  push:
+    branches:
+      - day33
+  workflow_dispatch:
+#    
+#  workflow_run:
+#    workflows: [ "Tests" ]
+#    branches: 
+#      - main
+#    types:
+#      - completed
 
 jobs:
   build:
