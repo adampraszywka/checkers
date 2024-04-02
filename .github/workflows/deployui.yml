@@ -31,12 +31,14 @@ jobs:
       - name: Build app
         run: npm rum build
         working-directory: ./UserInterface
+      - name: Test
+        run: ls -I node_modules -LR
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'production'
+      name: 'productionui'
 
     steps:
       - name: Copy files
