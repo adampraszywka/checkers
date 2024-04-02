@@ -4,10 +4,11 @@
 name: Build and deploy container app to Azure Web App - checkers100
 
 on:
-  push:
-    branches:
-      - day33
-  workflow_dispatch:
+  workflow_run:
+    workflows: [ "Tests" ]
+    branches: [ day33 ]
+    types:
+      - completed
 
 jobs:
   build:
