@@ -1,0 +1,56 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy UI to Azure Blob Storage
+
+on:
+  workflow_run:
+    workflows: [ "Tests" ]
+    branches: 
+      - main
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: ["ubuntu-latest"]
+    container:
+      image: node:20
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v4
+      - name: Restore dependencies
+        run: npm install
+        working-directory: ./UserInterface      
+      - name: Build app
+        run: npm rum build
+        working-directory: ./UserInterface
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui
+          path: UserInterface/dist/user-interface/browser
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'productionui'
+
+    steps:
+      - name: Download
+        uses: actions/download-artifact@v4
+        with:
+          name: ui
+          path: dist
+      - name: Copy files
+        uses: ulaval/azure-blob-copy-action@v1
+        with:
+          action: upload
+          connection_string: ${{ secrets.BLOB_CONNECTION_STRING }}
+          container_name: $web
+          local_directory: dist
+          http_headers: |            
+            - glob: "**/*"
+              headers:
+                Cache-Control: public, max-age=120, s-maxage=180, proxy-revalidate
