@@ -7,7 +7,7 @@ on:
   workflow_run:
     workflows: [ "Tests" ]
     branches: 
-      - day33
+      - main
     types:
       - completed
 
