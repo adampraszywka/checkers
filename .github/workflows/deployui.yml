@@ -31,7 +31,7 @@ jobs:
       - name: Build app
         run: npm rum build
         working-directory: ./UserInterface
-      - name: Test
+      - name: Test1
         run: ls -I node_modules -LR
 
   deploy:
@@ -41,6 +41,8 @@ jobs:
       name: 'productionui'
 
     steps:
+      - name: Test2
+        run: ls -I node_modules -LR
       - name: Copy files
         uses: ulaval/azure-blob-copy-action@v1
         with:
