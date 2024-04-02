@@ -31,8 +31,11 @@ jobs:
       - name: Build app
         run: npm rum build
         working-directory: ./UserInterface
-      - name: Test1
-        run: ls -I node_modules -LR
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui
+          path: UserInterface/dist/user-interface/browser
 
   deploy:
     runs-on: ubuntu-latest
@@ -41,15 +44,18 @@ jobs:
       name: 'productionui'
 
     steps:
-      - name: Test2
-        run: ls -I node_modules -LR
+      - name: Download
+        uses: actions/download-artifact@v4
+        with:
+          name: ui
+          path: dist
       - name: Copy files
         uses: ulaval/azure-blob-copy-action@v1
         with:
           action: upload
           connection_string: ${{ secrets.BLOB_CONNECTION_STRING }}
           container_name: $web
-          local_directory: ./UserInterface/dist/user-interface/browser
+          local_directory: dist
           http_headers: |            
             - glob: "**/*"
               headers:
