@@ -1,15 +1,20 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy container app to Azure Web App - checkers100
+name: Build and deploy WebAPI to Azure Web App - checkers100
 
 on:
-  workflow_run:
-    workflows: [ "Tests" ]
-    branches: 
-      - main
-    types:
-      - completed
+  push:
+    branches:
+      - day33
+  workflow_dispatch:
+
+#  workflow_run:
+#    workflows: [ "Tests" ]
+#    branches: 
+#      - main
+#    types:
+#      - completed
 
 jobs:
   build:
