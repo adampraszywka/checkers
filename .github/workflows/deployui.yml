@@ -47,7 +47,7 @@ jobs:
           action: upload
           connection_string: ${{ secrets.BLOB_CONNECTION_STRING }}
           container_name: $web
-          local_directory: UserInterface/dist/user-interface/browser
+          local_directory: ./UserInterface/dist/user-interface/browser
           http_headers: |            
             - glob: "**/*"
               headers:
