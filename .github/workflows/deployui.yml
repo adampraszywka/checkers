@@ -58,15 +58,3 @@ jobs:
           api_location: ''
           output_location: ''
           skip_app_build: true
-          
-      - name: Copy files
-        uses: ulaval/azure-blob-copy-action@v1
-        with:
-          action: upload
-          connection_string: ${{ secrets.BLOB_CONNECTION_STRING }}
-          container_name: $web
-          local_directory: dist
-          http_headers: |            
-            - glob: "**/*"
-              headers:
-                Cache-Control: public, max-age=120, s-maxage=180, proxy-revalidate
