@@ -8,7 +8,8 @@ Current version is available under: [https://thankful-bay-00e121503.5.azurestati
 
 CI/CD process deploys latest version after each commit to main branch.
 
-### Requirements
+Preview version is hosted on free Azure App Service Plan. I needs some time to warmu. First request may be really slow.
+### Requirementsp
 - .NET8 SDK
 - Node.js 20.9.0+
 
