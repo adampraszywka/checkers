@@ -5,21 +5,22 @@ namespace WebApi.Repository;
 
 public class InMemoryBoardRepository : BoardRepository
 {
-    private readonly Board _board;
+    private readonly Dictionary<string, Board> _boards = new();
     
-    public InMemoryBoardRepository()
+    public Task<Board> Get(string id)
     {
-        var config = ClassicConfiguration.NewBoard();
-        _board = new Board(config);
-    }
-    
-    public Task<Board> Get()
-    {
-        return Task.FromResult(_board);
+        if (!_boards.ContainsKey(id))
+        {
+            var board = new Board(ClassicConfiguration.NewBoard());
+            _boards[id] = board;
+            return Task.FromResult(board);
+        }
+        
+        return Task.FromResult(_boards[id]);
     }
 
-    public void Save(Board board)
+    public Task Save(Board board)
     {
-        
+        return Task.CompletedTask;
     }
 }

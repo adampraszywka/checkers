@@ -100,5 +100,5 @@ public class ClassicWhiteManMoves : PieceMove
         return moves.Count > 0 ? moves.Where(x => x.CapturedPieces == moves.Max(x => x.CapturedPieces)) : moves;
     }
 
-    public bool UpdateRequired(Position currentPosition) => currentPosition.Row == Position.R8;
+    public bool UpgradeRequired(Position currentPosition) => currentPosition.Row == Position.R8;
 }

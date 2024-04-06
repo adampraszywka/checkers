@@ -4,6 +4,6 @@ namespace WebApi.Repository;
 
 public interface BoardRepository
 {
-    public Task<Board> Get();
-    public void Save(Board board);
+    public Task<Board> Get(string id);
+    public Task Save(Board board);
 }

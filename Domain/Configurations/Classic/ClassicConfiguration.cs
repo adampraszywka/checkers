@@ -1,4 +1,5 @@
-﻿using Domain.PieceMoves;
+﻿using Domain.GameStates;
+using Domain.PieceMoves;
 using Domain.PieceMoves.Classic;
 using Domain.Pieces;
 using Domain.Pieces.Classic;
@@ -11,15 +12,19 @@ public class ClassicConfiguration : Configuration
     public IEnumerable<(Piece, Position)> PiecesPositions { get; }
     public PieceMoveFactory MoveFactory { get; }
     public PieceFactory PieceFactory { get; }
+    public GameState GameState { get; }
 
-    public static ClassicConfiguration NewBoard() => new(NewGamePieces);
-    public static ClassicConfiguration FromSnapshot(IEnumerable<(Piece, Position)> snapshot) => new(snapshot);
+    public static ClassicConfiguration NewBoard() => new(NewGamePieces, ClassicGameState.New);
+
+    public static ClassicConfiguration FromSnapshot(IEnumerable<(Piece, Position)> snapshot) => new(snapshot, ClassicGameState.New);
+    public static ClassicConfiguration FromSnapshot(IEnumerable<(Piece, Position)> snapshot, IEnumerable<Move> log) => new(snapshot, ClassicGameState.FromSnapshot(log));
     
-    private ClassicConfiguration(IEnumerable<(Piece, Position)> pieces)
+    private ClassicConfiguration(IEnumerable<(Piece, Position)> pieces, ClassicGameState gameState)
     {
         PiecesPositions = pieces;
         MoveFactory = new ClassicPieceMoveFactory();
         PieceFactory = new ClassicPieceFactory();
+        GameState = gameState;
     }
     
     private static IEnumerable<(Piece, Position)> NewGamePieces 

@@ -1,5 +1,6 @@
 ﻿using Domain.Configurations;
 using Domain.Errors.Board;
+using Domain.GameStates;
 using Domain.PieceMoves;
 using Domain.Pieces;
 using Extension;
@@ -13,16 +14,19 @@ public class Board
     private readonly PieceMoveFactory _pieceMoveFactory;
     private readonly PieceFactory _pieceFactory;
     private readonly Square[,] _squares;
+    private readonly GameState _gameState;
     
     public BoardSnapshot Snapshot => GenerateSnapshot();
+    public GameStateSnapshot GameState => _gameState.Snapshot;
     
     public Board(Configuration configuration)
     {
         _boardSize = configuration.BoardSize;
         _pieceMoveFactory = configuration.MoveFactory;
         _pieceFactory = configuration.PieceFactory;
+        _gameState = configuration.GameState;
         _squares = new Square[_boardSize.Rows, _boardSize.Columns];
-        
+
         for (var row = 0; row < _boardSize.Rows; row++)
         {
             for (var column = 0; column < _boardSize.Columns; column++)
@@ -80,8 +84,14 @@ public class Board
         {
             return Result.Fail(new EmptySquare(source));
         }
-
+        
         var piece = square.Piece;
+
+        if (!_gameState.IsMoveAllowed(piece))
+        {
+            return Result.Fail(new InvalidMoveOrder(_gameState.Snapshot.CurrentPlayer));
+        }
+        
         var pieceMove = _pieceMoveFactory.For(piece);
 
         var possibleMoves = pieceMove.PossibleMoves(square.Position, Snapshot);
@@ -103,7 +113,7 @@ public class Board
 
         var newSquare = _squares[target.Row, target.Column];
         
-        if (pieceMove.UpdateRequired(target))
+        if (pieceMove.UpgradeRequired(target))
         {
             var upgradedPiece = _pieceFactory.ReplacementFor(piece);
             square.RemovePiece();
@@ -115,8 +125,10 @@ public class Board
             newSquare.Move(piece);    
         }
         
+        _gameState.RegisterMove(piece, source, target);
+        
         return Result.Ok();
     }
     
-    private BoardSnapshot GenerateSnapshot() => new(_boardSize, _squares.Transform(s => s.Snapshot()));
+    private BoardSnapshot GenerateSnapshot() => new(_boardSize, _gameState.Snapshot, _squares.Transform(s => s.Snapshot()));
 }
