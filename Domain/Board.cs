@@ -1,6 +1,6 @@
 ﻿using Domain.Configurations;
 using Domain.Errors.Board;
-using Domain.Log;
+using Domain.GameStates;
 using Domain.PieceMoves;
 using Domain.Pieces;
 using Extension;
@@ -14,17 +14,17 @@ public class Board
     private readonly PieceMoveFactory _pieceMoveFactory;
     private readonly PieceFactory _pieceFactory;
     private readonly Square[,] _squares;
-    private readonly List<Move> _log;
+    private readonly GameState _gameState;
     
     public BoardSnapshot Snapshot => GenerateSnapshot();
-    public IEnumerable<Move> Log => _log;
-
+    public GameStateSnapshot GameState => _gameState.Snapshot;
+    
     public Board(Configuration configuration)
     {
         _boardSize = configuration.BoardSize;
         _pieceMoveFactory = configuration.MoveFactory;
         _pieceFactory = configuration.PieceFactory;
-        _log = configuration.Log.ToList();
+        _gameState = configuration.GameState;
         _squares = new Square[_boardSize.Rows, _boardSize.Columns];
 
         for (var row = 0; row < _boardSize.Rows; row++)
@@ -119,7 +119,7 @@ public class Board
             newSquare.Move(piece);    
         }
         
-        _log.Add(new Move(piece, source, target));
+        _gameState.RegisterMove(piece, source, target);
         
         return Result.Ok();
     }

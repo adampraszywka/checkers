@@ -1,7 +1,7 @@
 ﻿using Domain;
 using Domain.Configurations.Classic;
 using Domain.Errors.Board;
-using Domain.Log;
+using Domain.GameStates;
 using Domain.PieceMoves;
 using Domain.Pieces;
 using Domain.Pieces.Classic;
@@ -71,7 +71,7 @@ public class ClassicTests
         pieceMoveFactory.For(piece).Returns(pieceMoves);
         var pieceFactory = Substitute.For<PieceFactory>();
 
-        var configuration = new TestConfiguration(pieceMoveFactory, pieceFactory, new[] {(piece, Position.A1)});
+        var configuration = new TestConfiguration(pieceMoveFactory, pieceFactory, new[] {(piece, Position.A1)}, ClassicGameState.New);
         var board = new Board(configuration);
         var result = board.PossibleMoves(Position.A1);
 
@@ -265,16 +265,17 @@ public class ClassicTests
     }
     
     [Test]
-    public void EmptyGameLogForNewBoard()
+    public void GameStateForNewBoard()
     {
         var configuration = ClassicConfiguration.NewBoard();
         var board = new Board(configuration);
 
-        Assert.That(board.Log, Is.Empty);
+        Assert.That(board.GameState.Log, Is.Empty);
+        Assert.That(board.GameState.CurrentPlayer, Is.EqualTo(Color.White));
     }
     
     [Test]
-    public void EmptyGameLogForNewBoard1()
+    public void GameStateAfterWhitePieceMove()
     {
         var white = new Man("A1", Color.White);
         
@@ -284,6 +285,22 @@ public class ClassicTests
         var result = board.Move(Position.A1, Position.B2);
         
         Assert.That(result.IsSuccess);
-        Assert.That(board.Log, Is.EqualTo(new [] {new Move(white, Position.A1, Position.B2)}));
+        Assert.That(board.GameState.CurrentPlayer, Is.EqualTo(Color.Black));
+        Assert.That(board.GameState.Log, Is.EqualTo(new [] {new Move(white, Position.A1, Position.B2)}));
+    }
+    
+    [Test]
+    public void GameStateAfterBlackPieceMove()
+    {
+        var black = new Man("B8", Color.Black);
+        
+        var configuration = ClassicConfiguration.FromSnapshot(new [] {((Piece) black, Position.B8)});
+        var board = new Board(configuration);
+
+        var result = board.Move(Position.B8, Position.A7);
+        
+        Assert.That(result.IsSuccess);
+        Assert.That(board.GameState.CurrentPlayer, Is.EqualTo(Color.White));
+        Assert.That(board.GameState.Log, Is.EqualTo(new [] {new Move(black, Position.B8, Position.A7)}));
     }
 }

@@ -1,6 +1,6 @@
-﻿using Domain.Log;
-using Domain.PieceMoves;
+﻿using Domain.PieceMoves;
 using Domain.Pieces;
+using Domain.GameStates;
 
 namespace Domain.Configurations;
 
@@ -10,5 +10,5 @@ public interface Configuration
     public IEnumerable<(Piece, Position)> PiecesPositions { get; }
     public PieceMoveFactory MoveFactory { get; }
     public PieceFactory PieceFactory { get; }
-    public IEnumerable<Move> Log { get; }
+    public GameState GameState { get; }
 }
