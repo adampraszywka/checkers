@@ -11,20 +11,21 @@ import {Position} from "../dto/position.interface";
   providedIn: 'root'
 })
 export class ApiClientService {
-  constructor(
+  private readonly boardId: string = 'myBoard';
+  public constructor(
     private readonly config: BoardApiConfiguration,
     private readonly httpClient: HttpClient) { }
 
   public get(): Observable<Board> {
-    return this.httpClient.get<Board>(this.config.baseUrl + 'board');
+    return this.httpClient.get<Board>(this.config.baseUrl + 'board/' + this.boardId);
   }
 
   public possibleMoves(position: Position): Observable<PossibleMove[]> {
-    return this.httpClient.get<PossibleMove[]>(this.config.baseUrl + 'possiblemove/' + position.row + '/' + position.column);
+    return this.httpClient.get<PossibleMove[]>(this.config.baseUrl + 'board/' + this.boardId + '/possiblemove/' + position.row + '/' + position.column);
   }
 
   public move(move: Move): Observable<Board> {
-    return this.httpClient.post<Board>(this.config.baseUrl + 'move', move)
+    return this.httpClient.post<Board>(this.config.baseUrl + 'board/' + this.boardId + '/move', move)
   }
 }
 

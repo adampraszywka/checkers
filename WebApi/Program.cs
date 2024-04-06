@@ -1,12 +1,10 @@
-using Domain;
-using Microsoft.AspNetCore.Mvc;
-using WebApi.Dto;
 using WebApi.Repository;
 
 const string devCors = "_devCors";
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
 builder.Services.AddSingleton<BoardRepository, InMemoryBoardRepository>();
 
 // For PoC development. Needs to be reworked later
@@ -22,46 +20,7 @@ var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
 
-app.MapGet("/board", async (BoardRepository repository) =>
-{
-    var board = await repository.Get();
-    var snapshot = board.Snapshot;
-    return new BoardDto(snapshot);
-});
-
-app.MapGet("/possiblemove/{row}/{column}", async (int row, int column, BoardRepository repo) =>
-{
-    var board = await repo.Get();
-    var position = new Position(row, column);
-
-    var moves = board.PossibleMoves(position);
-    if (moves.IsFailed)
-    {
-        throw new Exception(moves.Errors.First().Message);
-    }
-
-    return moves.Value;
-});
-
-app.MapPost("/move", async (BoardRepository repo, [FromBody] MoveDto request) =>
-{
-    var board = await repo.Get();
-
-    var from = new Position(request.From.Row, request.From.Column);
-    var to = new Position(request.To.Row, request.To.Column);
-
-    var result = board.Move(from, to);
-
-    if (result.IsFailed)
-    {
-        throw new Exception(result.Errors.First().Message);
-    }
-    
-    repo.Save(board);
-
-    return new BoardDto(board.Snapshot);
-});
-    
+app.MapControllers();
 
 app.UseCors(devCors);
 
