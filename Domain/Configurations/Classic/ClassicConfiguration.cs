@@ -16,8 +16,8 @@ public class ClassicConfiguration : Configuration
 
     public static ClassicConfiguration NewBoard() => new(NewGamePieces, ClassicGameState.New);
 
-    public static ClassicConfiguration FromSnapshot(IEnumerable<(Piece, Position)> snapshot) => FromSnapshot(snapshot, ClassicGameState.New);
-    public static ClassicConfiguration FromSnapshot(IEnumerable<(Piece, Position)> snapshot, ClassicGameState gameState) => new(snapshot, gameState);
+    public static ClassicConfiguration FromSnapshot(IEnumerable<(Piece, Position)> snapshot) => new(snapshot, ClassicGameState.New);
+    public static ClassicConfiguration FromSnapshot(IEnumerable<(Piece, Position)> snapshot, IEnumerable<Move> log) => new(snapshot, ClassicGameState.FromSnapshot(log));
     
     private ClassicConfiguration(IEnumerable<(Piece, Position)> pieces, ClassicGameState gameState)
     {

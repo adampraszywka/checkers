@@ -84,8 +84,14 @@ public class Board
         {
             return Result.Fail(new EmptySquare(source));
         }
-
+        
         var piece = square.Piece;
+
+        if (!_gameState.IsMoveAllowed(piece))
+        {
+            return Result.Fail(new InvalidMoveOrder(_gameState.Snapshot.CurrentPlayer));
+        }
+        
         var pieceMove = _pieceMoveFactory.For(piece);
 
         var possibleMoves = pieceMove.PossibleMoves(square.Position, Snapshot);

@@ -123,6 +123,31 @@ public class ClassicTests
         
         Assert.That(result.HasError<MoveNotAllowed>());
     }
+
+    [Test]
+    public void BlackPieceMoveNotAllowedDueToGameState()
+    {
+        var configuration = ClassicConfiguration.NewBoard();
+        var board = new Board(configuration);
+
+        var result = board.Move(Position.C7, Position.B6);
+        
+        Assert.That(result.HasError<InvalidMoveOrder>());
+    }
+    
+    [Test]
+    public void WhitePieceMoveNotAllowedDueToGameState()
+    {
+        var configuration = ClassicConfiguration.NewBoard();
+        var board = new Board(configuration);
+
+        var whiteMove1 = board.Move(Position.A3, Position.B4);
+        Assert.That(whiteMove1.IsSuccess);
+        
+        var result = board.Move(Position.C3, Position.D4);
+        
+        Assert.That(result.HasError<InvalidMoveOrder>());
+    }
     
     [Test]
     public void FirstMove()
@@ -210,11 +235,14 @@ public class ClassicTests
     [Test]
     public void BlackUpgradesToKingOnceOppositeSideOfBoardReachedByMove()
     {
-        var black = new Man("W", Color.Black);
+        var white = new Man("W", Color.White);
+        var black = new Man("B", Color.Black);
         
-        var configuration = ClassicConfiguration.FromSnapshot(new []{((Piece) black, Position.D2)});
+        var configuration = ClassicConfiguration.FromSnapshot(new []{((Piece) black, Position.D2), (white, Position.G1)});
         var board = new Board(configuration);
 
+        Assert.That(board.Move(Position.G1, Position.H2).IsSuccess);
+        
         var result = board.Move(Position.D2, Position.C1);
         
         Assert.That(result.IsSuccess);
@@ -228,7 +256,7 @@ public class ClassicTests
             { Empty, 	Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
             { Empty, 	Empty, 	    Empty, 		Empty, 		Empty, 		Empty, 		Empty, 		Empty},
             { Empty,    Empty, 		Empty, 	    Empty, 		Empty,	    Empty, 		Empty, 	    Empty},
-            { Empty, 	Empty, 	    Empty, 		Empty, 	    Empty, 		Empty, 	    Empty, 		Empty},
+            { Empty, 	Empty, 	    Empty, 		Empty, 	    Empty, 		Empty, 	    Empty, 		WhiteMan},
             { Empty,    Empty, 		BlackKing,  Empty, 		Empty, 	    Empty, 		Empty, 	    Empty}
         };
         
@@ -241,9 +269,11 @@ public class ClassicTests
         var white = new Man("A1", Color.White);
         var black = new Man("A2", Color.Black);
         
-        var configuration = ClassicConfiguration.FromSnapshot(new [] {((Piece) black, Position.C3), ((Piece) white, Position.D2)});
+        var configuration = ClassicConfiguration.FromSnapshot(new [] {((Piece) black, Position.C3), ((Piece) white, Position.C1)});
         var board = new Board(configuration);
 
+        Assert.That(board.Move(Position.C1, Position.D2).IsSuccess);
+        
         var result = board.Move(Position.C3, Position.E1);
         
         Assert.That(result.IsSuccess);
@@ -293,14 +323,18 @@ public class ClassicTests
     public void GameStateAfterBlackPieceMove()
     {
         var black = new Man("B8", Color.Black);
+        var white = new Man("A3", Color.White);
+
+        var pieces = new [] {((Piece) black, Position.B8), ((Piece) white, Position.B4)};
+        var moveLog = new []{new Move(white, Position.A3, Position.B4)};
         
-        var configuration = ClassicConfiguration.FromSnapshot(new [] {((Piece) black, Position.B8)});
+        var configuration = ClassicConfiguration.FromSnapshot(pieces, moveLog);
         var board = new Board(configuration);
 
         var result = board.Move(Position.B8, Position.A7);
         
         Assert.That(result.IsSuccess);
         Assert.That(board.GameState.CurrentPlayer, Is.EqualTo(Color.White));
-        Assert.That(board.GameState.Log, Is.EqualTo(new [] {new Move(black, Position.B8, Position.A7)}));
+        Assert.That(board.GameState.Log, Is.EqualTo(new [] {new Move(white, Position.A3, Position.B4), new Move(black, Position.B8, Position.A7)}));
     }
 }
