@@ -124,5 +124,5 @@ public class Board
         return Result.Ok();
     }
     
-    private BoardSnapshot GenerateSnapshot() => new(_boardSize, _squares.Transform(s => s.Snapshot()));
+    private BoardSnapshot GenerateSnapshot() => new(_boardSize, _gameState.Snapshot, _squares.Transform(s => s.Snapshot()));
 }
