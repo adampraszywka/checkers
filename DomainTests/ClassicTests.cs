@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Domain.Configurations.Classic;
 using Domain.Errors.Board;
+using Domain.Log;
 using Domain.PieceMoves;
 using Domain.Pieces;
 using Domain.Pieces.Classic;
@@ -261,5 +262,28 @@ public class ClassicTests
         };
         
         BoardAssert.ReversedRowsEqualTo(expected, snapshot);
+    }
+    
+    [Test]
+    public void EmptyGameLogForNewBoard()
+    {
+        var configuration = ClassicConfiguration.NewBoard();
+        var board = new Board(configuration);
+
+        Assert.That(board.Log, Is.Empty);
+    }
+    
+    [Test]
+    public void EmptyGameLogForNewBoard1()
+    {
+        var white = new Man("A1", Color.White);
+        
+        var configuration = ClassicConfiguration.FromSnapshot(new [] {((Piece) white, Position.A1)});
+        var board = new Board(configuration);
+
+        var result = board.Move(Position.A1, Position.B2);
+        
+        Assert.That(result.IsSuccess);
+        Assert.That(board.Log, Is.EqualTo(new [] {new Move(white, Position.A1, Position.B2)}));
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Domain.Configurations;
 using Domain.Errors.Board;
+using Domain.Log;
 using Domain.PieceMoves;
 using Domain.Pieces;
 using Extension;
@@ -13,16 +14,19 @@ public class Board
     private readonly PieceMoveFactory _pieceMoveFactory;
     private readonly PieceFactory _pieceFactory;
     private readonly Square[,] _squares;
+    private readonly List<Move> _log;
     
     public BoardSnapshot Snapshot => GenerateSnapshot();
-    
+    public IEnumerable<Move> Log => _log;
+
     public Board(Configuration configuration)
     {
         _boardSize = configuration.BoardSize;
         _pieceMoveFactory = configuration.MoveFactory;
         _pieceFactory = configuration.PieceFactory;
+        _log = configuration.Log.ToList();
         _squares = new Square[_boardSize.Rows, _boardSize.Columns];
-        
+
         for (var row = 0; row < _boardSize.Rows; row++)
         {
             for (var column = 0; column < _boardSize.Columns; column++)
@@ -114,6 +118,8 @@ public class Board
             square.RemovePiece();
             newSquare.Move(piece);    
         }
+        
+        _log.Add(new Move(piece, source, target));
         
         return Result.Ok();
     }
