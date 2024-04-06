@@ -112,7 +112,7 @@ public class ClassicBlackManMovesTests
     {
         var pieceMoves = new ClassicBlackManMoves();
         
-        Assert.True(pieceMoves.UpdateRequired(new Position(row, column)));
+        Assert.True(pieceMoves.UpgradeRequired(new Position(row, column)));
     }
 
     [Test]
@@ -148,6 +148,6 @@ public class ClassicBlackManMovesTests
     {
         var pieceMoves = new ClassicBlackManMoves();
         
-        Assert.False(pieceMoves.UpdateRequired(new Position(row, column)));
+        Assert.False(pieceMoves.UpgradeRequired(new Position(row, column)));
     }
 }

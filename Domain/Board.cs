@@ -103,7 +103,7 @@ public class Board
 
         var newSquare = _squares[target.Row, target.Column];
         
-        if (pieceMove.UpdateRequired(target))
+        if (pieceMove.UpgradeRequired(target))
         {
             var upgradedPiece = _pieceFactory.ReplacementFor(piece);
             square.RemovePiece();
