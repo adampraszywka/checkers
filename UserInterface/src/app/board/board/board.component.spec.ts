@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BoardComponent } from './board.component';
 import {BoardApiConfiguration} from "../../app.config";
 import {provideHttpClient} from "@angular/common/http";
+import {provideToastr} from "ngx-toastr";
 
 describe('BoardComponent', () => {
   let component: BoardComponent;
@@ -13,6 +14,7 @@ describe('BoardComponent', () => {
       imports: [BoardComponent],
       providers: [
         provideHttpClient(),
+        provideToastr(),
         {provide: BoardApiConfiguration, useValue: {baseUrl: ''}}
       ]
     })
