@@ -4,15 +4,16 @@ using FluentResults;
 
 namespace Domain;
 
-public class Game(string id)
+public class Game(string id, string boardId)
 {
     public string Id { get; } = id;
+    public string BoardId { get; } = boardId;
 
     private readonly List<Participant> _participants = new(2);
 
     public Result Join(Player player)
     {
-        if (_participants.Any(x => x.Id == player.Id))
+        if (DoesParticipate(player))
         {
             return Result.Fail(new PlayerAlreadyJoined());
         }
@@ -35,5 +36,6 @@ public class Game(string id)
     }
 
     public Participant? Get(Player player) => _participants.FirstOrDefault(x => x.Id == player.Id);
-    
+
+    public bool DoesParticipate(Player player) => _participants.Any(x => x.Id == player.Id);
 }

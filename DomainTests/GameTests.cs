@@ -13,7 +13,7 @@ public class GameTests
     [Test]
     public void NewGame()
     {
-        var game = new Game("ID");
+        var game = new Game("ID", "BID");
         
         Assert.That(game.Id, Is.EqualTo("ID"));
     }
@@ -21,7 +21,7 @@ public class GameTests
     [Test]
     public void NoParticipantsReturnsNull()
     {
-        var game = new Game("ID");
+        var game = new Game("ID", "BID");
         
         Assert.That(game.Get(new TestPlayer("123")), Is.Null);
     }
@@ -29,7 +29,7 @@ public class GameTests
     [Test]
     public void FirstPlayerIsWhitePlayer()
     {
-        var game = new Game("ID");
+        var game = new Game("ID", "BID");
         var player = new TestPlayer("1");
         
         var result = game.Join(player);
@@ -48,7 +48,7 @@ public class GameTests
     [Test]
     public void SecondPlayerIsBlackPlayer()
     {
-        var game = new Game("ID");
+        var game = new Game("ID", "BID");
         var white = new TestPlayer("W");
         var black = new TestPlayer("B");
         
@@ -78,7 +78,7 @@ public class GameTests
     [Test]
     public void OnlyTwoPlayersCanJoinTheGame()
     {
-        var game = new Game("ID");
+        var game = new Game("ID", "BID");
         
         var white = new TestPlayer("W");
         var black = new TestPlayer("B");
@@ -94,9 +94,21 @@ public class GameTests
     }
     
     [Test]
+    public void GameWithoutPlayersNooneParticipates()
+    {
+        var game = new Game("ID", "BID");
+        
+        var white = new TestPlayer("W");
+        var black = new TestPlayer("B");
+
+        Assert.That(game.DoesParticipate(white), Is.False);
+        Assert.That(game.DoesParticipate(black), Is.False);
+    }
+    
+    [Test]
     public void FirstPlayerCannotJoinTwice()
     {
-        var game = new Game("ID");
+        var game = new Game("ID", "BID");
         
         var white = new TestPlayer("W");
         
@@ -105,6 +117,38 @@ public class GameTests
 
         Assert.That(whiteJoinResult1.IsSuccess);
         Assert.That(whiteJoinResult2.HasError<PlayerAlreadyJoined>());
+    }
+
+    [Test]
+    public void WhitePlayerParticipatesInGame()
+    {
+        var game = new Game("ID", "BID");
+        
+        var white = new TestPlayer("W");
+        var black = new TestPlayer("B");
+
+        var whiteJoinResult = game.Join(white);
+        var blackJoinResult = game.Join(black);
+
+        var participatesFlag = game.DoesParticipate(black);
+        
+        Assert.That(whiteJoinResult.IsSuccess);
+        Assert.That(blackJoinResult.IsSuccess);
+        Assert.That(participatesFlag, Is.True);
+    }
+    
+    [Test]
+    public void BlackPlayerParticipatesInGame()
+    {
+        var game = new Game("ID", "BID");
+        
+        var white = new TestPlayer("W");
+        var whiteJoinResult = game.Join(white);
+
+        var participatesFlag = game.DoesParticipate(white);
+        
+        Assert.That(whiteJoinResult.IsSuccess);
+        Assert.That(participatesFlag, Is.True);
     }
 
     public static IEnumerable<Piece> WhitePieces
@@ -129,7 +173,7 @@ public class GameTests
     [TestCaseSource(nameof(WhitePieces))]
     public void WhitePlayerCanMoveWhitePieces(Piece piece)
     {
-        var game = new Game("ID");
+        var game = new Game("ID", "BID");
         
         var white = new TestPlayer("W");
 
@@ -145,7 +189,7 @@ public class GameTests
     [TestCaseSource(nameof(BlackPieces))]
     public void WhitePlayerCannotMoveBlackPieces(Piece piece)
     {
-        var game = new Game("ID");
+        var game = new Game("ID", "BID");
         
         var white = new TestPlayer("W");
 
@@ -161,7 +205,7 @@ public class GameTests
     [TestCaseSource(nameof(BlackPieces))]
     public void BlackPlayerCanMoveBlackPieces(Piece piece)
     {
-        var game = new Game("ID");
+        var game = new Game("ID", "BID");
         var black = new TestPlayer("B");
 
         game.Join(new TestPlayer("W"));
@@ -177,7 +221,7 @@ public class GameTests
     [TestCaseSource(nameof(WhitePieces))]
     public void BlackPlayerCannotMoveWhitePieces(Piece piece)
     {
-        var game = new Game("ID");
+        var game = new Game("ID", "BID");
         var black = new TestPlayer("B");
 
         game.Join(new TestPlayer("W"));
