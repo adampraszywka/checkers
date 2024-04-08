@@ -17,7 +17,7 @@ public class ClassicTests
     public void NewBoard()
     {
         var configuration = ClassicConfiguration.NewBoard();
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
 
         var snapshot = board.Snapshot.ToTestSquares(); 
         var expected = new[,]
@@ -42,7 +42,7 @@ public class ClassicTests
     public void PossibleMovesOutOfBoard(int sourceRow, int sourceColumn)
     {
         var configuration = ClassicConfiguration.NewBoard();
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
         var result = board.PossibleMoves(new Position(sourceRow, sourceColumn));
         
         Assert.That(result.HasError<PositionOutOfBoard>());
@@ -52,7 +52,7 @@ public class ClassicTests
     public void PossibleMovesSourceEmpty()
     {
         var configuration = ClassicConfiguration.NewBoard();
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
 
         var result = board.PossibleMoves(Position.B4);
         
@@ -72,7 +72,7 @@ public class ClassicTests
         var pieceFactory = Substitute.For<PieceFactory>();
 
         var configuration = new TestConfiguration(pieceMoveFactory, pieceFactory, new[] {(piece, Position.A1)}, ClassicGameState.New);
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
         var result = board.PossibleMoves(Position.A1);
 
         Assert.That(result.IsSuccess);
@@ -95,7 +95,7 @@ public class ClassicTests
     public void MoveOutOfBoard(int sourceRow, int sourceColumn, int targetRow, int targetColumn)
     {
         var configuration = ClassicConfiguration.NewBoard();
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
 
         var result = board.Move(new Position(sourceRow, sourceColumn), new Position(targetRow, targetColumn));
         
@@ -106,7 +106,7 @@ public class ClassicTests
     public void SquareEmpty()
     {
         var configuration = ClassicConfiguration.NewBoard();
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
 
         var result = board.Move(Position.B4, Position.C5);
         
@@ -117,7 +117,7 @@ public class ClassicTests
     public void MoveNotAllowed()
     {
         var configuration = ClassicConfiguration.NewBoard();
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
 
         var result = board.Move(Position.A1, Position.H8);
         
@@ -128,7 +128,7 @@ public class ClassicTests
     public void BlackPieceMoveNotAllowedDueToGameState()
     {
         var configuration = ClassicConfiguration.NewBoard();
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
 
         var result = board.Move(Position.C7, Position.B6);
         
@@ -139,7 +139,7 @@ public class ClassicTests
     public void WhitePieceMoveNotAllowedDueToGameState()
     {
         var configuration = ClassicConfiguration.NewBoard();
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
 
         var whiteMove1 = board.Move(Position.A3, Position.B4);
         Assert.That(whiteMove1.IsSuccess);
@@ -153,7 +153,7 @@ public class ClassicTests
     public void FirstMove()
     {
         var configuration = ClassicConfiguration.NewBoard();
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
 
         var result = board.Move(Position.A3, Position.B4);
         
@@ -181,7 +181,7 @@ public class ClassicTests
         var white = new Man("W", Color.White);
         
         var configuration = ClassicConfiguration.FromSnapshot(new []{((Piece) white, Position.E7)});
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
 
         var result = board.Move(Position.E7, Position.D8);
         
@@ -210,7 +210,7 @@ public class ClassicTests
         var black = new Man("A2", Color.Black);
         
         var configuration = ClassicConfiguration.FromSnapshot(new [] {((Piece) black, Position.E7), ((Piece) white, Position.F6)});
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
 
         var result = board.Move(Position.F6, Position.D8);
         
@@ -239,7 +239,7 @@ public class ClassicTests
         var black = new Man("B", Color.Black);
         
         var configuration = ClassicConfiguration.FromSnapshot(new []{((Piece) black, Position.D2), (white, Position.G1)});
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
 
         Assert.That(board.Move(Position.G1, Position.H2).IsSuccess);
         
@@ -270,7 +270,7 @@ public class ClassicTests
         var black = new Man("A2", Color.Black);
         
         var configuration = ClassicConfiguration.FromSnapshot(new [] {((Piece) black, Position.C3), ((Piece) white, Position.C1)});
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
 
         Assert.That(board.Move(Position.C1, Position.D2).IsSuccess);
         
@@ -298,7 +298,7 @@ public class ClassicTests
     public void GameStateForNewBoard()
     {
         var configuration = ClassicConfiguration.NewBoard();
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
 
         Assert.That(board.GameState.Log, Is.Empty);
         Assert.That(board.GameState.CurrentPlayer, Is.EqualTo(Color.White));
@@ -310,7 +310,7 @@ public class ClassicTests
         var white = new Man("A1", Color.White);
         
         var configuration = ClassicConfiguration.FromSnapshot(new [] {((Piece) white, Position.A1)});
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
 
         var result = board.Move(Position.A1, Position.B2);
         
@@ -329,7 +329,7 @@ public class ClassicTests
         var moveLog = new []{new Move(white, Position.A3, Position.B4)};
         
         var configuration = ClassicConfiguration.FromSnapshot(pieces, moveLog);
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
 
         var result = board.Move(Position.B8, Position.A7);
         
