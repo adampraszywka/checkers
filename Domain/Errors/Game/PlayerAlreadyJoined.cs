@@ -2,7 +2,4 @@
 
 namespace Domain.Errors.Game;
 
-public class PlayerAlreadyJoined() : Error("Given player has already join the game")
-{
-    
-}
+public class PlayerAlreadyJoined() : Error("Given player has already join the game");
