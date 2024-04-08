@@ -16,11 +16,13 @@ public class Board
     private readonly Square[,] _squares;
     private readonly GameState _gameState;
     
+    public string Id { get; }
     public BoardSnapshot Snapshot => GenerateSnapshot();
     public GameStateSnapshot GameState => _gameState.Snapshot;
     
-    public Board(Configuration configuration)
+    public Board(string id, Configuration configuration)
     {
+        Id = id;
         _boardSize = configuration.BoardSize;
         _pieceMoveFactory = configuration.MoveFactory;
         _pieceFactory = configuration.PieceFactory;

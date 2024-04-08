@@ -12,7 +12,7 @@ public class EmptyBoard8X8Tests
     public void EmptyBoard()
     {
         var configuration = ClassicConfiguration.FromSnapshot(Enumerable.Empty<(Piece, Position)>());
-        var board = new Board(configuration);
+        var board = new Board("ID", configuration);
 
         var boardSnapshot = board.Snapshot;
         var boardSnapshotNames = boardSnapshot.Squares.Transform(s => s.Id);

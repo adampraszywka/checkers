@@ -11,7 +11,8 @@ public class InMemoryBoardRepository : BoardRepository
     {
         if (!_boards.ContainsKey(id))
         {
-            var board = new Board(ClassicConfiguration.NewBoard());
+            var boardId = Guid.NewGuid().ToString();
+            var board = new Board(boardId, ClassicConfiguration.NewBoard());
             _boards[id] = board;
             return Task.FromResult(board);
         }
@@ -21,6 +22,7 @@ public class InMemoryBoardRepository : BoardRepository
 
     public Task Save(Board board)
     {
+        _boards[board.Id] = board;
         return Task.CompletedTask;
     }
 }
