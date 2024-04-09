@@ -5,55 +5,119 @@ using WebApi.Repository;
 
 namespace WebApi.Controllers;
 
-public class BoardController : Controller
+public class BoardController(GameRepository gameRepository, BoardRepository boardRepository) : Controller
 {
-    private readonly BoardRepository _repository;
-
-    public BoardController(BoardRepository repository)
+    [HttpGet("/game/{gameId}/board")]
+    public async Task<IActionResult> GetBoard([FromRoute] string gameId, [FromHeader(Name = HeaderPlayer.HeaderName)] string playerId)
     {
-        _repository = repository;
-    }
+        var game = await gameRepository.Get(gameId);
+        if (game is null)
+        {
+            return NotFound("Game not found");
+        }
 
-    [HttpGet("/board/{boardId}")]
-    public async Task<IActionResult> GetBoard([FromRoute] string boardId)
-    {
-        var board = await _repository.Get(boardId);
+        var player = new HeaderPlayer(playerId);
+        var participation = game.Participation(player);
+        if (!participation.DoesParticipate)
+        {
+            return Forbid();
+        }
+
+        var board = await boardRepository.Get(game.BoardId);
+        if (board is null)
+        {
+            throw new NotImplementedException();
+        }
+        
+        
         var snapshot = board.Snapshot;
     
         return new OkObjectResult(new BoardDto(snapshot));
     }
 
-    [HttpGet("/board/{boardId}/possiblemove/{row}/{column}")]
-    public async Task<IActionResult> GetPossibleMoves([FromRoute] string boardId, [FromRoute] int row, [FromRoute] int column)
+    [HttpGet("/game/{gameId}/possiblemove/{row}/{column}")]
+    public async Task<IActionResult> GetPossibleMoves([FromRoute] string gameId, [FromRoute] int row, [FromRoute] int column, [FromHeader(Name = HeaderPlayer.HeaderName)] string playerId)
     {
-        var board = await _repository.Get(boardId);
-        var position = new Position(row, column);
+        var game = await gameRepository.Get(gameId);
+        if (game is null)
+        {
+            return NotFound("Game not found");
+        }
 
+        var player = new HeaderPlayer(playerId);
+        var participation = game.Participation(player);
+        if (!participation.DoesParticipate)
+        {
+            return StatusCode(403);
+        }
+        
+        var board = await boardRepository.Get(game.BoardId);
+        if (board is null)
+        {
+            throw new NotImplementedException();
+        }        
+        
+        var position = new Position(row, column);
+        var piece = board.Snapshot.At(position);
+        if (piece is null)
+        {
+            throw new NotImplementedException();
+        }
+
+        if (!participation.Participant.CanMove(piece))
+        {
+            return StatusCode(403);
+        }
+        
         var moves = board.PossibleMoves(position);
         if (moves.IsFailed)
         {
-            return new BadRequestObjectResult(new ErrorDto(moves.Errors.First()));
+            return new BadRequestObjectResult(new ErrorDto(moves.Errors));
         }
 
         return new OkObjectResult(moves.Value);
     }
 
-    [HttpPost("/board/{boardId}/move")]
-    public async Task<IActionResult> MovePiece([FromRoute] string boardId, [FromBody] MoveDto request)
+    [HttpPost("/game/{gameId}/move")]
+    public async Task<IActionResult> MovePiece([FromRoute] string gameId, [FromBody] MoveDto request, [FromHeader(Name = HeaderPlayer.HeaderName)] string playerId)
     {
-        var board = await _repository.Get(boardId);
+        var game = await gameRepository.Get(gameId);
+        if (game is null)
+        {
+            return NotFound("Game not found");
+        }
+        
+        var player = new HeaderPlayer(playerId);
+        var participation = game.Participation(player);
+        if (!participation.DoesParticipate)
+        {
+            return StatusCode(403);
+        }
+        
+        var board = await boardRepository.Get(gameId);
 
         var from = new Position(request.From.Row, request.From.Column);
         var to = new Position(request.To.Row, request.To.Column);
 
+        var piece = board.Snapshot.At(from);
+        if (piece is null)
+        {
+            throw new NotImplementedException();
+        }
+        
+        if (!participation.Participant.CanMove(piece))
+        {
+            return StatusCode(403);
+        }
+        
         var result = board.Move(from, to);
 
         if (result.IsFailed)
         {
-            return new BadRequestObjectResult(new ErrorDto(result.Errors.First()));
+            return new BadRequestObjectResult(new ErrorDto(result.Errors));
         }
     
-        await _repository.Save(board);
+        await boardRepository.Save(board);
 
         return new OkObjectResult(new BoardDto(board.Snapshot));
     }
