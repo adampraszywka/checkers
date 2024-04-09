@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSingleton<BoardRepository, InMemoryBoardRepository>();
+builder.Services.AddSingleton<GameRepository, InMemoryGameRepository>();
 
 // For PoC development. Needs to be reworked later
 builder.Services.AddCors(o =>
