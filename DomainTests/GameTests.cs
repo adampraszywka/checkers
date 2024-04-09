@@ -5,7 +5,6 @@ using Domain.Pieces.Classic;
 
 namespace DomainTests;
 
-
 public class GameTests
 {
     private record TestPlayer(string Id) : Player;
@@ -16,6 +15,7 @@ public class GameTests
         var game = new Game("ID", "BID");
         
         Assert.That(game.Id, Is.EqualTo("ID"));
+        Assert.That(game.Participants, Is.Empty);
     }
 
     [Test]
@@ -101,8 +101,13 @@ public class GameTests
         var white = new TestPlayer("W");
         var black = new TestPlayer("B");
 
-        Assert.That(game.DoesParticipate(white), Is.False);
-        Assert.That(game.DoesParticipate(black), Is.False);
+        var whiteParticipation = game.Participation(white);
+        var blackParticipation = game.Participation(black);
+        
+        Assert.That(whiteParticipation.DoesParticipate, Is.False);
+        Assert.Throws<InvalidOperationException>(() => _ = whiteParticipation.Participant);
+        Assert.That(blackParticipation.DoesParticipate, Is.False);
+        Assert.Throws<InvalidOperationException>(() => _ = blackParticipation.Participant);
     }
     
     [Test]
@@ -130,11 +135,13 @@ public class GameTests
         var whiteJoinResult = game.Join(white);
         var blackJoinResult = game.Join(black);
 
-        var participatesFlag = game.DoesParticipate(black);
+        var participation = game.Participation(black);
         
         Assert.That(whiteJoinResult.IsSuccess);
         Assert.That(blackJoinResult.IsSuccess);
-        Assert.That(participatesFlag, Is.True);
+        Assert.That(participation.DoesParticipate, Is.True);
+        Assert.That(participation.Participant.Id, Is.EqualTo("B"));
+        Assert.That(participation.Participant.Color, Is.EqualTo(Color.Black));
     }
     
     [Test]
@@ -145,10 +152,11 @@ public class GameTests
         var white = new TestPlayer("W");
         var whiteJoinResult = game.Join(white);
 
-        var participatesFlag = game.DoesParticipate(white);
+        var participation = game.Participation(white);
         
         Assert.That(whiteJoinResult.IsSuccess);
-        Assert.That(participatesFlag, Is.True);
+        Assert.That(participation.Participant.Id, Is.EqualTo("W"));
+        Assert.That(participation.Participant.Color, Is.EqualTo(Color.White));
     }
 
     public static IEnumerable<Piece> WhitePieces

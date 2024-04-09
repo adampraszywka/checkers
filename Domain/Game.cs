@@ -8,12 +8,13 @@ public class Game(string id, string boardId)
 {
     public string Id { get; } = id;
     public string BoardId { get; } = boardId;
+    public IEnumerable<Participant> Participants => _participants.AsReadOnly();
 
     private readonly List<Participant> _participants = new(2);
 
     public Result Join(Player player)
     {
-        if (DoesParticipate(player))
+        if (_participants.Any(x => x.Id == player.Id))
         {
             return Result.Fail(new PlayerAlreadyJoined());
         }
@@ -37,5 +38,5 @@ public class Game(string id, string boardId)
 
     public Participant? Get(Player player) => _participants.FirstOrDefault(x => x.Id == player.Id);
 
-    public bool DoesParticipate(Player player) => _participants.Any(x => x.Id == player.Id);
+    public Participation Participation(Player player) => new(Get(player));
 }
