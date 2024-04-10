@@ -48,7 +48,7 @@ By default Angular development server binds to localhost:4200 and its connected 
 - [ ] basic implementation of King piece moves
 - [X] board UI PoC
 - [ ] in-memory game state storage
-- [ ] game log
+- [X] game log
 - [ ] persistent game state storage
 - [ ] use SignalR for Board UI <-> Board API communication
 - [ ] implementation of complex Man piece moves
