@@ -1,8 +1,8 @@
-﻿using Domain;
-using Domain.Configurations;
-using Domain.GameStates;
-using Domain.PieceMoves;
-using Domain.Pieces;
+﻿using Domain.Chessboard;
+using Domain.Chessboard.Configurations;
+using Domain.Chessboard.GameStates;
+using Domain.Chessboard.PieceMoves;
+using Domain.Chessboard.Pieces;
 
 namespace DomainTests.Extensions;
 

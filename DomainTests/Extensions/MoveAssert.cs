@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using Domain.PieceMoves;
+using Domain.Chessboard.PieceMoves;
 
 namespace DomainTests.Extensions;
 
@@ -10,7 +10,7 @@ public static class MoveAssert
         var orderedExpected = expected
             .OrderBy(x => x.To.Row)
             .ThenBy(x => x.To.Column);
-        
+
         var orderedActual = actual
             .OrderBy(x => x.To.Row)
             .ThenBy(x => x.To.Column);
@@ -18,7 +18,7 @@ public static class MoveAssert
 
         var expectedString = JsonSerializer.Serialize(orderedExpected);
         var actualString = JsonSerializer.Serialize(orderedActual);
-        
+
         Assert.That(actualString, Is.EqualTo(expectedString));
     }
 }

@@ -1,8 +1,9 @@
-﻿using Domain;
-using Domain.Configurations.Classic;
+﻿using Domain.Chessboard;
+using Domain.Chessboard.Configurations.Classic;
+using Domain.Game;
+using Domain.Repository;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Dto;
-using WebApi.Repository;
 
 namespace WebApi.Controllers;
 
@@ -26,7 +27,7 @@ public class GameController(GameRepository gameRepository, BoardRepository board
         var gameId = Guid.NewGuid().ToString();
         var boardId = Guid.NewGuid().ToString();
 
-        var game = new Game(gameId, boardId);
+        var game = new GameInstance(gameId, boardId);
         var board = new Board(boardId, ClassicConfiguration.NewBoard());
 
         await boardRepository.Save(board);
@@ -34,7 +35,7 @@ public class GameController(GameRepository gameRepository, BoardRepository board
 
         return Ok(game);
     }
-    
+
     [HttpPost("/game/{gameId}/join")]
     public async Task<IActionResult> Join([FromRoute] string gameId, [FromHeader(Name = HeaderPlayer.HeaderName)] string playerId)
     {
@@ -52,7 +53,7 @@ public class GameController(GameRepository gameRepository, BoardRepository board
         }
 
         await gameRepository.Save(game);
-        
+
         return Ok(game);
     }
 }

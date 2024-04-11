@@ -1,4 +1,6 @@
+using Domain.Repository;
 using WebApi.Repository;
+using WebApi.Service;
 
 const string devCors = "_devCors";
 
@@ -7,14 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSingleton<BoardRepository, InMemoryBoardRepository>();
 builder.Services.AddSingleton<GameRepository, InMemoryGameRepository>();
+builder.Services.AddTransient<GameBoardFactory>();
 
 // For PoC development. Needs to be reworked later
 builder.Services.AddCors(o =>
 {
-    o.AddPolicy(devCors, p =>
-    {
-        p.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowAnyHeader();
-    });
+    o.AddPolicy(devCors,
+        p => { p.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowAnyHeader(); });
 });
 
 var app = builder.Build();

@@ -1,124 +1,63 @@
-﻿using Domain;
+﻿using Domain.Chessboard;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Dto;
-using WebApi.Repository;
+using WebApi.Service;
 
 namespace WebApi.Controllers;
 
-public class BoardController(GameRepository gameRepository, BoardRepository boardRepository) : Controller
+public class BoardController(GameBoardFactory factory) : Controller
 {
     [HttpGet("/game/{gameId}/board")]
     public async Task<IActionResult> GetBoard([FromRoute] string gameId, [FromHeader(Name = HeaderPlayer.HeaderName)] string playerId)
     {
-        var game = await gameRepository.Get(gameId);
-        if (game is null)
-        {
-            return NotFound("Game not found");
-        }
+        var gameBoard = factory.Create(gameId);
 
         var player = new HeaderPlayer(playerId);
-        var participation = game.Participation(player);
-        if (!participation.DoesParticipate)
+        var snapshotResult = await gameBoard.Get(player);
+        if (snapshotResult.IsFailed)
         {
-            return Forbid();
+            // TODO: tmp solution
+            return BadRequest(snapshotResult.Errors.First().Message);
         }
 
-        var board = await boardRepository.Get(game.BoardId);
-        if (board is null)
-        {
-            throw new NotImplementedException();
-        }
-        
-        
-        var snapshot = board.Snapshot;
-    
-        return new OkObjectResult(new BoardDto(snapshot));
+        var dto = new BoardDto(snapshotResult.Value);
+        return Ok(dto);
     }
 
     [HttpGet("/game/{gameId}/possiblemove/{row}/{column}")]
     public async Task<IActionResult> GetPossibleMoves([FromRoute] string gameId, [FromRoute] int row, [FromRoute] int column, [FromHeader(Name = HeaderPlayer.HeaderName)] string playerId)
     {
-        var game = await gameRepository.Get(gameId);
-        if (game is null)
-        {
-            return NotFound("Game not found");
-        }
+        var gameBoard = factory.Create(gameId);
 
         var player = new HeaderPlayer(playerId);
-        var participation = game.Participation(player);
-        if (!participation.DoesParticipate)
+        var from = new Position(row, column);
+        var possibleMovesResult = await gameBoard.PossibleMoves(player, from);
+        if (possibleMovesResult.IsFailed)
         {
-            return StatusCode(403);
+            // TODO: tmp solution
+            return BadRequest(possibleMovesResult.Errors.First().Message);
         }
         
-        var board = await boardRepository.Get(game.BoardId);
-        if (board is null)
-        {
-            throw new NotImplementedException();
-        }        
-        
-        var position = new Position(row, column);
-        var piece = board.Snapshot.At(position);
-        if (piece is null)
-        {
-            throw new NotImplementedException();
-        }
-
-        if (!participation.Participant.CanMove(piece))
-        {
-            return StatusCode(403);
-        }
-        
-        var moves = board.PossibleMoves(position);
-        if (moves.IsFailed)
-        {
-            return new BadRequestObjectResult(new ErrorDto(moves.Errors));
-        }
-
-        return new OkObjectResult(moves.Value);
+        return Ok(possibleMovesResult.Value);
     }
 
     [HttpPost("/game/{gameId}/move")]
     public async Task<IActionResult> MovePiece([FromRoute] string gameId, [FromBody] MoveDto request, [FromHeader(Name = HeaderPlayer.HeaderName)] string playerId)
     {
-        var game = await gameRepository.Get(gameId);
-        if (game is null)
-        {
-            return NotFound("Game not found");
-        }
+        var gameBoard = factory.Create(gameId);
         
         var player = new HeaderPlayer(playerId);
-        var participation = game.Participation(player);
-        if (!participation.DoesParticipate)
-        {
-            return StatusCode(403);
-        }
+        var from = request.From.Position;
+        var to = request.To.Position;
         
-        var board = await boardRepository.Get(gameId);
-
-        var from = new Position(request.From.Row, request.From.Column);
-        var to = new Position(request.To.Row, request.To.Column);
-
-        var piece = board.Snapshot.At(from);
-        if (piece is null)
+        var moveResult = await gameBoard.Move(player, from, to);
+        if (moveResult.IsFailed)
         {
-            throw new NotImplementedException();
+            // TODO: tmp solution
+            return BadRequest(moveResult.Errors.First().Message);
         }
-        
-        if (!participation.Participant.CanMove(piece))
-        {
-            return StatusCode(403);
-        }
-        
-        var result = board.Move(from, to);
 
-        if (result.IsFailed)
-        {
-            return new BadRequestObjectResult(new ErrorDto(result.Errors));
-        }
-    
-        await boardRepository.Save(board);
-
-        return new OkObjectResult(new BoardDto(board.Snapshot));
+        var dto = new BoardDto(moveResult.Value);
+        return Ok(dto);
     }
 }

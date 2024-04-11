@@ -1,3 +1,8 @@
-﻿namespace WebApi.Dto;
+﻿using Domain.Chessboard;
 
-public record PositionDto(int Row, int Column);
+namespace WebApi.Dto;
+
+public record PositionDto(int Row, int Column)
+{
+    public Position Position => new(Row, Column);
+}

@@ -1,24 +1,22 @@
-﻿using Domain;
+﻿using Domain.Game;
+using Domain.Repository;
 
 namespace WebApi.Repository;
 
 public class InMemoryGameRepository : GameRepository
 {
-    private readonly Dictionary<string, Game> _games = new();
-    
-    public Task<Game?> Get(string id)
-    {
-        if (!_games.ContainsKey(id))
-        {
-            return Task.FromResult<Game?>(null);
-        }
+    private readonly Dictionary<string, GameInstance> _games = new();
 
-        return Task.FromResult<Game?>(_games[id]);
+    public Task<GameInstance?> Get(string id)
+    {
+        if (!_games.ContainsKey(id)) return Task.FromResult<GameInstance?>(null);
+
+        return Task.FromResult<GameInstance?>(_games[id]);
     }
 
-    public Task Save(Game game)
+    public Task Save(GameInstance gameInstance)
     {
-        _games[game.Id] = game;
+        _games[gameInstance.Id] = gameInstance;
         return Task.CompletedTask;
     }
 }
