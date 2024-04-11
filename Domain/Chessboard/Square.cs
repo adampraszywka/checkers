@@ -20,39 +20,39 @@ public class Square
 
     public static Square FromCoordinates(Position position)
     {
-        return new Square($"{MapColumn(position.Column)}{position.Row + 1}", position);
+        if (position.Column >= 26)
+            throw new ArgumentException($"Only A-Z columns are supported");
+        
+        return new Square(position.Name, position);
     }
 
     public SquareSnapshot Snapshot()
     {
-        if (IsOccupied) return SquareSnapshot.Occupied(Id, Position, _piece!);
+        if (IsOccupied)
+        {
+            return SquareSnapshot.Occupied(Id, Position, _piece!);
+        }
 
         return SquareSnapshot.Unoccupied(Id, Position);
     }
 
     public void Move(Piece piece)
     {
-        if (_piece is not null) throw InvalidBoardState.SquareIsNotEmpty;
+        if (_piece is not null)
+        {
+            throw InvalidBoardState.SquareIsNotEmpty;
+        }
 
         _piece = piece;
     }
 
     public void RemovePiece()
     {
-        if (_piece is null) throw InvalidBoardState.SquareIsEmpty;
+        if (_piece is null)
+        {
+            throw InvalidBoardState.SquareIsEmpty;
+        }
 
         _piece = null;
-    }
-
-    private static char MapColumn(int columnNumber)
-    {
-        const int charA = 65;
-        const int charZ = 90;
-        const int supportedColumns = charZ - charA;
-
-        if (columnNumber > supportedColumns)
-            throw new ArgumentException($"Only {supportedColumns} columns are supported");
-
-        return (char) (columnNumber + charA);
     }
 }
