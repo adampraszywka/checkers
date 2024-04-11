@@ -1,12 +1,13 @@
-﻿using Domain;
-using Domain.Configurations.Classic;
+﻿using Domain.Chessboard;
+using Domain.Chessboard.Configurations.Classic;
+using Domain.Repository;
 
 namespace WebApi.Repository;
 
 public class InMemoryBoardRepository : BoardRepository
 {
     private readonly Dictionary<string, Board> _boards = new();
-    
+
     public Task<Board> Get(string id)
     {
         if (!_boards.ContainsKey(id))
@@ -16,7 +17,7 @@ public class InMemoryBoardRepository : BoardRepository
             _boards[id] = board;
             return Task.FromResult(board);
         }
-        
+
         return Task.FromResult(_boards[id]);
     }
 
