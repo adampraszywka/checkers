@@ -58,7 +58,10 @@ public class Board
         }
 
         var square = _squares[source.Row, source.Column];
-        if (!square.IsOccupied) return Result.Fail(new EmptySquare(source));
+        if (!square.IsOccupied)
+        {
+            return Result.Fail(new EmptySquare(source));
+        }
 
         var piece = square.Piece;
         var pieceMove = _pieceMoveFactory.For(piece);
@@ -96,7 +99,10 @@ public class Board
         var possibleMoves = pieceMove.PossibleMoves(square.Position, Snapshot);
         var move = possibleMoves.FirstOrDefault(x => x.To == target);
 
-        if (move is null) return Result.Fail(new MoveNotAllowed());
+        if (move is null)
+        {
+            return Result.Fail(new MoveNotAllowed());
+        }
 
         foreach (var affectedSquarePosition in move.AffectedSquares)
         {
