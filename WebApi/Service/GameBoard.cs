@@ -7,19 +7,8 @@ using WebApi.Service.Errors;
 
 namespace WebApi.Service;
 
-public class GameBoard 
+public class GameBoard(GameRepository gameRepository, BoardRepository boardRepository, string gameId)
 {
-    private readonly GameRepository _gameRepository;
-    private readonly BoardRepository _boardRepository;
-    private readonly string _gameId;
-
-    public GameBoard(GameRepository gameRepository, BoardRepository boardRepository, string gameId)
-    {
-        _gameRepository = gameRepository;
-        _boardRepository = boardRepository;
-        _gameId = gameId;
-    }
-    
     public async Task<Result<BoardSnapshot>> Get(Player player)
     {
         var boardResult = await GetBoard(player);
@@ -88,17 +77,17 @@ public class GameBoard
             return Result.Fail(new MoveFailed(result.Errors));
         }
 
-        await _boardRepository.Save(board);
+        await boardRepository.Save(board);
 
         return Result.Ok(board.Snapshot); 
     }
     
     private async Task<Result<(Board Board, Participation participation)>> GetBoard(Player player)
     {
-        var game = await _gameRepository.Get(_gameId);
+        var game = await gameRepository.Get(gameId);
         if (game is null)
         {
-            return Result.Fail(new GameNotFound(_gameId));
+            return Result.Fail(new GameNotFound(gameId));
         }
 
         var participation = game.Participation(player);
@@ -107,7 +96,7 @@ public class GameBoard
             return Result.Fail(new PlayerDoesNotParticipate(player));
         }
 
-        var board = await _boardRepository.Get(game.BoardId);
+        var board = await boardRepository.Get(game.BoardId);
         if (board is null)
         {
             return Result.Fail(new BoardNotFound(game.BoardId));    
