@@ -26,15 +26,21 @@ public class Board
         _squares = new Square[_boardSize.Rows, _boardSize.Columns];
 
         for (var row = 0; row < _boardSize.Rows; row++)
-        for (var column = 0; column < _boardSize.Columns; column++)
-            _squares[row, column] = Square.FromCoordinates(new Position(row, column));
-
+        {
+            for (var column = 0; column < _boardSize.Columns; column++)
+            {
+                _squares[row, column] = Square.FromCoordinates(new Position(row, column));
+            }
+        }
+        
         foreach (var (piece, position) in configuration.PiecesPositions)
         {
             if (!position.IsWithinBoard(_boardSize))
+            {
                 //TODO: Catch an error and throw it in exception?
                 throw new NotImplementedException();
-
+            }
+            
             var square = _squares[position.Row, position.Column];
             square.Move(piece);
         }
@@ -46,7 +52,10 @@ public class Board
 
     public Result<IEnumerable<PossibleMove>> PossibleMoves(Position source)
     {
-        if (!source.IsWithinBoard(_boardSize)) return Result.Fail(new PositionOutOfBoard(source));
+        if (!source.IsWithinBoard(_boardSize))
+        {
+            return Result.Fail(new PositionOutOfBoard(source));
+        }
 
         var square = _squares[source.Row, source.Column];
         if (!square.IsOccupied) return Result.Fail(new EmptySquare(source));
@@ -59,17 +68,28 @@ public class Board
 
     public Result Move(Position source, Position target)
     {
-        if (!source.IsWithinBoard(_boardSize)) return Result.Fail(new PositionOutOfBoard(source));
+        if (!source.IsWithinBoard(_boardSize))
+        {
+            return Result.Fail(new PositionOutOfBoard(source));
+        }
 
-        if (!target.IsWithinBoard(_boardSize)) return Result.Fail(new PositionOutOfBoard(target));
+        if (!target.IsWithinBoard(_boardSize))
+        {
+            return Result.Fail(new PositionOutOfBoard(target));
+        }
 
         var square = _squares[source.Row, source.Column];
-        if (!square.IsOccupied) return Result.Fail(new EmptySquare(source));
+        if (!square.IsOccupied)
+        {
+            return Result.Fail(new EmptySquare(source));
+        }
 
         var piece = square.Piece;
 
         if (!_gameState.IsMoveAllowed(piece))
+        {
             return Result.Fail(new InvalidMoveOrder(_gameState.Snapshot.CurrentPlayer));
+        }
 
         var pieceMove = _pieceMoveFactory.For(piece);
 
