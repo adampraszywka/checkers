@@ -13,7 +13,10 @@ public class GameController(GameRepository gameRepository, BoardRepository board
     public async Task<IActionResult> Get([FromRoute] string gameId)
     {
         var game = await gameRepository.Get(gameId);
-        if (game is null) return NotFound();
+        if (game is null)
+        {
+            return NotFound();
+        }
 
         return Ok(game);
     }
@@ -39,10 +42,16 @@ public class GameController(GameRepository gameRepository, BoardRepository board
     {
         var player = new HeaderPlayer(playerId);
         var game = await gameRepository.Get(gameId);
-        if (game is null) return NotFound();
+        if (game is null)
+        {
+            return NotFound();
+        }
 
         var joinResult = game.Join(player);
-        if (joinResult.IsFailed) return BadRequest(new ErrorDto(joinResult.Errors));
+        if (joinResult.IsFailed)
+        {
+            return BadRequest(new ErrorDto(joinResult.Errors));
+        }
 
         await gameRepository.Save(game);
 
