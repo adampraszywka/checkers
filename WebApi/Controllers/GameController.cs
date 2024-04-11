@@ -37,8 +37,7 @@ public class GameController(GameRepository gameRepository, BoardRepository board
     }
 
     [HttpPost("/game/{gameId}/join")]
-    public async Task<IActionResult> Join([FromRoute] string gameId,
-        [FromHeader(Name = HeaderPlayer.HeaderName)] string playerId)
+    public async Task<IActionResult> Join([FromRoute] string gameId, [FromHeader(Name = HeaderPlayer.HeaderName)] string playerId)
     {
         var player = new HeaderPlayer(playerId);
         var game = await gameRepository.Get(gameId);
