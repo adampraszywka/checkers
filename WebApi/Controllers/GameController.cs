@@ -4,6 +4,7 @@ using Domain.Game;
 using Domain.Repository;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Dto;
+using WebApi.Players;
 
 namespace WebApi.Controllers;
 

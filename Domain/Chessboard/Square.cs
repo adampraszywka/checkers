@@ -21,7 +21,9 @@ public class Square
     public static Square FromCoordinates(Position position)
     {
         if (position.Column >= 26)
+        {
             throw new ArgumentException($"Only A-Z columns are supported");
+        }
         
         return new Square(position.Name, position);
     }
