@@ -1,8 +1,3 @@
-﻿using Domain.Chessboard.Pieces;
+﻿namespace Domain.Shared;
 
-namespace Domain.Shared;
-
-public record Participant(Player Player, Color Color)
-{
-    
-}
+public record Participant(Player Player, Color Color);
