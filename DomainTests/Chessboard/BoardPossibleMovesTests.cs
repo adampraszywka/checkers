@@ -4,6 +4,7 @@ using Domain.Chessboard.Errors;
 using Domain.Chessboard.GameStates;
 using Domain.Chessboard.PieceMoves;
 using Domain.Chessboard.Pieces;
+using Domain.Shared;
 using DomainTests.Chessboard.TestData;
 using DomainTests.Extensions;
 using NSubstitute;
@@ -39,15 +40,61 @@ public class BoardPossibleMovesTests
     }
 
     [Test]
+    public void NotParticipatingPlayerCannotFetchPossibleMovesForWhitePiece()
+    {
+        var configuration = ClassicConfiguration.NewBoard();
+        var board = new Board("ID", configuration, _participants.All);
+        
+        var result = board.PossibleMoves(_participants.NotParticipating, Position.C3);
+        Assert.That(result.HasError<PlayerDoesNotParticipate>());
+    }
+    
+    [Test]
+    public void NotParticipatingPlayerCannotFetchPossibleMovesForBlackPiece()
+    {
+        var configuration = ClassicConfiguration.NewBoard();
+        var board = new Board("ID", configuration, _participants.All);
+
+        var result = board.PossibleMoves(_participants.NotParticipating, Position.B6);
+        
+        Assert.That(result.HasError<PlayerDoesNotParticipate>());
+    }
+
+    [Test]
+    public void WhitePlayerCannotFetchPossibleMovesForBlackPiece()
+    {
+        var configuration = ClassicConfiguration.NewBoard();
+        var board = new Board("ID", configuration, _participants.All);
+
+        var result = board.PossibleMoves(_participants.White, Position.B6);
+        
+        Assert.That(result.HasError<PieceBelongsToTheOtherPlayer>());
+    }
+
+    [Test]
+    public void BlackPlayerCannotFetchPossibleMovesForWhitePiece()
+    {
+        var configuration = ClassicConfiguration.NewBoard();
+        var board = new Board("ID", configuration, _participants.All);
+        
+        var result = board.PossibleMoves(_participants.Black, Position.C3);
+        Assert.That(result.HasError<PieceBelongsToTheOtherPlayer>());
+    }
+
+    [Test]
     public void PossibleMoves()
     {
         var possibleMoves = new[] {new PossibleMove(Position.B4, new[] {Position.B4}, 1)};
 
         var piece = Substitute.For<Piece>();
+        piece.Color.Returns(Color.White);
+        
         var pieceMoves = Substitute.For<PieceMove>();
         pieceMoves.PossibleMoves(Position.A1, Arg.Any<BoardSnapshot>()).Returns(possibleMoves);
+        
         var pieceMoveFactory = Substitute.For<PieceMoveFactory>();
         pieceMoveFactory.For(piece).Returns(pieceMoves);
+        
         var pieceFactory = Substitute.For<PieceFactory>();
 
         var configuration = new TestConfiguration(pieceMoveFactory, pieceFactory, new[] {(piece, Position.A1)}, ClassicGameState.New);

@@ -68,6 +68,17 @@ public class Board
         }
 
         var piece = square.Piece;
+        var participant = _participants.For(player);
+        if (participant is null)
+        {
+            return Result.Fail(new PlayerDoesNotParticipate(player));
+        }
+        
+        if (!participant.CanMove(piece))
+        {
+            return Result.Fail(new PieceBelongsToTheOtherPlayer());
+        }
+        
         var pieceMove = _pieceMoveFactory.For(piece);
         var possibleMoves = pieceMove.PossibleMoves(square.Position, Snapshot);
         return Result.Ok(possibleMoves);
@@ -92,7 +103,6 @@ public class Board
         }
 
         var piece = square.Piece;
-
         var participant = _participants.For(player);
         if (participant is null)
         {
