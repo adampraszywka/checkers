@@ -1,4 +1,6 @@
-﻿namespace Domain.Chessboard.Pieces.Classic;
+﻿using Domain.Shared;
+
+namespace Domain.Chessboard.Pieces.Classic;
 
 public class Man(string id, Color color) : Piece
 {

@@ -1,6 +1,7 @@
 ﻿using Domain.Chessboard;
 using Domain.Chessboard.GameStates;
 using Domain.Chessboard.Pieces;
+using Domain.Shared;
 using Extension;
 
 namespace WebApi.Dto;

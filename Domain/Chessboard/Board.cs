@@ -3,6 +3,7 @@ using Domain.Chessboard.Errors;
 using Domain.Chessboard.GameStates;
 using Domain.Chessboard.PieceMoves;
 using Domain.Chessboard.Pieces;
+using Domain.Shared;
 using Extension;
 using FluentResults;
 
@@ -15,10 +16,12 @@ public class Board
     private readonly PieceFactory _pieceFactory;
     private readonly PieceMoveFactory _pieceMoveFactory;
     private readonly Square[,] _squares;
+    private readonly Participants _participants;
 
-    public Board(string id, Configuration configuration)
+    public Board(string id, Configuration configuration, IEnumerable<Participant> participants)
     {
         Id = id;
+        _participants = new Participants(participants);
         _boardSize = configuration.BoardSize;
         _pieceMoveFactory = configuration.MoveFactory;
         _pieceFactory = configuration.PieceFactory;
@@ -47,10 +50,11 @@ public class Board
     }
 
     public string Id { get; }
+    public Participants Participants => _participants;
     public BoardSnapshot Snapshot => GenerateSnapshot();
     public GameStateSnapshot GameState => _gameState.Snapshot;
 
-    public Result<IEnumerable<PossibleMove>> PossibleMoves(Position source)
+    public Result<IEnumerable<PossibleMove>> PossibleMoves(Player player, Position source)
     {
         if (!source.IsWithinBoard(_boardSize))
         {
@@ -69,7 +73,7 @@ public class Board
         return Result.Ok(possibleMoves);
     }
 
-    public Result Move(Position source, Position target)
+    public Result Move(Player player, Position source, Position target)
     {
         if (!source.IsWithinBoard(_boardSize))
         {
@@ -89,13 +93,23 @@ public class Board
 
         var piece = square.Piece;
 
+        var participant = _participants.For(player);
+        if (participant is null)
+        {
+            return Result.Fail(new PlayerDoesNotParticipate(player));
+        }
+        
+        if (!participant.CanMove(piece))
+        {
+            return Result.Fail(new PieceBelongsToTheOtherPlayer(source, target));
+        }
+        
         if (!_gameState.IsMoveAllowed(piece))
         {
             return Result.Fail(new InvalidMoveOrder(_gameState.Snapshot.CurrentPlayer));
         }
 
         var pieceMove = _pieceMoveFactory.For(piece);
-
         var possibleMoves = pieceMove.PossibleMoves(square.Position, Snapshot);
         var move = possibleMoves.FirstOrDefault(x => x.To == target);
 

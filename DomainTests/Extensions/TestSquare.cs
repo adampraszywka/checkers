@@ -1,5 +1,6 @@
 ﻿using Domain.Chessboard;
 using Domain.Chessboard.Pieces;
+using Domain.Shared;
 
 namespace DomainTests.Extensions;
 

@@ -1,6 +1,7 @@
 ﻿using Domain.Chessboard;
 using Domain.Chessboard.Configurations.Classic;
 using Domain.Chessboard.Pieces;
+using DomainTests.Chessboard.TestData;
 using DomainTests.Extensions;
 using Extension;
 
@@ -8,11 +9,13 @@ namespace DomainTests.Chessboard;
 
 public class EmptyBoard8X8Tests
 {
+    private readonly AllParticipants _participants = ParticipantTestData.Participants;
+
     [Test]
     public void EmptyBoard()
     {
         var configuration = ClassicConfiguration.FromSnapshot(Enumerable.Empty<(Piece, Position)>());
-        var board = new Board("ID", configuration);
+        var board = new Board("ID", configuration, _participants.All);
 
         var boardSnapshot = board.Snapshot;
         var boardSnapshotNames = boardSnapshot.Squares.Transform(s => s.Id);

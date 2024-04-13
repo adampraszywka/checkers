@@ -1,7 +1,6 @@
-﻿using Domain.Chessboard;
-using FluentResults;
+﻿using FluentResults;
 
-namespace WebApi.Service.Errors;
+namespace Domain.Chessboard.Errors;
 
 public class PieceBelongsToTheOtherPlayer : Error
 {

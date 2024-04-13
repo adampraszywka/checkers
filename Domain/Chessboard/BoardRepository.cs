@@ -1,6 +1,4 @@
-﻿using Domain.Chessboard;
-
-namespace Domain.Repository;
+﻿namespace Domain.Chessboard;
 
 public interface BoardRepository
 {

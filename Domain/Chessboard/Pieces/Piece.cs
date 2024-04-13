@@ -1,4 +1,6 @@
-﻿namespace Domain.Chessboard.Pieces;
+﻿using Domain.Shared;
+
+namespace Domain.Chessboard.Pieces;
 
 public interface Piece
 {
