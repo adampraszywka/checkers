@@ -30,13 +30,6 @@ public class GameBoard(BoardRepository boardRepository, string boardId)
         }
     
         var board = boardResult.Value;
-    
-        var piece = board.Snapshot.At(position);
-        if (piece is null)
-        {
-            return Result.Fail(new EmptySquare(position));
-        }
-    
         var moves = board.PossibleMoves(player, position);
         if (moves.IsFailed)
         {
