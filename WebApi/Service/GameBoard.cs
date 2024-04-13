@@ -1,5 +1,4 @@
 ﻿using Domain.Chessboard;
-using Domain.Chessboard.Errors;
 using Domain.Chessboard.PieceMoves;
 using Domain.Shared;
 using FluentResults;
