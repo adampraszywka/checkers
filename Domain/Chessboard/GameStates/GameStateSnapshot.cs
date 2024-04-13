@@ -1,4 +1,5 @@
 ﻿using Domain.Chessboard.Pieces;
+using Domain.Shared;
 
 namespace Domain.Chessboard.GameStates;
 

@@ -1,4 +1,4 @@
-﻿namespace Domain.Game;
+﻿namespace Domain.Shared;
 
 public interface Player
 {

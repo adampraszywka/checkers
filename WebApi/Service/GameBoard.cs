@@ -1,13 +1,12 @@
 ﻿using Domain.Chessboard;
 using Domain.Chessboard.PieceMoves;
-using Domain.Game;
-using Domain.Repository;
+using Domain.Shared;
 using FluentResults;
 using WebApi.Service.Errors;
 
 namespace WebApi.Service;
 
-public class GameBoard(GameRepository gameRepository, BoardRepository boardRepository, string gameId)
+public class GameBoard(BoardRepository boardRepository, string boardId)
 {
     public async Task<Result<BoardSnapshot>> Get(Player player)
     {
@@ -17,7 +16,7 @@ public class GameBoard(GameRepository gameRepository, BoardRepository boardRepos
             return Result.Fail(boardResult.Errors); 
         }
 
-        var (board, _) = boardResult.Value;
+        var board = boardResult.Value;
         return Result.Ok(board.Snapshot);
     }
 
@@ -29,20 +28,8 @@ public class GameBoard(GameRepository gameRepository, BoardRepository boardRepos
             return Result.Fail(boardResult.Errors); 
         }
     
-        var (board, participation) = boardResult.Value;
-    
-        var piece = board.Snapshot.At(position);
-        if (piece is null)
-        {
-            return Result.Fail(new EmptySquare(position));
-        }
-        
-        if (!participation.Participant.CanMove(piece))
-        {
-            return Result.Fail(new PieceBelongsToTheOtherPlayer(position));
-        }
-    
-        var moves = board.PossibleMoves(position);
+        var board = boardResult.Value;
+        var moves = board.PossibleMoves(player, position);
         if (moves.IsFailed)
         {
             return Result.Fail(new PossibleMovesUnavailable(moves.Errors));
@@ -58,20 +45,9 @@ public class GameBoard(GameRepository gameRepository, BoardRepository boardRepos
         {
             return Result.Fail(boardResult.Errors); 
         }
-    
-        var (board, participation) = boardResult.Value;
-        var piece = board.Snapshot.At(from);
-        if (piece is null)
-        {
-            return Result.Fail(new EmptySquare(from));
-        }
 
-        if (!participation.Participant.CanMove(piece))
-        {
-            return Result.Fail(new PieceBelongsToTheOtherPlayer(from, to));
-        }
-
-        var result = board.Move(from, to);
+        var board = boardResult.Value;
+        var result = board.Move(player, from, to);
         if (result.IsFailed)
         {
             return Result.Fail(new MoveFailed(result.Errors));
@@ -82,26 +58,20 @@ public class GameBoard(GameRepository gameRepository, BoardRepository boardRepos
         return Result.Ok(board.Snapshot); 
     }
     
-    private async Task<Result<(Board Board, Participation participation)>> GetBoard(Player player)
+    private async Task<Result<Board>> GetBoard(Player player)
     {
-        var game = await gameRepository.Get(gameId);
-        if (game is null)
-        {
-            return Result.Fail(new GameNotFound(gameId));
-        }
-
-        var participation = game.Participation(player);
-        if (!participation.DoesParticipate)
-        {
-            return Result.Fail(new PlayerDoesNotParticipate(player));
-        }
-
-        var board = await boardRepository.Get(game.BoardId);
+        var board = await boardRepository.Get(boardId);
         if (board is null)
         {
-            return Result.Fail(new BoardNotFound(game.BoardId));    
+            return Result.Fail(new BoardNotFound(boardId));    
         }
 
-        return Result.Ok((board, participation));
+        var participant = board.Participants.For(player);
+        if (participant is null)
+        {
+            return Result.Fail(new NoAccess(player, boardId));
+        }
+
+        return Result.Ok(board);
     }
 }

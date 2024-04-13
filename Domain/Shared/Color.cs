@@ -1,4 +1,4 @@
-﻿namespace Domain.Chessboard.Pieces;
+﻿namespace Domain.Shared;
 
 public enum Color
 {

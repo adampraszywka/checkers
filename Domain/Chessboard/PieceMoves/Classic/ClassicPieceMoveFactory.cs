@@ -1,4 +1,5 @@
 ﻿using Domain.Chessboard.Pieces;
+using Domain.Shared;
 using Type = Domain.Chessboard.Pieces.Type;
 
 namespace Domain.Chessboard.PieceMoves.Classic;

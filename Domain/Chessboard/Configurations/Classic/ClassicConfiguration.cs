@@ -3,6 +3,7 @@ using Domain.Chessboard.PieceMoves;
 using Domain.Chessboard.PieceMoves.Classic;
 using Domain.Chessboard.Pieces;
 using Domain.Chessboard.Pieces.Classic;
+using Domain.Shared;
 
 namespace Domain.Chessboard.Configurations.Classic;
 

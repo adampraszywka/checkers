@@ -3,21 +3,25 @@ using Domain.Chessboard.Configurations.Classic;
 using Domain.Chessboard.PieceMoves.Classic;
 using Domain.Chessboard.Pieces;
 using Domain.Chessboard.Pieces.Classic;
+using Domain.Shared;
 using DomainTests.Chessboard.PieceMoves.Classic.TestData;
 using DomainTests.Chessboard.PieceMoves.Classic.TestData.Dto;
+using DomainTests.Chessboard.TestData;
 using DomainTests.Extensions;
 
 namespace DomainTests.Chessboard.PieceMoves.Classic;
 
 public class ClassicBlackManMovesTests
 {
+    private readonly AllParticipants _participants = ParticipantTestData.Participants;
+    
     [Test]
     [TestCaseSource(typeof(BlackManMovesForward))]
     public void PossibleMovesNoOtherPieceInteractions(MoveForwardTestCase testCase)
     {
         var piece = new Man("ID", Color.White);
         var configuration = ClassicConfiguration.FromSnapshot(new[] {((Piece) piece, SourceP: testCase.Source)});
-        var board = new Board("ID", configuration);
+        var board = new Board("ID", configuration, _participants.All);
         var pieceMoves = new ClassicBlackManMoves();
 
         var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
@@ -35,7 +39,7 @@ public class ClassicBlackManMovesTests
             .Select(x => ((Piece) new Man("ID", Color.Black), x));
 
         var configuration = ClassicConfiguration.FromSnapshot(pieces.Union(blockingPieces));
-        var board = new Board("ID", configuration);
+        var board = new Board("ID", configuration, _participants.All);
         var pieceMoves = new ClassicBlackManMoves();
 
         var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
@@ -53,7 +57,7 @@ public class ClassicBlackManMovesTests
         var capturedPieces = testCase.CapturedPieces.Select(x => (white, x));
 
         var configuration = ClassicConfiguration.FromSnapshot(piece.Union(capturedPieces));
-        var board = new Board("ID", configuration);
+        var board = new Board("ID", configuration, _participants.All);
         var pieceMoves = new ClassicBlackManMoves();
 
         var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
@@ -73,7 +77,7 @@ public class ClassicBlackManMovesTests
         var blockingPieces = testCase.BlockingPieces.Select(x => (blockingPiece, x));
 
         var configuration = ClassicConfiguration.FromSnapshot(piece.Union(capturedPieces).Union(blockingPieces));
-        var board = new Board("ID", configuration);
+        var board = new Board("ID", configuration, _participants.All);
         var pieceMoves = new ClassicBlackManMoves();
 
         var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
@@ -93,7 +97,7 @@ public class ClassicBlackManMovesTests
         var blockingPieces = testCase.BlockingPieces.Select(x => (blockingPiece, x));
 
         var configuration = ClassicConfiguration.FromSnapshot(piece.Union(capturedPieces).Union(blockingPieces));
-        var board = new Board("ID", configuration);
+        var board = new Board("ID", configuration, _participants.All);
         var pieceMoves = new ClassicBlackManMoves();
 
         var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);

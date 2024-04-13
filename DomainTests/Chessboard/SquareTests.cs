@@ -2,6 +2,7 @@
 using Domain.Chessboard.Exceptions;
 using Domain.Chessboard.Pieces;
 using Domain.Chessboard.Pieces.Classic;
+using Domain.Shared;
 
 namespace DomainTests.Chessboard;
 

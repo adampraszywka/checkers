@@ -1,4 +1,5 @@
-using Domain.Repository;
+using Domain.Chessboard;
+using MassTransit;
 using WebApi.Repository;
 using WebApi.Service;
 
@@ -8,8 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSingleton<BoardRepository, InMemoryBoardRepository>();
-builder.Services.AddSingleton<GameRepository, InMemoryGameRepository>();
 builder.Services.AddTransient<GameBoardFactory>();
+
+builder.Services.AddMediator();
 
 // For PoC development. Needs to be reworked later
 builder.Services.AddCors(o =>

@@ -1,4 +1,4 @@
-﻿using Domain.Chessboard.Pieces;
+﻿using Domain.Shared;
 using FluentResults;
 
 namespace Domain.Chessboard.Errors;

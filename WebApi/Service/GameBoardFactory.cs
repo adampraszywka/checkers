@@ -1,11 +1,11 @@
-﻿using Domain.Repository;
+﻿using Domain.Chessboard;
 
 namespace WebApi.Service;
 
-public class GameBoardFactory(GameRepository gameRepository, BoardRepository boardRepository)
+public class GameBoardFactory(BoardRepository boardRepository)
 {
     public GameBoard Create(string gameId)
     {
-        return new GameBoard(gameRepository, boardRepository, gameId);
+        return new GameBoard(boardRepository, gameId);
     }
 }

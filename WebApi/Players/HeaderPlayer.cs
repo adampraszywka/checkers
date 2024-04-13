@@ -1,5 +1,5 @@
 ﻿using Domain.Chessboard;
-using Domain.Game;
+using Domain.Shared;
 
 namespace WebApi.Players;
 

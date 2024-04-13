@@ -1,11 +1,10 @@
-﻿using Domain.Chessboard;
-using FluentResults;
+﻿using FluentResults;
 
-namespace WebApi.Service.Errors;
+namespace Domain.Chessboard.Errors;
 
 public class PieceBelongsToTheOtherPlayer : Error
 {
-    public PieceBelongsToTheOtherPlayer(Position from) : base($"Cannot move piece from {from.Name}. Piece belongs to the opposite player")
+    public PieceBelongsToTheOtherPlayer() : base($"Piece belongs to the opposite player")
     {
     }
 

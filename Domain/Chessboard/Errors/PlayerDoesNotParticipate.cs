@@ -1,7 +1,7 @@
-﻿using Domain.Game;
+﻿using Domain.Shared;
 using FluentResults;
 
-namespace WebApi.Service.Errors;
+namespace Domain.Chessboard.Errors;
 
 public class PlayerDoesNotParticipate(Player player) : Error($"Player {player.Id} does not participate in the game")
 {
