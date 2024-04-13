@@ -13,7 +13,10 @@ public class GameInstance(string id, string boardId)
 
     public Result Join(Player player)
     {
-        if (_participants.Any(x => x.Id == player.Id)) return Result.Fail(new PlayerAlreadyJoined());
+        if (_participants.Any(x => x.Id == player.Id))
+        {
+            return Result.Fail(new PlayerAlreadyJoined());
+        }
 
         if (_participants.Count == 0)
         {
