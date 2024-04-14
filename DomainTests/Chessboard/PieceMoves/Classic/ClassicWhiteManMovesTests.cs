@@ -22,7 +22,7 @@ public class ClassicWhiteManMovesTests
     {
         var piece = new Man("ID", Color.White);
         var configuration = ClassicConfiguration.FromSnapshot(new[] {((Piece) piece, testCase.Source)});
-        var board = new Board("ID", configuration, _participants.All);
+        var board = new GameBoard("ID", configuration, _participants.All);
         var pieceMoves = new ClassicWhiteManMoves();
 
         var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
@@ -40,7 +40,7 @@ public class ClassicWhiteManMovesTests
             .Select(x => ((Piece) new Man("ID", Color.White), x));
 
         var configuration = ClassicConfiguration.FromSnapshot(pieces.Union(blockingPieces));
-        var board = new Board("ID", configuration, _participants.All);
+        var board = new GameBoard("ID", configuration, _participants.All);
         var pieceMoves = new ClassicWhiteManMoves();
 
         var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
@@ -59,7 +59,7 @@ public class ClassicWhiteManMovesTests
         var capturedPieces = testCase.CapturedPieces.Select(x => (black, x));
 
         var configuration = ClassicConfiguration.FromSnapshot(piece.Union(capturedPieces));
-        var board = new Board("ID", configuration, _participants.All);
+        var board = new GameBoard("ID", configuration, _participants.All);
         var pieceMoves = new ClassicWhiteManMoves();
 
         var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
@@ -79,7 +79,7 @@ public class ClassicWhiteManMovesTests
         var blockingPieces = testCase.BlockingPieces.Select(x => (blockingPiece, x));
 
         var configuration = ClassicConfiguration.FromSnapshot(piece.Union(capturedPieces).Union(blockingPieces));
-        var board = new Board("ID", configuration, _participants.All);
+        var board = new GameBoard("ID", configuration, _participants.All);
         var pieceMoves = new ClassicWhiteManMoves();
 
         var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
@@ -99,7 +99,7 @@ public class ClassicWhiteManMovesTests
         var blockingPieces = testCase.BlockingPieces.Select(x => (blockingPiece, x));
 
         var configuration = ClassicConfiguration.FromSnapshot(piece.Union(capturedPieces).Union(blockingPieces));
-        var board = new Board("ID", configuration, _participants.All);
+        var board = new GameBoard("ID", configuration, _participants.All);
         var pieceMoves = new ClassicWhiteManMoves();
 
         var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);

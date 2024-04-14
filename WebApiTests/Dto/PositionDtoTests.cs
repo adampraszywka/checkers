@@ -1,4 +1,5 @@
 ﻿using WebApi.Dto;
+using WebApi.Dto.Response;
 
 namespace WebApiTests.Dto;
 

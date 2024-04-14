@@ -3,6 +3,7 @@ using Domain.Chessboard.Configurations.Classic;
 using Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Dto;
+using WebApi.Dto.Response;
 using WebApi.Players;
 
 namespace WebApi.Controllers;
@@ -16,10 +17,8 @@ public class BoardControllerLegacy(BoardRepository repository) : Controller
     public async Task<IActionResult> GetBoard([FromRoute] string boardId)
     {
         var board = await repository.Get(boardId) ?? CreateBoard(boardId);
-
-        var snapshot = board.Snapshot;
-
-        return new OkObjectResult(new BoardDto(snapshot));
+        
+        return new OkObjectResult(new BoardDto(board));
     }
 
     [HttpGet("/board/{boardId}/possiblemove/{row}/{column}")]
@@ -57,18 +56,18 @@ public class BoardControllerLegacy(BoardRepository repository) : Controller
 
         await repository.Save(board);
 
-        return new OkObjectResult(new BoardDto(board.Snapshot));
+        return new OkObjectResult(new BoardDto(board));
     }
 
     // Even more hacks to be compatible with old UI :)
-    private Board CreateBoard(string id)
+    private GameBoard CreateBoard(string id)
     {
         // Compatibility with old UI
         var participants = new List<Participant>
         {
             new(new HeaderPlayer(WhitePlayerId), Color.White), new(new HeaderPlayer(BlackPlayerId), Color.Black)
         };
-        var board = new Board(id, ClassicConfiguration.NewBoard(), participants);
+        var board = new GameBoard(id, ClassicConfiguration.NewBoard(), participants);
         repository.Save(board);
         return board;
     }

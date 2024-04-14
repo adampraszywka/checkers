@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 
-namespace WebApi.Dto;
+namespace WebApi.Dto.Response;
 
 public record ErrorDto(IEnumerable<IError> Errors)
 {

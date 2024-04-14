@@ -8,7 +8,7 @@ namespace WebApi.Service;
 
 public class GameBoard(BoardRepository boardRepository, string boardId)
 {
-    public async Task<Result<BoardSnapshot>> Get(Player player)
+    public async Task<Result<Board>> Get(Player player)
     {
         var boardResult = await GetBoard(player);
         if (boardResult.IsFailed)
@@ -17,7 +17,7 @@ public class GameBoard(BoardRepository boardRepository, string boardId)
         }
 
         var board = boardResult.Value;
-        return Result.Ok(board.Snapshot);
+        return Result.Ok(board);
     }
 
     public async Task<Result<IEnumerable<PossibleMove>>> PossibleMoves(Player player, Position position)
@@ -38,7 +38,7 @@ public class GameBoard(BoardRepository boardRepository, string boardId)
         return Result.Ok(moves.Value);
     }
 
-    public async Task<Result<BoardSnapshot>> Move(Player player, Position from, Position to)
+    public async Task<Result<Board>> Move(Player player, Position from, Position to)
     {
         var boardResult = await GetBoard(player);
         if (boardResult.IsFailed)
@@ -55,7 +55,7 @@ public class GameBoard(BoardRepository boardRepository, string boardId)
 
         await boardRepository.Save(board);
 
-        return Result.Ok(board.Snapshot); 
+        return Result.Ok(board); 
     }
     
     private async Task<Result<Board>> GetBoard(Player player)
