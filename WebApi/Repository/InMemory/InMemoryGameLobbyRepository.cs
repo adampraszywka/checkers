@@ -16,10 +16,10 @@ public class InMemoryGameLobbyRepository : GameLobbyRepository, GameLobbyListRep
         return Task.FromResult<GameLobby?>(null);
     }
 
-    public Task Save(GameLobby gameLobby)
+    public async Task Save(GameLobby gameLobby)
     {
-        _gameLobbies[gameLobby.Id] = gameLobby;
-        return Task.CompletedTask;
+        var id = gameLobby.Id;
+        _gameLobbies[id] = gameLobby;
     }
 
     public Task<IEnumerable<GameLobby>> GetAll()

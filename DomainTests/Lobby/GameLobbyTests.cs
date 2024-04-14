@@ -32,6 +32,7 @@ public class GameLobbyTests
 
         Assert.That(lobby.Id, Is.EqualTo("ID"));
         Assert.That(lobby.Name, Is.EqualTo("Name"));
+        Assert.That(lobby.MaxPlayers, Is.EqualTo(2));
         Assert.That(lobby.GameId, Is.Null);
         Assert.That(lobby.Participants, Is.Empty);
     }

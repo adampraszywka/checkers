@@ -1,73 +1,60 @@
 ﻿using Domain.Lobby;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Dto.Request;
 using WebApi.Dto.Response;
+using WebApi.Extensions;
 using WebApi.Players;
 using WebApi.Repository;
+using WebApi.Service;
 
 namespace WebApi.Controllers;
 
-public class LobbyController(GameLobbyRepository lobbyRepository, GameLobbyListRepository lobbyListRepository) : ControllerBase
+public class LobbyController(GameLobbyListRepository lobbyListRepository, GameLobbyService lobbyService) : ControllerBase
 {
     [HttpGet("/lobby")]
     public async Task<IActionResult> GetAll()
     {
         var lobbies = await lobbyListRepository.GetAll();
-        var dtos = lobbies.Select(x => new GameLobbyDto(x));
-        return Ok(dtos);
+        return Ok(lobbies.ToDto());
     }
 
     [HttpGet("/lobby/{lobbyId}")]
     public async Task<IActionResult> Get([FromRoute] string lobbyId)
     {
-        var lobby = await lobbyRepository.Get(lobbyId);
-        if (lobby is null)
+        var lobbyResult = await lobbyService.Get(lobbyId);
+        if (lobbyResult.IsFailed)
         {
-            return NotFound();
+            return BadRequest(new ErrorDto(lobbyResult.Errors));
         }
 
-        var dto = new GameLobbyDto(lobby);
-        return Ok(dto);
+        return Ok(lobbyResult.Value.ToDto());
     }
 
     [HttpPost("/lobby")]
     public async Task<IActionResult> Create([FromBody] CreateLobbyRequest request, [FromHeader(Name = HeaderPlayer.HeaderName)] string playerId)
     {
-        var id = Guid.NewGuid().ToString();
-        var lobby = new GameLobby(id, request.Name );
-
         var player = new HeaderPlayer(playerId);
-        var result = lobby.Join(player);
+        var createResult = await lobbyService.Create(player, request.Name);
 
-        if (!result.IsSuccess)
+        if (!createResult.IsSuccess)
         {
-            return BadRequest(new ErrorDto(result.Errors));
+            return BadRequest(new ErrorDto(createResult.Errors));
         }
-
-        await lobbyRepository.Save(lobby);
-
-        var dto = new GameLobbyDto(lobby);
-        return Ok(dto);
+        return Ok(createResult.Value.ToDto());
     }
     
     [HttpPost("/lobby/{lobbyId}/join")]
     public async Task<IActionResult> Join(string lobbyId, [FromHeader(Name = HeaderPlayer.HeaderName)] string playerId)
     {
-        var lobby = await lobbyRepository.Get(lobbyId);
-        if (lobby is null)
-        {
-            return NotFound();
-        }
-
         var player = new HeaderPlayer(playerId);
-        var result = lobby.Join(player);
+        var joinResult = await lobbyService.Join(lobbyId, player);
 
-        if (result.IsSuccess)
+        if (joinResult.IsFailed)
         {
-            var dto = new GameLobbyDto(lobby);
-            return Ok(dto);
+            return BadRequest(new ErrorDto(joinResult.Errors));
         }
 
-        return BadRequest(new ErrorDto(result.Errors));
+        return Ok(joinResult.Value.ToDto());
     }
 }
