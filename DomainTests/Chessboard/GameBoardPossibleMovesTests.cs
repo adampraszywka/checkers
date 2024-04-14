@@ -11,7 +11,7 @@ using NSubstitute;
 
 namespace DomainTests.Chessboard;
 
-public class BoardPossibleMovesTests
+public class GameBoardPossibleMovesTests
 {
     private readonly AllParticipants _participants = ParticipantTestData.Participants;
     
@@ -22,7 +22,7 @@ public class BoardPossibleMovesTests
     public void PossibleMovesOutOfBoard(int sourceRow, int sourceColumn)
     {
         var configuration = ClassicConfiguration.NewBoard();
-        var board = new Board("ID", configuration, _participants.All);
+        var board = new GameBoard("ID", configuration, _participants.All);
         var result = board.PossibleMoves(_participants.White, new Position(sourceRow, sourceColumn));
 
         Assert.That(result.HasError<PositionOutOfBoard>());
@@ -32,7 +32,7 @@ public class BoardPossibleMovesTests
     public void PossibleMovesSourceEmpty()
     {
         var configuration = ClassicConfiguration.NewBoard();
-        var board = new Board("ID", configuration, _participants.All);
+        var board = new GameBoard("ID", configuration, _participants.All);
 
         var result = board.PossibleMoves(_participants.White, Position.B4);
 
@@ -43,7 +43,7 @@ public class BoardPossibleMovesTests
     public void NotParticipatingPlayerCannotFetchPossibleMovesForWhitePiece()
     {
         var configuration = ClassicConfiguration.NewBoard();
-        var board = new Board("ID", configuration, _participants.All);
+        var board = new GameBoard("ID", configuration, _participants.All);
         
         var result = board.PossibleMoves(_participants.NotParticipating, Position.C3);
         Assert.That(result.HasError<PlayerDoesNotParticipate>());
@@ -53,7 +53,7 @@ public class BoardPossibleMovesTests
     public void NotParticipatingPlayerCannotFetchPossibleMovesForBlackPiece()
     {
         var configuration = ClassicConfiguration.NewBoard();
-        var board = new Board("ID", configuration, _participants.All);
+        var board = new GameBoard("ID", configuration, _participants.All);
 
         var result = board.PossibleMoves(_participants.NotParticipating, Position.B6);
         
@@ -64,7 +64,7 @@ public class BoardPossibleMovesTests
     public void WhitePlayerCannotFetchPossibleMovesForBlackPiece()
     {
         var configuration = ClassicConfiguration.NewBoard();
-        var board = new Board("ID", configuration, _participants.All);
+        var board = new GameBoard("ID", configuration, _participants.All);
 
         var result = board.PossibleMoves(_participants.White, Position.B6);
         
@@ -75,7 +75,7 @@ public class BoardPossibleMovesTests
     public void BlackPlayerCannotFetchPossibleMovesForWhitePiece()
     {
         var configuration = ClassicConfiguration.NewBoard();
-        var board = new Board("ID", configuration, _participants.All);
+        var board = new GameBoard("ID", configuration, _participants.All);
         
         var result = board.PossibleMoves(_participants.Black, Position.C3);
         Assert.That(result.HasError<PieceBelongsToTheOtherPlayer>());
@@ -98,7 +98,7 @@ public class BoardPossibleMovesTests
         var pieceFactory = Substitute.For<PieceFactory>();
 
         var configuration = new TestConfiguration(pieceMoveFactory, pieceFactory, new[] {(piece, Position.A1)}, ClassicGameState.New);
-        var board = new Board("ID", configuration, _participants.All);
+        var board = new GameBoard("ID", configuration, _participants.All);
         var result = board.PossibleMoves(_participants.White, Position.A1);
 
         Assert.That(result.IsSuccess);

@@ -1,6 +1,8 @@
 using Domain.Chessboard;
+using Domain.Lobby;
 using MassTransit;
 using WebApi.Repository;
+using WebApi.Repository.InMemory;
 using WebApi.Service;
 
 const string devCors = "_devCors";
@@ -8,7 +10,13 @@ const string devCors = "_devCors";
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
 builder.Services.AddSingleton<BoardRepository, InMemoryBoardRepository>();
+builder.Services.AddSingleton<InMemoryGameLobbyRepository>();
+
+builder.Services.AddTransient<GameLobbyRepository>(x => x.GetRequiredService<InMemoryGameLobbyRepository>());
+builder.Services.AddTransient<GameLobbyListRepository>(x => x.GetRequiredService<InMemoryGameLobbyRepository>());
+
 builder.Services.AddTransient<GameBoardFactory>();
 
 builder.Services.AddMediator();

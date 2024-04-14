@@ -1,5 +1,6 @@
 ﻿using Domain.Chessboard;
-namespace WebApi.Repository;
+
+namespace WebApi.Repository.InMemory;
 
 public class InMemoryBoardRepository : BoardRepository
 {
@@ -15,9 +16,9 @@ public class InMemoryBoardRepository : BoardRepository
         return Task.FromResult<Board?>(null);
     }
 
-    public Task Save(Board board)
+    public Task Save(Board gameBoard)
     {
-        _boards[board.Id] = board;
+        _boards[gameBoard.Id] = gameBoard;
         return Task.CompletedTask;
     }
 }

@@ -4,10 +4,11 @@ using Domain.Chessboard.Pieces;
 using DomainTests.Chessboard.TestData;
 using DomainTests.Extensions;
 using Extension;
+using static DomainTests.Extensions.TestSquare;
 
 namespace DomainTests.Chessboard;
 
-public class EmptyBoard8X8Tests
+public class GameBoardTests
 {
     private readonly AllParticipants _participants = ParticipantTestData.Participants;
 
@@ -15,7 +16,7 @@ public class EmptyBoard8X8Tests
     public void EmptyBoard()
     {
         var configuration = ClassicConfiguration.FromSnapshot(Enumerable.Empty<(Piece, Position)>());
-        var board = new Board("ID", configuration, _participants.All);
+        var board = new GameBoard("ID", configuration, _participants.All);
 
         var boardSnapshot = board.Snapshot;
         var boardSnapshotNames = boardSnapshot.Squares.Transform(s => s.Id);
@@ -34,5 +35,27 @@ public class EmptyBoard8X8Tests
         };
 
         BoardAssert.ReversedRowsEqualTo(expected, boardSnapshotNames);
+    }
+    
+    [Test]
+    public void NewBoard()
+    {
+        var configuration = ClassicConfiguration.NewBoard();
+        var board = new GameBoard("ID", configuration, _participants.All);
+
+        var snapshot = board.Snapshot.ToTestSquares();
+        var expected = new[,]
+        {
+            {Empty, BlackMan, Empty, BlackMan, Empty, BlackMan, Empty, BlackMan},
+            {BlackMan, Empty, BlackMan, Empty, BlackMan, Empty, BlackMan, Empty},
+            {Empty, BlackMan, Empty, BlackMan, Empty, BlackMan, Empty, BlackMan},
+            {Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty},
+            {Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty},
+            {WhiteMan, Empty, WhiteMan, Empty, WhiteMan, Empty, WhiteMan, Empty},
+            {Empty, WhiteMan, Empty, WhiteMan, Empty, WhiteMan, Empty, WhiteMan},
+            {WhiteMan, Empty, WhiteMan, Empty, WhiteMan, Empty, WhiteMan, Empty}
+        };
+
+        BoardAssert.ReversedRowsEqualTo(expected, snapshot);
     }
 }

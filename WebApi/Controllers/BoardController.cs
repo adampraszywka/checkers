@@ -1,6 +1,7 @@
 ﻿using Domain.Chessboard;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Dto;
+using WebApi.Dto.Response;
 using WebApi.Players;
 using WebApi.Service;
 
