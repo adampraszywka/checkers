@@ -14,6 +14,7 @@ public class GameLobby(string id, string name)
     
     public string Id { get; } = id;
     public string Name { get; } = name;
+    public int MaxPlayers { get; } = RequiredPlayerCount;
     public string? GameId => _gameId;
     
     public IEnumerable<Participant> Participants => _participants.AsReadOnly();

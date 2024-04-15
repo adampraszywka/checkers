@@ -3,4 +3,5 @@
 public interface Player
 {
     public string Id { get; }
+    public string Type { get; }
 }

@@ -15,7 +15,10 @@ public static class ParticipantTestData
         }
     }
 
-    public record TestPlayer(string Id) : Player;
+    private record TestPlayer(string Id) : Player
+    {
+        public string Type => "Test";
+    }
 }
 
 public record AllParticipants(Player White, Player Black, Player NotParticipating, IEnumerable<Participant> All);

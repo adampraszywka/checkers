@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using Domain.Chessboard;
+﻿using Domain.Chessboard;
 using Domain.Lobby;
 using Domain.Lobby.Errors;
 using Domain.Shared;
@@ -32,6 +31,7 @@ public class GameLobbyTests
 
         Assert.That(lobby.Id, Is.EqualTo("ID"));
         Assert.That(lobby.Name, Is.EqualTo("Name"));
+        Assert.That(lobby.MaxPlayers, Is.EqualTo(2));
         Assert.That(lobby.GameId, Is.Null);
         Assert.That(lobby.Participants, Is.Empty);
     }
@@ -180,8 +180,10 @@ public class GameLobbyTests
 
         var thirdJoin = lobby.Join(third);
         Assert.That(thirdJoin.HasError<AlreadyClosed>());
-
     }
-    
-    private record TestPlayer(string Id) : Player;
+
+    private record TestPlayer(string Id) : Player
+    {
+        public string Type => "Test";
+    }
 }
