@@ -3,7 +3,6 @@ using Domain.Lobby;
 using MassTransit;
 using WebApi.Consumers.Notification;
 using WebApi.Hubs;
-using WebApi.Messages.Notification;
 using WebApi.Repository;
 using WebApi.Repository.InMemory;
 using WebApi.Service;
@@ -56,5 +55,4 @@ app.MapGet("/", () => "Hello World!");
 app.MapHub<DashboardHub>("/hub_dashboard");
 app.MapControllers();
 app.UseCors(devCors);
-
 app.Run();
