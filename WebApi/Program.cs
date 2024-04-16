@@ -53,6 +53,8 @@ var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
 app.MapHub<DashboardHub>("/hub_dashboard");
+app.MapHub<BoardHub>("/hub_board");
+app.MapHub<LobbyHub>("/hub_lobby");
 app.MapControllers();
 app.UseCors(devCors);
 app.Run();
