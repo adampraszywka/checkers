@@ -1,20 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ApiClientService } from './api-client.service';
+import { BoardClientService } from './board-client.service';
 import {provideHttpClient} from "@angular/common/http";
-import {BoardApiConfiguration} from "../../app.config";
+import {ApiConfiguration} from "../../app.config";
 
 describe('ApiClientService', () => {
-  let service: ApiClientService;
+  let service: BoardClientService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),
-        {provide: BoardApiConfiguration, useValue: {baseUrl: ''}}
+        {provide: ApiConfiguration, useValue: {baseUrl: ''}}
       ]
     });
-    service = TestBed.inject(ApiClientService);
+    service = TestBed.inject(BoardClientService);
   });
 
   it('should be created', () => {

@@ -4,7 +4,7 @@ import { SquareComponent } from './square.component';
 import {By} from "@angular/platform-browser";
 import {BoardService} from "../board/board.service";
 import {HttpClientModule} from "@angular/common/http";
-import {BoardApiConfiguration} from "../../app.config";
+import {ApiConfiguration} from "../../app.config";
 
 describe('SquareComponent', () => {
   let component: SquareComponent;
@@ -13,7 +13,7 @@ describe('SquareComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SquareComponent, HttpClientModule],
-      providers: [BoardService, {provide: BoardApiConfiguration, useValue: {baseUrl: ''}}]
+      providers: [BoardService, {provide: ApiConfiguration, useValue: {baseUrl: ''}}]
     })
     .compileComponents();
 

@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
-import {Color, Piece, Type} from "../dto/piece.interface";
 import {NgClass} from "@angular/common";
+import {Color, Piece, Type} from "../../shared/dto/piece.interface";
 
 @Component({
   selector: 'app-piece[piece]',

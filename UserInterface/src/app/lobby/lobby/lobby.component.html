@@ -1,0 +1,22 @@
+
+
+
+@if (lobby) {
+  <div class="container">
+    <h1>{{lobby.id}}</h1>
+    <h2>Players: {{lobby.players}}/{{lobby.maxPlayers}}</h2>
+
+    @for (participant of lobby.participants; track participant) {
+      <div>{{participant.name}} - {{participant.color}}</div>
+    }
+
+
+    @if (lobby.status === LobbyStatus.ReadyToStart) {
+      <button type="button" class="btn btn-primary" (click)="closeClose()">Start game!</button>
+    } @else {
+      <span>Two players are required to start...</span>
+    }
+
+
+  </div>
+}
