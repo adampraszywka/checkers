@@ -11,11 +11,11 @@ public static class GameLobbyExtensions
         {
             Id = lobby.Id,
             Name = lobby.Name,
-            GameId = lobby.BoardId,
+            BoardId = lobby.BoardId,
             Players = lobby.Participants.Count(),
             MaxPlayers = lobby.MaxPlayers,
             Status = lobby.Status,
-            Participants = lobby.Participants.Select(x => x.ToDto())
+            Participants = lobby.Participants.ToDto()
         };
     }
 

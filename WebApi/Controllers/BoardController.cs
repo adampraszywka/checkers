@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Dto;
 using WebApi.Dto.Response;
+using WebApi.Extensions;
 using WebApi.Players;
 using WebApi.Service;
 
@@ -20,8 +21,7 @@ public class BoardController(BoardService boardService) : Controller
             return BadRequest(snapshotResult.Errors.First().Message);
         }
 
-        var dto = new BoardDto(snapshotResult.Value);
-        return Ok(dto);
+        return Ok(snapshotResult.Value.ToDto());
     }
 
     [HttpGet("/game/{gameId}/possiblemove/{row}/{column}")]
@@ -43,8 +43,8 @@ public class BoardController(BoardService boardService) : Controller
     public async Task<IActionResult> MovePiece([FromRoute] string gameId, [FromBody] MoveDto request, [FromHeader(Name = HeaderPlayer.HeaderName)] string playerId)
     {
         var player = new HeaderPlayer(playerId);
-        var from = request.From.Position;
-        var to = request.To.Position;
+        var from = request.From.ToPosition();
+        var to = request.To.ToPosition();
         
         var moveResult = await boardService.Move(gameId, player, from, to);
         if (moveResult.IsFailed)
@@ -52,8 +52,7 @@ public class BoardController(BoardService boardService) : Controller
             // TODO: tmp solution
             return BadRequest(moveResult.Errors.First().Message);
         }
-
-        var dto = new BoardDto(moveResult.Value);
-        return Ok(dto);
+        
+        return Ok(moveResult.Value.ToDto());
     }
 }

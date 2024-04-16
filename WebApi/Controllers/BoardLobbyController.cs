@@ -2,6 +2,7 @@
 using Domain.Lobby;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Dto.Response;
+using WebApi.Extensions;
 using WebApi.Players;
 
 namespace WebApi.Controllers;
@@ -30,6 +31,6 @@ public class BoardLobbyController(GameLobbyRepository lobbyRepository, BoardRepo
         await boardRepository.Save(board);
         await lobbyRepository.Save(lobby);
 
-        return Ok(new BoardDto(board));
+        return Ok(board.ToDto());
     }
 }

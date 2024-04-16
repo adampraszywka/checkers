@@ -2,11 +2,14 @@
 using Domain.Chessboard.PieceMoves;
 using Domain.Shared;
 using FluentResults;
+using MassTransit;
+using WebApi.Extensions;
+using WebApi.Messages.Notification;
 using WebApi.Service.Errors;
 
 namespace WebApi.Service;
 
-public class BoardService(BoardRepository boardRepository)
+public class BoardService(BoardRepository boardRepository, IPublishEndpoint publishEndpoint)
 {
     public async Task<Result<Board>> Get(string boardId, Player player)
     {
@@ -55,6 +58,9 @@ public class BoardService(BoardRepository boardRepository)
 
         await boardRepository.Save(board);
 
+        var notification = new BoardUpdated(board.ToDto(), board.Participants.ToNotifiableDto());
+        await publishEndpoint.Publish(notification);
+        
         return Result.Ok(board); 
     }
     

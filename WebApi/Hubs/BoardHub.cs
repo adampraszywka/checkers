@@ -1,5 +1,4 @@
-﻿using Domain.Chessboard;
-using Domain.Chessboard.PieceMoves;
+﻿using Domain.Chessboard.PieceMoves;
 using Microsoft.AspNetCore.SignalR;
 using WebApi.Dto;
 using WebApi.Dto.Response;
@@ -44,8 +43,10 @@ public class BoardHub(BoardService boardService, ILogger<BoardHub> logger) : Hub
         {
             return AuthError<BoardDto>();
         }
-        
-        var boardResult = await boardService.Move(boardId, player, move.From.Position, move.To.Position);
+
+        var from = move.From.ToPosition();
+        var to = move.To.ToPosition();
+        var boardResult = await boardService.Move(boardId, player, from, to);
         if (boardResult.IsFailed)
         {
             return ActionResult<BoardDto>.FromErrors(boardResult.Errors);
@@ -64,8 +65,9 @@ public class BoardHub(BoardService boardService, ILogger<BoardHub> logger) : Hub
         {
             return AuthError<IEnumerable<PossibleMove>>();
         }
-        
-        var possibleMovesResult = await boardService.PossibleMoves(boardId, player, from.Position);
+
+        var position = from.ToPosition();
+        var possibleMovesResult = await boardService.PossibleMoves(boardId, player, position);
         if (possibleMovesResult.IsFailed)
         {
             return ActionResult<IEnumerable<PossibleMove>>.FromErrors(possibleMovesResult.Errors);
