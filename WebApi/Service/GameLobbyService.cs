@@ -1,13 +1,16 @@
-﻿using Domain.Lobby;
+﻿using Domain.Chessboard;
+using Domain.Lobby;
 using Domain.Shared;
 using FluentResults;
 using MassTransit;
+using WebApi.Extensions;
 using WebApi.Messages.Notification;
+using WebApi.Repository;
 using WebApi.Service.Errors;
 
 namespace WebApi.Service;
 
-public class GameLobbyService(GameLobbyRepository lobbyRepository, IPublishEndpoint publishEndpoint)
+public class GameLobbyService(GameLobbyRepository lobbyRepository, BoardRepository boardRepository, IPublishEndpoint publishEndpoint)
 {
     public async Task<Result<GameLobby>> Get(string lobbyId)
     {
@@ -58,5 +61,28 @@ public class GameLobbyService(GameLobbyRepository lobbyRepository, IPublishEndpo
         return Result.Ok(lobby);
     }
 
-    private Task LobbyUpdateNotification(GameLobby lobby) => publishEndpoint.Publish(new LobbyUpdated(lobby.Id));
+    public async Task<Result<Board>> Close(string lobbyId, Player player)
+    {
+        var lobby = await lobbyRepository.Get(lobbyId);
+        if (lobby is null)
+        {
+            return Result.Fail(new LobbyNotFound(lobbyId));
+        }
+
+        var closeResult = lobby.Close(player, new ClassicBoardFactory());
+        if (closeResult.IsFailed)
+        {
+            return Result.Fail(new LobbyCloseFailed(closeResult.Errors));
+        }
+
+        var board = closeResult.Value;
+
+        await boardRepository.Save(board); 
+        await lobbyRepository.Save(lobby);
+        await LobbyUpdateNotification(lobby);
+
+        return Result.Ok(board);
+    }
+
+    private Task LobbyUpdateNotification(GameLobby lobby) => publishEndpoint.Publish(new LobbyUpdated(lobby.ToDto()));
 }

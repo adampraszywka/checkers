@@ -32,8 +32,9 @@ public class GameLobbyTests
         Assert.That(lobby.Id, Is.EqualTo("ID"));
         Assert.That(lobby.Name, Is.EqualTo("Name"));
         Assert.That(lobby.MaxPlayers, Is.EqualTo(2));
-        Assert.That(lobby.GameId, Is.Null);
+        Assert.That(lobby.BoardId, Is.Null);
         Assert.That(lobby.Participants, Is.Empty);
+        Assert.That(lobby.Status, Is.EqualTo(GameLobby.LobbyStatus.WaitingForPlayers));
     }
 
     [Test]
@@ -45,6 +46,7 @@ public class GameLobbyTests
         var result = lobby.Join(player);
         
         Assert.That(lobby.Participants.Count(), Is.EqualTo(1));
+        Assert.That(lobby.Status, Is.EqualTo(GameLobby.LobbyStatus.WaitingForPlayers));
         var participant = lobby.Participants.First();
         
         Assert.That(result.IsSuccess);
@@ -65,6 +67,7 @@ public class GameLobbyTests
         var whiteJoinResult = lobby.Join(white);
         var blackJoinResult = lobby.Join(black);
     
+        Assert.That(lobby.Status, Is.EqualTo(GameLobby.LobbyStatus.ReadyToStart));
         Assert.That(lobby.Participants.Count(), Is.EqualTo(2));
         Assert.That(whiteJoinResult.IsSuccess);
         Assert.That(blackJoinResult.IsSuccess);
@@ -119,6 +122,7 @@ public class GameLobbyTests
         var close = lobby.Close(white, factory);
         Assert.That(close.IsSuccess);
         Assert.That(close.Value, Is.SameAs(board));
+        Assert.That(lobby.Status, Is.EqualTo(GameLobby.LobbyStatus.Closed));
     }
 
     [Test]

@@ -5,15 +5,29 @@ using WebApi.Dto;
 using WebApi.Dto.Response;
 using WebApi.Extensions;
 using WebApi.Hubs.Extensions;
+using WebApi.Repository;
 using WebApi.Service;
 
 namespace WebApi.Hubs;
 
-public class DashboardHub(GameLobbyService lobbyService, ILogger<DashboardHub> logger) : Hub<DashboardHubClient>()
+public class DashboardHub(GameLobbyService lobbyService, GameLobbyListRepository lobbyListRepository, ILogger<DashboardHub> logger) : Hub<DashboardHubClient>()
 {
+    public override async Task OnConnectedAsync()
+    {
+        var player = Context.Player();
+        
+        if (player is null)
+        {
+            throw new NotImplementedException();
+        }
+
+        var lobbies = await lobbyListRepository.GetAll();
+        await Clients.Caller.LobbiesUpdated(lobbies.ToDto());
+    }
+
     public async Task<ActionResult<GameLobbyDto>> CreateLobby(string lobbyName)
     {
-        var player = Context.GetPlayer();
+        var player = Context.Player();
         if (player is null)
         {
             return AuthError<GameLobbyDto>();
@@ -25,7 +39,7 @@ public class DashboardHub(GameLobbyService lobbyService, ILogger<DashboardHub> l
 
     public async Task<ActionResult<GameLobbyDto>> JoinLobby(string lobbyId)
     {
-        var player = Context.GetPlayer();
+        var player = Context.Player();
         if (player is null)
         {
             return AuthError<GameLobbyDto>();
@@ -49,5 +63,4 @@ public class DashboardHub(GameLobbyService lobbyService, ILogger<DashboardHub> l
     {
         return ActionResult<T>.Failed("Authorization error!");
     }
-    
 }

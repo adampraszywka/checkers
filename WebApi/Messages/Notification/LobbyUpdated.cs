@@ -1,3 +1,5 @@
-﻿namespace WebApi.Messages.Notification;
+﻿using WebApi.Dto.Response;
 
-public record LobbyUpdated(string Id);
+namespace WebApi.Messages.Notification;
+
+public record LobbyUpdated(GameLobbyDto Lobby);

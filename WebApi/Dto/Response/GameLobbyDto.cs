@@ -5,30 +5,17 @@ namespace WebApi.Dto.Response;
 
 public record GameLobbyDto
 {
-    public string Id { get; }
-    public string Name { get; } 
-    public int Players { get; }
-    public int MaxPlayers { get; }
-    public IEnumerable<ParticipantDto> Participants { get; }
-
-    public GameLobbyDto(GameLobby gameLobby)
-    {
-        Id = gameLobby.Id;
-        Name = gameLobby.Name;
-        Players = gameLobby.Participants.Count();
-        MaxPlayers = gameLobby.MaxPlayers; 
-        Participants = gameLobby.Participants.Select(x => new ParticipantDto(x));
-    }
+    public required string Id { get; init; }
+    public required string Name { get; init; } 
+    public required string? GameId { get; init; } 
+    public required int Players { get; init; }
+    public required int MaxPlayers { get; init; }
+    public required GameLobby.LobbyStatus Status { get; init; }
+    public required IEnumerable<ParticipantDto> Participants { get; init; }
 }
 
 public record ParticipantDto
 {
-    public string Name { get; }
-    public Color Color { get; }
-
-    public ParticipantDto(Participant participant)
-    {
-        Name = participant.Player.Id;
-        Color = participant.Color;
-    }
+    public required string Name { get; init; }
+    public required Color Color { get; init; }
 }
