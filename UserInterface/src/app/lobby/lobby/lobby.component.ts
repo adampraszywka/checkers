@@ -3,6 +3,7 @@ import {LobbyClientService} from "./lobby-client-service";
 import {CommonModule} from "@angular/common";
 import {Router} from "@angular/router";
 import {Lobby, LobbyStatus} from "../../shared/dto/lobby.interface";
+import {Color} from "../../shared/dto/piece.interface";
 
 @Component({
   selector: 'app-lobby',
@@ -40,4 +41,5 @@ export class LobbyComponent implements OnInit {
   }
 
   protected readonly LobbyStatus = LobbyStatus;
+  protected readonly Color = Color;
 }

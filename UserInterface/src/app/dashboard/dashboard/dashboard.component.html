@@ -2,7 +2,7 @@
 
   <div class="row">
     <div class="col">
-      <h1>Active lobbies</h1>
+      <h1>Lobbies</h1>
 
       <div>
         @if (lobbies.length > 0) {
@@ -20,6 +20,19 @@
       </div>
 
     </div>
-    <div class="col">Second column!</div>
+    <div class="col">
+      <h1>Games</h1>
+      <ul class="list-group">
+        @for( number of [1,2,3,4]; track number) {
+        <li class="list-group-item">
+          <div class="row align-items-center">
+            <div class="col-9">Game {{number}}</div>
+            <div class="col-1"><button type="button" class="btn btn-primary">Watch</button></div>
+          </div>
+        </li>
+        }
+
+      </ul>
+    </div>
   </div>
 </div>
