@@ -1,10 +1,10 @@
 import {Component, Input, OnDestroy} from '@angular/core';
-import {Square} from "../dto/square.interface";
 import {NgClass, NgIf} from "@angular/common";
 import {PieceComponent} from "../piece/piece.component";
 import {BoardService} from "../board/board.service";
 import {Highlight} from "./highlight.enum";
 import {Subscription} from "rxjs";
+import {Square} from "../../shared/dto/square.interface";
 
 @Component({
   selector: 'app-square[square][row][column]',

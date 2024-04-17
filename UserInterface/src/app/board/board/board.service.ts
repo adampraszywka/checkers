@@ -1,13 +1,13 @@
 ﻿import {Injectable} from "@angular/core";
 import {Observable, Subject} from "rxjs";
-import {Square} from "../dto/square.interface";
-import {Move} from "../dto/move.interface";
-import {ApiClientService} from "../services/api-client.service";
-import {Board} from "../dto/board.interface";
+import {BoardClientService} from "../services/board-client.service";
 import {HighlightRequested} from "../events/highlight-requested.interface";
 import {Highlight} from "../square/highlight.enum";
-import {PossibleMove} from "../dto/possiblemove.interface";
 import {HttpErrorResponse} from "@angular/common/http";
+import {Square} from "../../shared/dto/square.interface";
+import {PossibleMove} from "../../shared/dto/possiblemove.interface";
+import {Board} from "../../shared/dto/board.interface";
+import {Move} from "../../shared/dto/move.interface";
 
 @Injectable()
 export class BoardService {
@@ -23,11 +23,12 @@ export class BoardService {
   public readonly boardUpdateRequested$: Observable<Board> = this.boardUpdatedSource.asObservable();
   public readonly squareHighlightChangeRequested$: Observable<HighlightRequested> = this.squareHighlightChangeRequestedSource.asObservable();
 
-  public constructor(private readonly apiClient: ApiClientService) {
+  public constructor(private readonly clientService: BoardClientService) {
   }
 
-  public initialize(): void {
-    this.apiClient.get().subscribe(x => this.boardUpdatedSource.next(x));
+  public initialize(boardId: string): void {
+    this.clientService.dashboardUpdatedRequested.subscribe(b => this.boardUpdatedSource.next(b));
+    this.clientService.initialize(boardId);
   }
 
   public select(square: Square) {
@@ -45,11 +46,15 @@ export class BoardService {
       this.selectedSquare = square;
       this.squareHighlightChangeRequestedSource.next({position: square.position, type: Highlight.Selected});
 
-      this.apiClient.possibleMoves(square.position).subscribe({
+      this.clientService.possibleMoves(square.position).subscribe({
         next: x => {
-          this.possibleMoves = x;
-          for (const move of x) {
-            this.squareHighlightChangeRequestedSource.next({position: move.to, type: Highlight.Target});
+          if (x.isSuccessful) {
+            this.possibleMoves = x.value;
+            for (const move of x.value) {
+              this.squareHighlightChangeRequestedSource.next({position: move.to, type: Highlight.Target});
+            }
+          } else {
+            this.errorNotificationSource.next(x.errorMessage);
           }
         },
         error: err => this.errorNotificationSource.next(this.extractError(err))
@@ -58,10 +63,14 @@ export class BoardService {
 
     if (this.selectedSquare !== null && square.piece === null) {
       const move: Move = {from: this.selectedSquare.position, to: square.position};
-      this.apiClient.move(move).subscribe({
+      this.clientService.move(move).subscribe({
         next: x => {
-          this.boardUpdatedSource.next(x)
-          this.selectedSquare = null;
+          if (x.isSuccessful) {
+            this.boardUpdatedSource.next(x.value)
+            this.selectedSquare = null;
+          } else {
+            this.errorNotificationSource.next(x.errorMessage);
+          }
         },
         error: err => this.errorNotificationSource.next(this.extractError(err))
       });

@@ -1,0 +1,25 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col">
+      <h1>Active lobbies</h1>
+
+      <div>
+        @if (lobbies.length > 0) {
+          <ul class="list-group">
+            @for (lobby of lobbies; track lobby.id)
+            {
+              <li class="list-group-item"><app-dashboard-lobby [lobby]="lobby" (joinRequested)="joinLobby($event)"></app-dashboard-lobby></li>
+            }
+          </ul>
+        }
+      </div>
+
+      <div>
+        <button type="button" class="btn btn-success" (click)="createLobby()">Create new lobby!</button>
+      </div>
+
+    </div>
+    <div class="col">Second column!</div>
+  </div>
+</div>

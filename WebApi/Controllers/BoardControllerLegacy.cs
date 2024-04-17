@@ -4,6 +4,7 @@ using Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Dto;
 using WebApi.Dto.Response;
+using WebApi.Extensions;
 using WebApi.Players;
 
 namespace WebApi.Controllers;
@@ -18,7 +19,7 @@ public class BoardControllerLegacy(BoardRepository repository) : Controller
     {
         var board = await repository.Get(boardId) ?? CreateBoard(boardId);
         
-        return new OkObjectResult(new BoardDto(board));
+        return new OkObjectResult(board.ToDto());
     }
 
     [HttpGet("/board/{boardId}/possiblemove/{row}/{column}")]
@@ -56,7 +57,7 @@ public class BoardControllerLegacy(BoardRepository repository) : Controller
 
         await repository.Save(board);
 
-        return new OkObjectResult(new BoardDto(board));
+        return new OkObjectResult(board.ToDto());
     }
 
     // Even more hacks to be compatible with old UI :)

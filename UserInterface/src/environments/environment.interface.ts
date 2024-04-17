@@ -1,5 +1,5 @@
-﻿import {BoardApiConfiguration} from "../app/app.config";
+﻿import {ApiConfiguration} from "../app/app.config";
 
-export abstract class Configuration extends BoardApiConfiguration {
+export abstract class Configuration extends ApiConfiguration {
 
 }

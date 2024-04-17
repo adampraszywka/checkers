@@ -26,6 +26,7 @@ builder.Services.AddScoped<GameLobbyService>();
 builder.Services.AddMassTransit(m =>
 {
     m.AddConsumer<LobbyUpdatedConsumer>();
+    m.AddConsumer<BoardUpdatedConsumer>();
     
     m.UsingInMemory((context, cfg) =>
     {

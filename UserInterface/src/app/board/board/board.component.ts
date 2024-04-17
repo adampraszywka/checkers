@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {SquareComponent} from "../square/square.component";
-import {Board} from "../dto/board.interface";
 import {BoardService} from "./board.service";
 import {ToastrModule, ToastrService} from "ngx-toastr";
+import {Board} from "../../shared/dto/board.interface";
 
 @Component({
   selector: 'app-board',
@@ -16,7 +16,7 @@ import {ToastrModule, ToastrService} from "ngx-toastr";
   ]
 })
 export class BoardComponent implements OnInit {
-
+  @Input() boardId!: string;
   public board: Board|null = null;
 
   public constructor(private readonly service: BoardService, private readonly toastr: ToastrService) {
@@ -25,7 +25,7 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.service.initialize();
+    this.service.initialize(this.boardId);
   }
 
 }
