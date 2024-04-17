@@ -52,7 +52,7 @@ builder.Services.AddCors(o =>
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/ping", () => new {Result = "pong"});
 app.MapHub<DashboardHub>("/hub_dashboard");
 app.MapHub<BoardHub>("/hub_board");
 app.MapHub<LobbyHub>("/hub_lobby");
