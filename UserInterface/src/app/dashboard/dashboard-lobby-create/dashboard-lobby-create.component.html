@@ -1,0 +1,17 @@
+<div class="modal-header">
+  <h4 class="modal-title">Create lobby</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+</div>
+<form>
+  <div class="container">
+    <div class="form-group">
+      <label for="lobbyNameInput">Lobby name</label>
+      <input type="text" [formControl]="name" class="form-control" id="lobbyNameInput" aria-describedby="desc" placeholder="Enter lobby name">
+      <small id="desc" class="form-text text-muted">Give your lobby a memorable title.</small>
+    </div>
+  </div>
+</form>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="onCreate()">Create</button>
+  <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+</div>
