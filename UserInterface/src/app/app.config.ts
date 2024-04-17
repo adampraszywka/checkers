@@ -6,7 +6,6 @@ import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@ang
 import {environment} from "../environments/environment";
 import {provideToastr} from "ngx-toastr";
 import {provideAnimations} from "@angular/platform-browser/animations";
-import {PlayerIdInterceptor} from "./shared/authorization/authorization-interceptor";
 import {PlayerIdProvider} from "./shared/authorization/playerid-provider.service";
 
 export abstract class ApiConfiguration {
@@ -20,8 +19,7 @@ export const appConfig: ApplicationConfig = {
     {provide: ApiConfiguration, useValue: environment},
     provideToastr(),
     provideAnimations(),
-    {provide: PlayerIdProvider, useClass: PlayerIdProvider},
-    {provide: HTTP_INTERCEPTORS, useClass: PlayerIdInterceptor, multi: true}
+    {provide: PlayerIdProvider, useClass: PlayerIdProvider}
   ]
 
 };

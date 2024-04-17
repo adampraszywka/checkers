@@ -1,8 +1,8 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {PieceComponent} from './piece.component';
-import {Color, Type} from "../dto/piece.interface";
 import {By} from "@angular/platform-browser";
+import {Color, Type} from "../../shared/dto/piece.interface";
 
 describe('PieceComponent', () => {
   let component: PieceComponent;
