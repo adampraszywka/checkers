@@ -1,8 +1,6 @@
-﻿export interface Participant {
-  readonly name: string;
-  readonly color: ParticipantColor;
-}
+﻿import { Color } from "./piece.interface";
 
-enum ParticipantColor {
-  Black = 0, White = 1
+export interface Participant {
+  readonly name: string;
+  readonly color: Color;
 }

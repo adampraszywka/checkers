@@ -1,10 +1,8 @@
 import {Component, OnDestroy} from '@angular/core';
 import {CommonModule} from "@angular/common";
-import {Lobby} from "../../shared/dto/lobby.interface";
-import {DashboardLobbyComponent} from "../dashboard-lobby/dashboard-lobby.component";
+import {Lobby, LobbyStatus} from "../../shared/dto/lobby.interface";
 import {DashboardClientService} from "./dashboard-client.service";
 import {Subscription} from "rxjs";
-import { v4 as uuidv4 } from 'uuid';
 import {Router} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {DashboardLobbyCreateComponent, ModalResult} from "../dashboard-lobby-create/dashboard-lobby-create.component";
@@ -12,7 +10,7 @@ import {DashboardLobbyCreateComponent, ModalResult} from "../dashboard-lobby-cre
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, DashboardLobbyComponent],
+  imports: [CommonModule],
   providers: [
     {provide: DashboardClientService}
   ],
@@ -55,4 +53,6 @@ export class DashboardComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.lobbiesUpdatedSubscription.unsubscribe();
   }
+
+  protected readonly LobbyStatus = LobbyStatus;
 }

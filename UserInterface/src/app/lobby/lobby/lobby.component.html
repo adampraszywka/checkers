@@ -1,19 +1,67 @@
 @if (lobby) {
   <div class="container">
-    <h1>{{lobby.name}}</h1>
-    <h2>Players: {{lobby.players}}/{{lobby.maxPlayers}}</h2>
+    <div class="row">
+      <h3>Checkers Lobby: Welcome Aboard!</h3>
+      <h5>{{lobby.name}}</h5>
 
-    @for (participant of lobby.participants; track participant) {
-      <div>{{participant.name}} - {{Color[participant.color]}}</div>
-    }
+      <div class="row mt-5">
+        <div class="col">
 
+          <form>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Game type</label>
+              <select class="form-select" id="exampleInputEmail1" aria-label="" disabled>
+                <option selected>Classic checkers</option>
+              </select>
+            </div>
+          </form>
 
-    @if (lobby.status === LobbyStatus.ReadyToStart) {
-      <button type="button" class="btn btn-primary" (click)="closeClose()">Start game!</button>
-    } @else {
-      <span>Two players are required to start...</span>
-    }
+        </div>
 
+        <div class="col">
+          <table class="table">
+            <thead>
+            <tr>
+              <th></th>
+              <th scope="col">Name</th>
+              <th scope="col">Color</th>
+            </tr>
+            </thead>
+            <tbody>
+              @for (participant of lobby.participants; track participant; let counter = $index) {
+                <tr>
+                  <td>
+                    <span class="badge" [ngClass]="participant.color === Color.Black ? 'bg-black' : 'bg-light text-dark'">{{counter + 1}}</span>
+                  </td>
+                  <td>{{ participant.name }}</td>
+                  <td>{{Color[participant.color]}}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
 
+          @if(lobby.status === LobbyStatus.WaitingForPlayers) {
+            <div class="text-center">
+              <button class="btn btn-warning" disabled>Add AI Player</button>
+            </div>
+          }
+        </div>
+
+        <div class="row mt-5">
+          @if (lobby.status === LobbyStatus.ReadyToStart) {
+            <div class="text-center">
+              <button type="button" class="btn btn-primary" (click)="onClose()">Start game!</button>
+            </div>
+          } @else {
+            <div class="text-center">
+              <div class="spinner-border" role="status">
+                <span class="sr-only"></span>
+              </div>
+              <p class="mt-4">Two players are essential to ignite the board, so assemble your opponents and let the games begin!</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
   </div>
 }
