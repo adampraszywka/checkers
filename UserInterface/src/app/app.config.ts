@@ -7,6 +7,7 @@ import {environment} from "../environments/environment";
 import {provideToastr} from "ngx-toastr";
 import {provideAnimations} from "@angular/platform-browser/animations";
 import {PlayerIdProvider} from "./shared/authorization/playerid-provider.service";
+import {LocalStorage} from "./shared/storage/local-storage";
 
 export abstract class ApiConfiguration {
   abstract readonly baseUrl: string;
@@ -19,7 +20,8 @@ export const appConfig: ApplicationConfig = {
     {provide: ApiConfiguration, useValue: environment},
     provideToastr(),
     provideAnimations(),
-    {provide: PlayerIdProvider, useClass: PlayerIdProvider}
+    {provide: PlayerIdProvider},
+    {provide: LocalStorage}
   ]
 
 };
