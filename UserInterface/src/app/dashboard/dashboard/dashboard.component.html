@@ -3,36 +3,59 @@
   <div class="row">
     <div class="col">
       <h1>Lobbies</h1>
-
-      <div>
+      <div class="mt-5">
         @if (lobbies.length > 0) {
-          <ul class="list-group">
-            @for (lobby of lobbies; track lobby.id)
-            {
-              <li class="list-group-item"><app-dashboard-lobby [lobby]="lobby" (joinRequested)="joinLobby($event)"></app-dashboard-lobby></li>
-            }
-          </ul>
+          <table class="table">
+            <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Players</th>
+              <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+              @for (lobby of lobbies; track lobby.id) {
+                <tr>
+                  <td class="align-middle">{{lobby.name}}</td>
+                  <td class="align-middle">{{lobby.players}}/{{lobby.maxPlayers}}</td>
+                  <td class="align-middle">
+                    <button class="btn btn-primary" (click)="joinLobby(lobby.id)" [disabled]="lobby.status !== LobbyStatus.WaitingForPlayers">Join!</button></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <p class="text-center">No lobbies waiting? Be the spark and create your own for some gaming fun!</p>
         }
       </div>
 
-      <div>
+      <div class="text-center">
         <button type="button" class="btn btn-success" (click)="createLobby()">Create new lobby!</button>
       </div>
 
     </div>
     <div class="col">
       <h1>Games</h1>
-      <ul class="list-group">
-        @for( number of [1,2,3,4]; track number) {
-        <li class="list-group-item">
-          <div class="row align-items-center">
-            <div class="col-9">Game {{number}}</div>
-            <div class="col-1"><button type="button" class="btn btn-primary">Watch</button></div>
-          </div>
-        </li>
-        }
+      <div class="mt-5">
 
-      </ul>
+        <table class="table">
+          <thead>
+          <tr>
+            <th class="w-75" scope="col">Name</th>
+            <th class="w-25" scope="col"></th>
+          </tr>
+          </thead>
+          <tbody>
+            @for( number of [1,2,3,4,5,6,7,8]; track number) {
+              <tr>
+                <td class="align-middle">Game {{number}}</td>
+                <td class="align-middle">
+                  <button class="btn btn-primary" disabled>Watch</button></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
