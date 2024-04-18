@@ -25,6 +25,9 @@ jobs:
       - name: Build app
         run: npm rum build
         working-directory: ./UserInterface
+      - name: Copy SWA configuration to the output directory
+        run: cp deployment/* dist/user-interface/browser
+        working-directory: ./UserInterface
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
