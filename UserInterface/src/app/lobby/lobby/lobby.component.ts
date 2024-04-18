@@ -34,7 +34,7 @@ export class LobbyComponent implements OnInit {
     })
   }
 
-  closeClose() {
+  onClose() {
     this.client.close().then(x => {
       console.log(x);
     });
