@@ -1,5 +1,51 @@
 <div class="container" *ngIf="board !== null">
-  <div *ngFor="let squares of board.squares; let row = index" class="row g-0">
-    <app-square *ngFor="let square of squares; let column = index" class="col" [square]="square" [row]="row" [column]="column"></app-square>
+
+  <div class="row">
+    <div class="col-9">
+      <div>
+        @for(squares of board.squares; track squares; let row = $index) {
+          <div class="row g-0">
+            @for (square of squares; track square; let column = $index) {
+              <app-square class="col" [square]="square" [row]="row" [column]="column"></app-square>
+            }
+          </div>
+        }
+        </div>
+      </div>
+
+    <div class="col-3">
+      <p class="text-center">It's the turn to move the {{ Color[board.currentPlayer] }} piece.</p>
+
+      <div class="mt-2">
+           <table class="table">
+             <thead>
+             <tr>
+               <th>#</th>
+               <th scope="col">Piece</th>
+               <th scope="col">From</th>
+               <th scope="col">To</th>
+             </tr>
+             </thead>
+             <tbody>
+               @for (entry of board.moveLog.slice().reverse(); track entry; let index = $index) {
+                 <tr>
+                   <td>{{board.moveLog.length - index}}</td>
+                   <td>
+                     <span class="badge" [ngClass]="entry.piece.color === Color.Black ? 'bg-black' : 'bg-light text-dark'">
+                       {{ Type[entry.piece.type] }}
+                     </span>
+                   </td>
+                   <td>{{entry.from.name}}</td>
+                   <td>{{entry.to.name}}</td>
+                 </tr>
+               }
+             </tbody>
+           </table>
+      </div>
+
+    </div>
+
   </div>
+
+
 </div>

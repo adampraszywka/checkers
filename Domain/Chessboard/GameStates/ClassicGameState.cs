@@ -6,7 +6,7 @@ namespace Domain.Chessboard.GameStates;
 public class ClassicGameState : GameState
 {
     private readonly List<Move> _log;
-
+    
 
     private ClassicGameState(IEnumerable<Move> log)
     {

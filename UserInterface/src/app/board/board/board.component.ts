@@ -4,6 +4,7 @@ import {SquareComponent} from "../square/square.component";
 import {BoardService} from "./board.service";
 import {ToastrModule, ToastrService} from "ngx-toastr";
 import {Board} from "../../shared/dto/board.interface";
+import {Color, Type} from "../../shared/dto/piece.interface";
 
 @Component({
   selector: 'app-board',
@@ -20,7 +21,10 @@ export class BoardComponent implements OnInit {
   public board: Board|null = null;
 
   public constructor(private readonly service: BoardService, private readonly toastr: ToastrService) {
-    service.boardUpdateRequested$.subscribe(x => this.board = x);
+    service.boardUpdateRequested$.subscribe(x => {
+      console.log(x)
+      this.board = x;
+    });
     service.errorNotificationRequested$.subscribe(x => toastr.error(x));
   }
 
@@ -28,4 +32,6 @@ export class BoardComponent implements OnInit {
     this.service.initialize(this.boardId);
   }
 
+  protected readonly Color = Color;
+  protected readonly Type = Type;
 }
