@@ -155,12 +155,7 @@ public class ClassicWhiteManMoves : PieceMove
             }
         }
 
-        if (moves.Count > 0)
-        {
-            return moves.Where(x => x.CapturedPieces == moves.Max(x => x.CapturedPieces)).ToList();
-        }
-
-        return moves;
+        return moves.Count > 0 ? moves.Where(x => x.CapturedPieces == moves.Max(x => x.CapturedPieces)).ToList() : moves;
     }
 
     public bool UpgradeRequired(Position currentPosition)
