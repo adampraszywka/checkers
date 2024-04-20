@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using Domain.Chessboard.PieceMoves;
 using P = Domain.Chessboard.Position;
-using TestCase = DomainTests.Chessboard.PieceMoves.Classic.TestData.Dto.PieceBackwardCaptureBlockTestCase;
+using TestCase = DomainTests.Chessboard.PieceMoves.Classic.TestData.Dto.PieceCaptureTestCase;
 
 namespace DomainTests.Chessboard.PieceMoves.Classic.TestData;
 
