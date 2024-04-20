@@ -28,7 +28,6 @@ export class SquareComponent implements OnDestroy {
   public constructor(private readonly service: BoardService) {
     this.highlightSubscription = this.service.squareHighlightChangeRequested$.subscribe(x => {
       if (x.position.row === this.square.position.row && x.position.column === this.square.position.column) {
-        console.log(x);
         this.highlight = x.type;
       }
     })

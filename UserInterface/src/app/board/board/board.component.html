@@ -2,8 +2,8 @@
 
   <div class="row">
     <div class="col-9">
-      <div>
-        @for(squares of board.squares; track squares; let row = $index) {
+      <div [ngClass]="board.playerColor === Color.Black ? 'rotated' : ''">
+        @for(squares of board.board.squares; track squares; let row = $index) {
           <div class="row g-0">
             @for (square of squares; track square; let column = $index) {
               <app-square class="col" [square]="square" [row]="row" [column]="column"></app-square>
@@ -14,7 +14,7 @@
       </div>
 
     <div class="col-3">
-      <p class="text-center">It's the turn to move the {{ Color[board.currentPlayer] }} piece.</p>
+      <p class="text-center">It's the turn to move the {{ Color[board.board.currentPlayer] }} piece.</p>
 
       <div class="mt-2">
            <table class="table">
@@ -27,9 +27,9 @@
              </tr>
              </thead>
              <tbody>
-               @for (entry of board.moveLog.slice().reverse(); track entry; let index = $index) {
+               @for (entry of board.board.moveLog.slice().reverse(); track entry; let index = $index) {
                  <tr>
-                   <td>{{board.moveLog.length - index}}</td>
+                   <td>{{board.board.moveLog.length - index}}</td>
                    <td>
                      <span class="badge" [ngClass]="entry.piece.color === Color.Black ? 'bg-black' : 'bg-light text-dark'">
                        {{ Type[entry.piece.type] }}

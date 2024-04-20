@@ -16,6 +16,7 @@ public static class BoardExtensions
             Squares = board.Snapshot.Squares.Transform(x => x.ToDto()).ReversedRowsListOfLists(),
             MoveLog = board.Snapshot.GameState.Log.ToDto(),
             CurrentPlayer = board.Snapshot.GameState.CurrentPlayer,
+            Participants = board.Participants.List.ToDto()
         };
     }
 }

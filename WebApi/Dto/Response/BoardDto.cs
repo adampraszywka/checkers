@@ -10,4 +10,5 @@ public record BoardDto
     public required IEnumerable<IEnumerable<SquareSnapshotDto>> Squares { get; init; }
     public required IEnumerable<MoveLogEntryDto> MoveLog { get; init; }
     public required Color CurrentPlayer { get; init; }
+    public required IEnumerable<ParticipantDto> Participants { get; init; }
 }
