@@ -15,9 +15,9 @@ public static class PieceCaptureTestCaseExtensions
         var opponentPiece = (Piece) new Man("O", opponent);
         var blockingPiece = (Piece) new Man("B", blocking);
         
-        var piece = new List<(Piece Piece, Position Position)> {(playerPiece, testCase.SourcePiece)};
-        var capturedPieces = testCase.CapturedPieces.Select(x => (white: opponentPiece, x));
-        var blockingPieces = testCase.BlockingPieces.Select(x => (blockingPiece, x));
+        var piece = new List<(Piece Piece, Position Position)> {(playerPiece, testCase.Source)};
+        var capturedPieces = testCase.Captured.Select(x => (white: opponentPiece, x));
+        var blockingPieces = testCase.Blocking.Select(x => (blockingPiece, x));
         var configuration = ClassicConfiguration.FromSnapshot(piece.Union(capturedPieces).Union(blockingPieces));
         
         return new GameBoard("ID", configuration, ParticipantTestData.Participants.All);

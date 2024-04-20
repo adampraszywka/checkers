@@ -16,7 +16,7 @@ public class ClassicWhiteManMovesTests
         var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
         var pieceMoves = new ClassicWhiteManMoves();
 
-        var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
         MoveAssert.AreEqual(testCase.Moves, moves);
     }
@@ -28,7 +28,7 @@ public class ClassicWhiteManMovesTests
         var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
         var pieceMoves = new ClassicWhiteManMoves();
 
-        var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
         MoveAssert.AreEqual(testCase.Moves, moves);
     }
@@ -41,7 +41,7 @@ public class ClassicWhiteManMovesTests
         var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
         var pieceMoves = new ClassicWhiteManMoves();
 
-        var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
         MoveAssert.AreEqual(testCase.Moves, moves);
     }
@@ -53,7 +53,7 @@ public class ClassicWhiteManMovesTests
         var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
         var pieceMoves = new ClassicWhiteManMoves();
 
-        var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
         Assert.That(moves, Is.Empty);
     }
@@ -65,7 +65,19 @@ public class ClassicWhiteManMovesTests
         var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
         var pieceMoves = new ClassicWhiteManMoves();
 
-        var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
+
+        MoveAssert.AreEqual(testCase.Moves, moves);
+    }
+    
+    [Test]
+    [TestCaseSource(typeof(WhitePieceMultipleCapturesBlackPiecesTestCases))]
+    public void WhitePieceMultipleCaptures(PieceCaptureTestCase testCase)
+    {
+        var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
+        var pieceMoves = new ClassicWhiteManMoves();
+
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
         MoveAssert.AreEqual(testCase.Moves, moves);
     }

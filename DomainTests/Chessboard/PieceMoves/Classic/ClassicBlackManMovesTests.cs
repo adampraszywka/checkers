@@ -16,7 +16,7 @@ public class ClassicBlackManMovesTests
         var board = testCase.BuildBoard(Color.Black, Color.White, Color.Black);
         var pieceMoves = new ClassicBlackManMoves();
 
-        var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
         MoveAssert.AreEqual(testCase.Moves, moves);
     }
@@ -28,7 +28,7 @@ public class ClassicBlackManMovesTests
         var board = testCase.BuildBoard(Color.Black, Color.White, Color.Black);
         var pieceMoves = new ClassicBlackManMoves();
 
-        var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
         MoveAssert.AreEqual(testCase.Moves, moves);
     }
@@ -40,7 +40,7 @@ public class ClassicBlackManMovesTests
         var board = testCase.BuildBoard(Color.Black, Color.White, Color.Black);
         var pieceMoves = new ClassicBlackManMoves();
 
-        var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
         MoveAssert.AreEqual(testCase.Moves, moves);
     }
@@ -52,7 +52,7 @@ public class ClassicBlackManMovesTests
         var board = testCase.BuildBoard(Color.Black, Color.White, Color.Black);
         var pieceMoves = new ClassicBlackManMoves();
 
-        var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
         Assert.That(moves, Is.Empty);
     }
@@ -64,7 +64,7 @@ public class ClassicBlackManMovesTests
         var board = testCase.BuildBoard(Color.Black, Color.White, Color.Black);
         var pieceMoves = new ClassicBlackManMoves();
 
-        var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
         MoveAssert.AreEqual(testCase.Moves, moves);
     }

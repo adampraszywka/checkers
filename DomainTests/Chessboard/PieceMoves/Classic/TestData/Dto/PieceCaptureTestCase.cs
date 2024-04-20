@@ -5,8 +5,8 @@ namespace DomainTests.Chessboard.PieceMoves.Classic.TestData.Dto;
 
 public class PieceCaptureTestCase
 {
-    public required Position SourcePiece { get; init; }
-    public IEnumerable<Position> CapturedPieces { get; init; } = Enumerable.Empty<Position>();
+    public required Position Source { get; init; }
+    public IEnumerable<Position> Captured { get; init; } = Enumerable.Empty<Position>();
     public IEnumerable<PossibleMove> Moves { get; init; } = Enumerable.Empty<PossibleMove>();
-    public IEnumerable<Position> BlockingPieces { get; init; } = Enumerable.Empty<Position>();
+    public IEnumerable<Position> Blocking { get; init; } = Enumerable.Empty<Position>();
 }
