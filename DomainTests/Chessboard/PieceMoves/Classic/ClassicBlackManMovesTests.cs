@@ -69,6 +69,18 @@ public class ClassicBlackManMovesTests
         MoveAssert.AreEqual(testCase.Moves, moves);
     }
 
+    [Test]
+    [TestCaseSource(typeof(BlackPieceMultipleCapturesWhitePiecesTestCases))]
+    public void BlackPieceMultipleCaptures(PieceCaptureTestCase testCase)
+    {
+        var board = testCase.BuildBoard(Color.Black, Color.White, Color.Black);
+        var pieceMoves = new ClassicBlackManMoves();
+
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
+
+        MoveAssert.AreEqual(testCase.Moves, moves);
+    }
+    
 
     [Test]
     [TestCase(Position.R1, Position.B)]
@@ -79,7 +91,7 @@ public class ClassicBlackManMovesTests
     {
         var pieceMoves = new ClassicBlackManMoves();
 
-        Assert.True(pieceMoves.UpgradeRequired(new Position(row, column)));
+        Assert.That(pieceMoves.UpgradeRequired(new Position(row, column)), Is.True);
     }
 
     [Test]
@@ -115,6 +127,6 @@ public class ClassicBlackManMovesTests
     {
         var pieceMoves = new ClassicBlackManMoves();
 
-        Assert.False(pieceMoves.UpgradeRequired(new Position(row, column)));
+        Assert.That(pieceMoves.UpgradeRequired(new Position(row, column)), Is.False);
     }
 }
