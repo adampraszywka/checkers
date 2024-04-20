@@ -15,6 +15,18 @@ public class WhitePieceMultipleCapturesBlackPiecesTestCases : IEnumerable
         
         yield return new TC {Source = P.A1, Captured = [P.B2, P.D4, P.F6], Moves = [new M(P.G7, [P.B2, P.D4, P.F6], 3)]};
         yield return new TC {Source = P.A1, Captured = [P.B2, P.D4, P.D6], Moves = [new M(P.C7, [P.B2, P.D4, P.D6], 3)]};
+        yield return new TC
+        {
+            Source = P.A1, Captured = [P.B2, P.D4, P.D6, P.F6], 
+            Moves = [new M(P.C7, [P.B2, P.D4, P.D6], 3), new M(P.G7, [P.B2, P.D4, P.F6], 3)]
+        };
+
+        // One of the following moves won't be available, implementation may need to be changed later 
+        // yield return new TC
+        // {
+        //     Source = P.E3, Captured = [P.D4, P.F4, P.D6, P.F6],
+        //     Moves = [new M(P.E7, [P.F4, P.F6], 2), new M(P.E7, [P.D4, P.D6], 2)]
+        // };
         
         yield return new TC {Source = P.H4, Captured = [P.G5, P.E5, P.C3], Moves = [new M(P.B2, [P.G5, P.E5, P.C3], 3)]};
         yield return new TC {Source = P.H4, Captured = [P.G5, P.E5, P.C5], Moves = [new M(P.B6, [P.G5, P.E5, P.C5], 3)]};

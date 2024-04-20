@@ -5,7 +5,8 @@ namespace Domain.Chessboard.PieceMoves.Classic;
 public class ClassicWhiteManMoves : PieceMove
 {
     // To be refactored later
-
+    // Even more duplication added, but I'm not going to refactor it now
+    // Not sure if all tests cases were discovered
     public IEnumerable<PossibleMove> PossibleMoves(Position currentPosition, BoardSnapshot boardSnapshot)
     {
         return GenerateMoves(currentPosition, [], boardSnapshot);
@@ -23,14 +24,13 @@ public class ClassicWhiteManMoves : PieceMove
         var rightBackward = currentPosition.RightBackward();
         if (rightBackward.IsWithinBoard(boardSnapshot.BoardSize) && !excludedPositions.Contains(rightBackward))
         {
-            var newSquare = boardSnapshot.Squares[rightBackward.Row, rightBackward.Column];
-            if (newSquare.Piece is not null && newSquare.Piece.Color == Color.Black)
+            var piece = boardSnapshot.At(rightBackward);
+            if (piece is not null && piece.Color == Color.Black)
             {
                 var newPositionAfterCapture = rightBackward.RightBackward();
                 if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize) && !excludedPositions.Contains(newPositionAfterCapture))
                 {
-                    var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
-                    if (newSquareAfterCapture.Piece is null)
+                    if (boardSnapshot.At(newPositionAfterCapture) is null)
                     {
                         excludedPositions.Add(rightBackward);
                         excludedPositions.Add(newPositionAfterCapture);
@@ -46,7 +46,8 @@ public class ClassicWhiteManMoves : PieceMove
                         {
                             var x = nextMoves.Select(x => new PossibleMove(x.To, move.AffectedSquares.Union(x.AffectedSquares), x.CapturedPieces + 1));
                             moves.AddRange(x);
-                        }                    }
+                        }                    
+                    }
                 }
             }
         }
@@ -54,14 +55,13 @@ public class ClassicWhiteManMoves : PieceMove
         var leftBackward = currentPosition.LeftBackward();
         if (leftBackward.IsWithinBoard(boardSnapshot.BoardSize) && !excludedPositions.Contains(leftBackward))
         {
-            var newSquare = boardSnapshot.Squares[leftBackward.Row, leftBackward.Column];
-            if (newSquare.Piece is not null && newSquare.Piece.Color == Color.Black)
+            var piece = boardSnapshot.At(leftBackward);
+            if (piece is not null && piece.Color == Color.Black)
             {
                 var newPositionAfterCapture = leftBackward.LeftBackward();
                 if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize) && !excludedPositions.Contains(newPositionAfterCapture))
                 {
-                    var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
-                    if (newSquareAfterCapture.Piece is null)
+                    if (boardSnapshot.At(newPositionAfterCapture) is null)
                     {
                         excludedPositions.Add(leftBackward);
                         excludedPositions.Add(newPositionAfterCapture);
@@ -77,7 +77,8 @@ public class ClassicWhiteManMoves : PieceMove
                         {
                             var x = nextMoves.Select(x => new PossibleMove(x.To, move.AffectedSquares.Union(x.AffectedSquares), x.CapturedPieces + 1));
                             moves.AddRange(x);
-                        }                    }
+                        }                    
+                    }
                 }
             }
         }
@@ -86,14 +87,13 @@ public class ClassicWhiteManMoves : PieceMove
         var leftForward = currentPosition.LeftForward();
         if (leftForward.IsWithinBoard(boardSnapshot.BoardSize) && !excludedPositions.Contains(leftForward))
         {
-            var newSquare = boardSnapshot.Squares[leftForward.Row, leftForward.Column];
-            if (newSquare.Piece is not null && newSquare.Piece.Color == Color.Black)
+            var piece = boardSnapshot.At(leftForward);
+            if (piece is not null && piece.Color == Color.Black)
             {
                 var newPositionAfterCapture = leftForward.LeftForward();
                 if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize) && !excludedPositions.Contains(newPositionAfterCapture))
                 {
-                    var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
-                    if (newSquareAfterCapture.Piece is null)
+                    if (boardSnapshot.At(newPositionAfterCapture) is null)
                     {
                         excludedPositions.Add(leftForward);
                         excludedPositions.Add(newPositionAfterCapture);
@@ -113,7 +113,7 @@ public class ClassicWhiteManMoves : PieceMove
                     }
                 }
             }
-            else if (newSquare.Piece is null && excludedPositions.Count == 0)
+            else if (piece is null && excludedPositions.Count == 0)
             {
                 moves.Add(new PossibleMove(leftForward, new[] {leftForward}, 0));
             }
@@ -123,14 +123,13 @@ public class ClassicWhiteManMoves : PieceMove
         var rightForward = currentPosition.RightForward();
         if (rightForward.IsWithinBoard(boardSnapshot.BoardSize) && !excludedPositions.Contains(rightForward))
         {
-            var newSquare = boardSnapshot.Squares[rightForward.Row, rightForward.Column];
-            if (newSquare.Piece is not null && newSquare.Piece.Color == Color.Black)
+            var piece = boardSnapshot.At(rightForward);
+            if (piece is not null && piece.Color == Color.Black)
             {
                 var newPositionAfterCapture = rightForward.RightForward();
                 if (newPositionAfterCapture.IsWithinBoard(boardSnapshot.BoardSize) && !excludedPositions.Contains(newPositionAfterCapture))
                 {
-                    var newSquareAfterCapture = boardSnapshot.Squares[newPositionAfterCapture.Row, newPositionAfterCapture.Column];
-                    if (newSquareAfterCapture.Piece is null)
+                    if (boardSnapshot.At(newPositionAfterCapture) is null)
                     {
                         excludedPositions.Add(rightForward);
                         excludedPositions.Add(newPositionAfterCapture);
@@ -150,7 +149,7 @@ public class ClassicWhiteManMoves : PieceMove
                     }
                 }
             }
-            else if (newSquare.Piece is null && excludedPositions.Count == 0)
+            else if (piece is null && excludedPositions.Count == 0)
             {
                 moves.Add(new PossibleMove(rightForward, new[] {rightForward}, 0));
             }
