@@ -1,4 +1,6 @@
-﻿namespace WebApi.Dto.Response;
+﻿using Contracts.Dto;
+
+namespace WebApi.Dto.Response;
 
 public class SquareSnapshotDto
 {

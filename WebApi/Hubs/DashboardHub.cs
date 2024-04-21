@@ -1,4 +1,5 @@
-﻿using Domain.Lobby;
+﻿using Contracts.Dto;
+using Domain.Lobby;
 using FluentResults;
 using Microsoft.AspNetCore.SignalR;
 using WebApi.Dto;

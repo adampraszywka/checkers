@@ -1,5 +1,5 @@
-﻿using WebApi.Dto.Response;
+﻿using Contracts.Dto;
 
-namespace WebApi.Messages.Notification;
+namespace Contracts.Notification;
 
 public record BoardUpdated(BoardDto Board, IEnumerable<NotifiableParticipantDto> NotifiableParticipants);

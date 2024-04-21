@@ -1,3 +1,3 @@
-﻿namespace WebApi.Dto.Response;
+﻿namespace Contracts.Dto;
 
 public record MoveLogPositionDto(int Row, int Column, string Name);

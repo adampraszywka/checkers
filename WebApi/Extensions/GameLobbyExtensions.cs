@@ -1,5 +1,5 @@
-﻿using Domain.Lobby;
-using WebApi.Dto.Response;
+﻿using Contracts.Dto;
+using Domain.Lobby;
 
 namespace WebApi.Extensions;
 
@@ -14,7 +14,7 @@ public static class GameLobbyExtensions
             BoardId = lobby.BoardId,
             Players = lobby.Participants.Count(),
             MaxPlayers = lobby.MaxPlayers,
-            Status = lobby.Status,
+            Status = lobby.Status.ToDto(),
             Participants = lobby.Participants.ToDto()
         };
     }

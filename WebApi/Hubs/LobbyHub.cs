@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Contracts.Dto;
+using Microsoft.AspNetCore.SignalR;
 using WebApi.Dto;
-using WebApi.Dto.Response;
 using WebApi.Extensions;
 using WebApi.Hubs.Extensions;
 using WebApi.Service;

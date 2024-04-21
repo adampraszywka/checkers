@@ -1,4 +1,5 @@
-﻿using Domain.Chessboard.PieceMoves;
+﻿using Contracts.Dto;
+using Domain.Chessboard.PieceMoves;
 using Microsoft.AspNetCore.SignalR;
 using WebApi.Dto;
 using WebApi.Dto.Response;

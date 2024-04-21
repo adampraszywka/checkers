@@ -1,4 +1,4 @@
-﻿using WebApi.Dto.Response;
+﻿using Contracts.Dto;
 
 namespace WebApi.Hubs;
 

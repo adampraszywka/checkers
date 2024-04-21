@@ -14,12 +14,18 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Contracts\Contracts.csproj" />
         <ProjectReference Include="..\Domain\Domain.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="FluentResults" Version="3.15.2" />
       <PackageReference Include="MassTransit" Version="8.2.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Consumers\AIInterface\" />
+      <Folder Include="Messages\" />
     </ItemGroup>
 
 </Project>

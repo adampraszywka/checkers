@@ -1,11 +1,10 @@
-﻿using Domain.Chessboard;
+﻿using Contracts.Notification;
+using Domain.Chessboard;
 using Domain.Lobby;
 using Domain.Shared;
 using FluentResults;
 using MassTransit;
 using WebApi.Extensions;
-using WebApi.Messages.Notification;
-using WebApi.Repository;
 using WebApi.Service.Errors;
 
 namespace WebApi.Service;
