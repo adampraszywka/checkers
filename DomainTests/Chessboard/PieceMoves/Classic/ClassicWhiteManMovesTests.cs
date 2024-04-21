@@ -1,28 +1,19 @@
 ﻿using Domain.Chessboard;
-using Domain.Chessboard.Configurations.Classic;
 using Domain.Chessboard.PieceMoves.Classic;
-using Domain.Chessboard.Pieces;
-using Domain.Chessboard.Pieces.Classic;
 using Domain.Shared;
 using DomainTests.Chessboard.PieceMoves.Classic.TestData;
 using DomainTests.Chessboard.PieceMoves.Classic.TestData.Dto;
-using DomainTests.Chessboard.TestData;
 using DomainTests.Extensions;
 
 namespace DomainTests.Chessboard.PieceMoves.Classic;
 
 public class ClassicWhiteManMovesTests
 {
-    private readonly AllParticipants _participants = ParticipantTestData.Participants;
-
-    
     [Test]
     [TestCaseSource(typeof(WhiteManMovesForward))]
-    public void PossibleMovesNoOtherPieceInteractions(MoveForwardTestCase testCase)
+    public void PossibleMovesNoOtherPieceInteractions(PieceCaptureTestCase testCase)
     {
-        var piece = new Man("ID", Color.White);
-        var configuration = ClassicConfiguration.FromSnapshot(new[] {((Piece) piece, testCase.Source)});
-        var board = new GameBoard("ID", configuration, _participants.All);
+        var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
         var pieceMoves = new ClassicWhiteManMoves();
 
         var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
@@ -32,18 +23,12 @@ public class ClassicWhiteManMovesTests
 
     [Test]
     [TestCaseSource(typeof(WhiteManMovesForwardBlockingMoves))]
-    public void AnotherWhitePieceBlocks(BlockedMoveForwardTestCase testCase)
+    public void AnotherWhitePieceBlocks(PieceCaptureTestCase testCase)
     {
-        var piece1 = (Piece) new Man("ID", Color.White);
-        var pieces = new List<(Piece Piece, Position Position)> {(piece1, testCase.SourcePiece)};
-        var blockingPieces = testCase.BlockingPieces
-            .Select(x => ((Piece) new Man("ID", Color.White), x));
-
-        var configuration = ClassicConfiguration.FromSnapshot(pieces.Union(blockingPieces));
-        var board = new GameBoard("ID", configuration, _participants.All);
+        var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
         var pieceMoves = new ClassicWhiteManMoves();
 
-        var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
         MoveAssert.AreEqual(testCase.Moves, moves);
     }
@@ -53,56 +38,46 @@ public class ClassicWhiteManMovesTests
     [TestCaseSource(typeof(WhitePieceCapturesBackwardBlackPiecesTestCases))]
     public void WhitePieceCapturesBlackPieces(PieceCaptureTestCase testCase)
     {
-        var white = (Piece) new Man("W", Color.White);
-        var black = (Piece) new Man("B", Color.Black);
-        var piece = new List<(Piece Piece, Position Position)> {(white, testCase.SourcePiece)};
-        var capturedPieces = testCase.CapturedPieces.Select(x => (black, x));
-
-        var configuration = ClassicConfiguration.FromSnapshot(piece.Union(capturedPieces));
-        var board = new GameBoard("ID", configuration, _participants.All);
+        var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
         var pieceMoves = new ClassicWhiteManMoves();
 
-        var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
         MoveAssert.AreEqual(testCase.Moves, moves);
     }
 
     [Test]
     [TestCaseSource(typeof(WhitePieceForwardCaptureBlockedByAnotherPiece))]
-    public void WhitePieceCaptureForwardBlockedByDifferentPiece(PieceForwardCaptureBlockTestCase testCase)
+    public void WhitePieceCaptureForwardBlockedByDifferentPiece(PieceCaptureTestCase testCase)
     {
-        var white = (Piece) new Man("W", Color.White);
-        var black = (Piece) new Man("B", Color.Black);
-        var blockingPiece = (Piece) new Man("B", Color.Black);
-        var piece = new List<(Piece Piece, Position Position)> {(white, testCase.SourcePiece)};
-        var capturedPieces = testCase.CapturedPieces.Select(x => (black, x));
-        var blockingPieces = testCase.BlockingPieces.Select(x => (blockingPiece, x));
-
-        var configuration = ClassicConfiguration.FromSnapshot(piece.Union(capturedPieces).Union(blockingPieces));
-        var board = new GameBoard("ID", configuration, _participants.All);
+        var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
         var pieceMoves = new ClassicWhiteManMoves();
 
-        var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
         Assert.That(moves, Is.Empty);
     }
 
     [Test]
     [TestCaseSource(typeof(WhitePieceBackwardCaptureBlockedByAnotherPiece))]
-    public void WhitePieceCaptureBackwardBlockedByDifferentPiece(PieceBackwardCaptureBlockTestCase testCase)
+    public void WhitePieceCaptureBackwardBlockedByDifferentPiece(PieceCaptureTestCase testCase)
     {
-        var white = (Piece) new Man("W", Color.White);
-        var black = (Piece) new Man("B", Color.Black);
-        var blockingPiece = (Piece) new Man("B", Color.Black);
-        var piece = new List<(Piece Piece, Position Position)> {(white, testCase.SourcePiece)};
-        var capturedPieces = testCase.CapturedPieces.Select(x => (black, x));
-        var blockingPieces = testCase.BlockingPieces.Select(x => (blockingPiece, x));
-
-        var configuration = ClassicConfiguration.FromSnapshot(piece.Union(capturedPieces).Union(blockingPieces));
-        var board = new GameBoard("ID", configuration, _participants.All);
+        var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
         var pieceMoves = new ClassicWhiteManMoves();
 
-        var moves = pieceMoves.PossibleMoves(testCase.SourcePiece, board.Snapshot);
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
+
+        MoveAssert.AreEqual(testCase.Moves, moves);
+    }
+    
+    [Test]
+    [TestCaseSource(typeof(WhitePieceMultipleCapturesBlackPiecesTestCases))]
+    public void WhitePieceMultipleCaptures(PieceCaptureTestCase testCase)
+    {
+        var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
+        var pieceMoves = new ClassicWhiteManMoves();
+
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
         MoveAssert.AreEqual(testCase.Moves, moves);
     }
@@ -116,7 +91,7 @@ public class ClassicWhiteManMovesTests
     {
         var pieceMoves = new ClassicWhiteManMoves();
 
-        Assert.True(pieceMoves.UpgradeRequired(new Position(row, column)));
+        Assert.That(pieceMoves.UpgradeRequired(new Position(row, column)), Is.True);
     }
 
     [Test]
@@ -152,6 +127,6 @@ public class ClassicWhiteManMovesTests
     {
         var pieceMoves = new ClassicWhiteManMoves();
 
-        Assert.False(pieceMoves.UpgradeRequired(new Position(row, column)));
+        Assert.That(pieceMoves.UpgradeRequired(new Position(row, column)), Is.False);
     }
 }

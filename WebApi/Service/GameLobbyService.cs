@@ -1,11 +1,11 @@
-﻿using Domain.Chessboard;
+﻿using Contracts.Notification;
+using Domain.Chessboard;
 using Domain.Lobby;
 using Domain.Shared;
 using FluentResults;
 using MassTransit;
 using WebApi.Extensions;
-using WebApi.Messages.Notification;
-using WebApi.Repository;
+using WebApi.Players;
 using WebApi.Service.Errors;
 
 namespace WebApi.Service;
@@ -53,6 +53,29 @@ public class GameLobbyService(GameLobbyRepository lobbyRepository, BoardReposito
         if (result.IsFailed)
         {
             return Result.Fail(new LobbyJoinFailed(result.Errors));
+        }
+
+        await lobbyRepository.Save(lobby);
+        await LobbyUpdateNotification(lobby);
+
+        return Result.Ok(lobby);
+    }
+    
+    public async Task<Result<GameLobby>> AddAiPlayer(string lobbyId, string type)
+    {
+        var lobby = await lobbyRepository.Get(lobbyId);
+        if (lobby is null)
+        {
+            return Result.Fail(new LobbyNotFound(lobbyId));
+        }
+
+        var playerFactory = new PlayerFactory();
+        var guid = Guid.NewGuid().ToString();
+        var player = playerFactory.Create($"AI_{guid}", type);
+        var result = lobby.Join(player);
+        if (result.IsFailed)
+        {
+            return Result.Fail(new LobbyAddAiPlayerFailed(result.Errors));
         }
 
         await lobbyRepository.Save(lobby);

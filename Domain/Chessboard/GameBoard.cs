@@ -27,7 +27,7 @@ public class GameBoard : Board
         _pieceFactory = configuration.PieceFactory;
         _gameState = configuration.GameState;
         _squares = new Square[_boardSize.Rows, _boardSize.Columns];
-
+        
         for (var row = 0; row < _boardSize.Rows; row++)
         {
             for (var column = 0; column < _boardSize.Columns; column++)
@@ -119,6 +119,11 @@ public class GameBoard : Board
             return Result.Fail(new InvalidMoveOrder(_gameState.Snapshot.CurrentPlayer));
         }
 
+        // It may need to be changed later. It's not a most effective way to do it.
+        // Maybe that list could be generated in advance after each move?
+        // At least there are tests for it.
+        var movesForPlayer = FlatListOfPossibleMovesForPlayer(participant);
+        // It's done twice. Maybe it could be extracted from the list above in the future?
         var pieceMove = _pieceMoveFactory.For(piece);
         var possibleMoves = pieceMove.PossibleMoves(square.Position, Snapshot);
         var move = possibleMoves.FirstOrDefault(x => x.To == target);
@@ -126,6 +131,11 @@ public class GameBoard : Board
         if (move is null)
         {
             return Result.Fail(new MoveNotAllowed());
+        }
+
+        if (!movesForPlayer.Any(x => x.From == source && x.To == move.To))
+        {
+            return Result.Fail(new UnderperformingCaptureError(source, movesForPlayer.Select(x => x.To)));
         }
 
         foreach (var affectedSquarePosition in move.AffectedSquares)
@@ -151,6 +161,31 @@ public class GameBoard : Board
         _gameState.RegisterMove(piece, source, target);
 
         return Result.Ok();
+    }
+
+    private List<(Position From, Position To)> FlatListOfPossibleMovesForPlayer(Participant participant)
+    {
+        // Whole concept may need to be changed later. It's just a quick solution to make it work.
+        // It's covered by tests so it's safe to refactor it later.
+        var tmp = new List<(Position From, PossibleMove Move)>();
+        foreach (var s in _squares.Flatten().Where(x => x.IsOccupied && participant.CanMove(x.Piece)))
+        {
+            if (s.IsOccupied)
+            {
+                var p = s.Piece;
+                var pm = _pieceMoveFactory.For(p);
+                var pms = pm.PossibleMoves(s.Position, Snapshot);
+                tmp.AddRange(pms.Select(x => (s.Position, x)));
+            }
+        }
+        
+        var maxCapturedPieces = tmp.Max(x => x.Move.CapturedPieces);
+        var availableMoves = tmp
+            .Where(x => x.Move.CapturedPieces == maxCapturedPieces)
+            .Select(x => (x.From, x.Move.To))
+            .ToList();
+        
+        return availableMoves;
     }
 
     private BoardSnapshot GenerateSnapshot()

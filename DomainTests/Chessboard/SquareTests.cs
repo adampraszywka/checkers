@@ -97,7 +97,7 @@ public class SquareTests
     {
         var square = Square.FromCoordinates(new Position(0, 0));
 
-        Assert.IsFalse(square.IsOccupied);
+        Assert.That(square.IsOccupied, Is.False);
         Assert.Throws<InvalidOperationException>(() => _ = square.Piece);
     }
 

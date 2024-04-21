@@ -8,6 +8,6 @@ public record BoardSnapshot(BoardSize BoardSize, GameStateSnapshot GameState, Sq
 {
     public Piece? At(Position position)
     {
-        return position.IsWithinBoard(BoardSize) ? Squares[position.Row, position.Column].Piece : null;
+        return Squares[position.Row, position.Column].Piece;
     }
 }

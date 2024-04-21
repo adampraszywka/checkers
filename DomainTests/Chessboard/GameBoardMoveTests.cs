@@ -62,6 +62,41 @@ public class GameBoardMoveTests
     }
 
     [Test]
+    public void MoveNotAllowedDueToOtherPieceWithHigherCaptureCount()
+    {
+        var white = (Piece) new Man("W", Color.White);
+        var black = (Piece) new Man("W", Color.Black);
+
+        var configuration = ClassicConfiguration.FromSnapshot(new[]
+        {
+            (white, Position.A1), (black, Position.B2),
+            (white, Position.G1), (black, Position.F2), (black, Position.F4)
+            
+        });
+        var board = new GameBoard("ID", configuration, _participants.All);
+
+        var result = board.Move(_participants.White, Position.A1, Position.C3);
+
+        Assert.That(result.IsSuccess, Is.False);
+        Assert.That(result.HasError<UnderperformingCaptureError>());
+
+        var snapshot = board.Snapshot.ToTestSquares();
+        var expected = new[,]
+        {
+            {Empty,     Empty,      Empty,  Empty,      Empty,  Empty,      Empty,      Empty},
+            {Empty,     Empty,      Empty,  Empty,      Empty,  Empty,      Empty,      Empty},
+            {Empty,     Empty,      Empty,  Empty,      Empty,  Empty,      Empty,      Empty},
+            {Empty,     Empty,      Empty,  Empty,      Empty,  Empty,      Empty,      Empty},
+            {Empty,     Empty,      Empty,  Empty,      Empty,  BlackMan,   Empty,      Empty},
+            {Empty,     Empty,      Empty,  Empty,      Empty,  Empty,      Empty,      Empty},
+            {Empty,     BlackMan,   Empty,  Empty,      Empty,  BlackMan,   Empty,      Empty},
+            {WhiteMan,  Empty,      Empty,  Empty,      Empty,  Empty,      WhiteMan,   Empty}
+        };
+
+        BoardAssert.ReversedRowsEqualTo(expected, snapshot);
+    }
+
+    [Test]
     public void BlackPieceMoveNotAllowedDueToGameState()
     {
         var configuration = ClassicConfiguration.NewBoard();

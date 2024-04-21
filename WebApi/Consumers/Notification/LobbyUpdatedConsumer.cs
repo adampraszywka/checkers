@@ -1,8 +1,8 @@
-﻿using MassTransit;
+﻿using Contracts.Notification;
+using MassTransit;
 using Microsoft.AspNetCore.SignalR;
 using WebApi.Extensions;
 using WebApi.Hubs;
-using WebApi.Messages.Notification;
 using WebApi.Repository;
 
 namespace WebApi.Consumers.Notification;

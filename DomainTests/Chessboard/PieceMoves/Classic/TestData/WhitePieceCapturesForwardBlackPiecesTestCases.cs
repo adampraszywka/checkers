@@ -12,43 +12,43 @@ public class WhitePieceCapturesForwardBlackPiecesTestCases : IEnumerable
         //Row1
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.A1, CapturedPieces = new[] {P.B2},
+            Source = P.A1, Captured = new[] {P.B2},
             Moves = new[] {new PossibleMove(P.C3, new[] {P.B2}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.C1, CapturedPieces = new[] {P.D2},
+            Source = P.C1, Captured = new[] {P.D2},
             Moves = new[] {new PossibleMove(P.E3, new[] {P.D2}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.C1, CapturedPieces = new[] {P.B2},
+            Source = P.C1, Captured = new[] {P.B2},
             Moves = new[] {new PossibleMove(P.A3, new[] {P.B2}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.E1, CapturedPieces = new[] {P.D2},
+            Source = P.E1, Captured = new[] {P.D2},
             Moves = new[] {new PossibleMove(P.C3, new[] {P.D2}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.E1, CapturedPieces = new[] {P.F2},
+            Source = P.E1, Captured = new[] {P.F2},
             Moves = new[] {new PossibleMove(P.G3, new[] {P.F2}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.G1, CapturedPieces = new[] {P.F2, P.H2},
+            Source = P.G1, Captured = new[] {P.F2, P.H2},
             Moves = new[] {new PossibleMove(P.E3, new[] {P.F2}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.C1, CapturedPieces = new[] {P.B2, P.D2},
+            Source = P.C1, Captured = new[] {P.B2, P.D2},
             Moves = new[]
             {
                 new PossibleMove(P.A3, new[] {P.B2}, 1),
@@ -58,7 +58,7 @@ public class WhitePieceCapturesForwardBlackPiecesTestCases : IEnumerable
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.E1, CapturedPieces = new[] {P.D2, P.F2},
+            Source = P.E1, Captured = new[] {P.D2, P.F2},
             Moves = new[]
             {
                 new PossibleMove(P.C3, new[] {P.D2}, 1),
@@ -68,78 +68,78 @@ public class WhitePieceCapturesForwardBlackPiecesTestCases : IEnumerable
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.B2, CapturedPieces = new[] {P.C3, P.A3},
+            Source = P.B2, Captured = new[] {P.C3, P.A3},
             Moves = new[] {new PossibleMove(P.D4, new[] {P.C3}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.D2, CapturedPieces = new[] {P.C3},
+            Source = P.D2, Captured = new[] {P.C3},
             Moves = new[] {new PossibleMove(P.B4, new[] {P.C3}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.D2, CapturedPieces = new[] {P.E3},
+            Source = P.D2, Captured = new[] {P.E3},
             Moves = new[] {new PossibleMove(P.F4, new[] {P.E3}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.F2, CapturedPieces = new[] {P.E3},
+            Source = P.F2, Captured = new[] {P.E3},
             Moves = new[] {new PossibleMove(P.D4, new[] {P.E3}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.F2, CapturedPieces = new[] {P.G3},
+            Source = P.F2, Captured = new[] {P.G3},
             Moves = new[] {new PossibleMove(P.H4, new[] {P.G3}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.H2, CapturedPieces = new[] {P.G3},
+            Source = P.H2, Captured = new[] {P.G3},
             Moves = new[] {new PossibleMove(P.F4, new[] {P.G3}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.A3, CapturedPieces = new[] {P.B4},
+            Source = P.A3, Captured = new[] {P.B4},
             Moves = new[] {new PossibleMove(P.C5, new[] {P.B4}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.C3, CapturedPieces = new[] {P.B4},
+            Source = P.C3, Captured = new[] {P.B4},
             Moves = new[] {new PossibleMove(P.A5, new[] {P.B4}, 1)}
         };
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.C3, CapturedPieces = new[] {P.D4},
+            Source = P.C3, Captured = new[] {P.D4},
             Moves = new[] {new PossibleMove(P.E5, new[] {P.D4}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.E3, CapturedPieces = new[] {P.D4},
+            Source = P.E3, Captured = new[] {P.D4},
             Moves = new[] {new PossibleMove(P.C5, new[] {P.D4}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.E3, CapturedPieces = new[] {P.F4, P.H4},
+            Source = P.E3, Captured = new[] {P.F4, P.H4},
             Moves = new[] {new PossibleMove(P.G5, new[] {P.F4}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.G3, CapturedPieces = new[] {P.F4, P.F4},
+            Source = P.G3, Captured = new[] {P.F4, P.F4},
             Moves = new[] {new PossibleMove(P.E5, new[] {P.F4}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.C3, CapturedPieces = new[] {P.B4, P.D4},
+            Source = P.C3, Captured = new[] {P.B4, P.D4},
             Moves = new[]
             {
                 new PossibleMove(P.A5, new[] {P.B4}, 1),
@@ -149,7 +149,7 @@ public class WhitePieceCapturesForwardBlackPiecesTestCases : IEnumerable
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.E3, CapturedPieces = new[] {P.D4, P.F4},
+            Source = P.E3, Captured = new[] {P.D4, P.F4},
             Moves = new[]
             {
                 new PossibleMove(P.C5, new[] {P.D4}, 1),
@@ -159,76 +159,76 @@ public class WhitePieceCapturesForwardBlackPiecesTestCases : IEnumerable
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.B4, CapturedPieces = new[] {P.C5, P.A5},
+            Source = P.B4, Captured = new[] {P.C5, P.A5},
             Moves = new[] {new PossibleMove(P.D6, new[] {P.C5}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.D4, CapturedPieces = new[] {P.C5},
+            Source = P.D4, Captured = new[] {P.C5},
             Moves = new[] {new PossibleMove(P.B6, new[] {P.C5}, 1)}
         };
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.D4, CapturedPieces = new[] {P.E5},
+            Source = P.D4, Captured = new[] {P.E5},
             Moves = new[] {new PossibleMove(P.F6, new[] {P.E5}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.F4, CapturedPieces = new[] {P.E5},
+            Source = P.F4, Captured = new[] {P.E5},
             Moves = new[] {new PossibleMove(P.D6, new[] {P.E5}, 1)}
         };
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.F4, CapturedPieces = new[] {P.G5},
+            Source = P.F4, Captured = new[] {P.G5},
             Moves = new[] {new PossibleMove(P.H6, new[] {P.G5}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.H4, CapturedPieces = new[] {P.G5},
+            Source = P.H4, Captured = new[] {P.G5},
             Moves = new[] {new PossibleMove(P.F6, new[] {P.G5}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.A5, CapturedPieces = new[] {P.B6},
+            Source = P.A5, Captured = new[] {P.B6},
             Moves = new[] {new PossibleMove(P.C7, new[] {P.B6}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.C5, CapturedPieces = new[] {P.B6},
+            Source = P.C5, Captured = new[] {P.B6},
             Moves = new[] {new PossibleMove(P.A7, new[] {P.B6}, 1)}
         };
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.C5, CapturedPieces = new[] {P.D6},
+            Source = P.C5, Captured = new[] {P.D6},
             Moves = new[] {new PossibleMove(P.E7, new[] {P.D6}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.E5, CapturedPieces = new[] {P.D6},
+            Source = P.E5, Captured = new[] {P.D6},
             Moves = new[] {new PossibleMove(P.C7, new[] {P.D6}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.E5, CapturedPieces = new[] {P.F6},
+            Source = P.E5, Captured = new[] {P.F6},
             Moves = new[] {new PossibleMove(P.G7, new[] {P.F6}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.G5, CapturedPieces = new[] {P.F6, P.H6},
+            Source = P.G5, Captured = new[] {P.F6, P.H6},
             Moves = new[] {new PossibleMove(P.E7, new[] {P.F6}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.C5, CapturedPieces = new[] {P.B6, P.D6},
+            Source = P.C5, Captured = new[] {P.B6, P.D6},
             Moves = new[]
             {
                 new PossibleMove(P.A7, new[] {P.B6}, 1),
@@ -238,7 +238,7 @@ public class WhitePieceCapturesForwardBlackPiecesTestCases : IEnumerable
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.E5, CapturedPieces = new[] {P.D6, P.F6},
+            Source = P.E5, Captured = new[] {P.D6, P.F6},
             Moves = new[]
             {
                 new PossibleMove(P.C7, new[] {P.D6}, 1),
@@ -248,59 +248,59 @@ public class WhitePieceCapturesForwardBlackPiecesTestCases : IEnumerable
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.B6, CapturedPieces = new[] {P.C7, P.A7},
+            Source = P.B6, Captured = new[] {P.C7, P.A7},
             Moves = new[] {new PossibleMove(P.D8, new[] {P.C7}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.D6, CapturedPieces = new[] {P.C7},
+            Source = P.D6, Captured = new[] {P.C7},
             Moves = new[] {new PossibleMove(P.B8, new[] {P.C7}, 1)}
         };
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.D6, CapturedPieces = new[] {P.E7},
+            Source = P.D6, Captured = new[] {P.E7},
             Moves = new[] {new PossibleMove(P.F8, new[] {P.E7}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.F6, CapturedPieces = new[] {P.E7},
+            Source = P.F6, Captured = new[] {P.E7},
             Moves = new[] {new PossibleMove(P.D8, new[] {P.E7}, 1)}
         };
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.F6, CapturedPieces = new[] {P.G7},
+            Source = P.F6, Captured = new[] {P.G7},
             Moves = new[] {new PossibleMove(P.H8, new[] {P.G7}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.H6, CapturedPieces = new[] {P.G7},
+            Source = P.H6, Captured = new[] {P.G7},
             Moves = new[] {new PossibleMove(P.F8, new[] {P.G7}, 1)}
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.A7, CapturedPieces = new[] {P.B8},
+            Source = P.A7, Captured = new[] {P.B8},
             Moves = Enumerable.Empty<PossibleMove>()
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.C7, CapturedPieces = new[] {P.B8, P.D8},
+            Source = P.C7, Captured = new[] {P.B8, P.D8},
             Moves = Enumerable.Empty<PossibleMove>()
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.E7, CapturedPieces = new[] {P.D8, P.F8},
+            Source = P.E7, Captured = new[] {P.D8, P.F8},
             Moves = Enumerable.Empty<PossibleMove>()
         };
 
         yield return new PieceCaptureTestCase
         {
-            SourcePiece = P.G7, CapturedPieces = new[] {P.F8, P.H8},
+            Source = P.G7, Captured = new[] {P.F8, P.H8},
             Moves = Enumerable.Empty<PossibleMove>()
         };
     }

@@ -5,7 +5,8 @@ import {DashboardClientService} from "./dashboard-client.service";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {DashboardLobbyCreateComponent, ModalResult} from "../dashboard-lobby-create/dashboard-lobby-create.component";
+import {DashboardLobbyCreateComponent} from "../dashboard-lobby-create/dashboard-lobby-create.component";
+import {ModalResult} from "../../shared/result/modal-result";
 
 @Component({
   selector: 'app-dashboard',

@@ -1,4 +1,5 @@
-﻿using Domain.Chessboard;
+﻿using Contracts.Dto;
+using Domain.Chessboard;
 using WebApi.Dto.Response;
 
 namespace WebApi.Extensions;
