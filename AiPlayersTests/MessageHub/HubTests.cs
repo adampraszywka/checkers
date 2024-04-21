@@ -50,7 +50,8 @@ public class HubTests
         var message = result.Context.Message;
         Assert.Multiple(() =>
         {
-            Assert.That(message.participant, Is.EqualTo(ColorDto.Black));
+            Assert.That(message.Participant.Id, Is.EqualTo("AI_1"));
+            Assert.That(message.Participant.Color, Is.EqualTo(ColorDto.Black));
             Assert.That(message.Board.Columns, Is.EqualTo(board.Columns));
             Assert.That(message.Board.Rows, Is.EqualTo(board.Rows));
             Assert.That(message.Board.CurrentPlayer, Is.EqualTo(board.CurrentPlayer));
