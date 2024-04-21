@@ -1,6 +1,4 @@
-﻿using WebApi.Dto.Response;
-
-namespace Contracts.Dto;
+﻿namespace Contracts.Dto;
 
 public record BoardDto
 {

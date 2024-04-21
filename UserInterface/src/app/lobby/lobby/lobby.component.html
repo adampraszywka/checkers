@@ -42,7 +42,7 @@
 
           @if(lobby.status === LobbyStatus.WaitingForPlayers) {
             <div class="text-center">
-              <button class="btn btn-warning" disabled>Add AI Player</button>
+              <button class="btn btn-warning" (click)="onAddAiPlayer()">Add AI Player</button>
             </div>
           }
         </div>

@@ -1,4 +1,5 @@
-﻿using WebApi.Dto.Response;
+﻿using Contracts.Dto;
+using WebApi.Dto.Response;
 using WebApi.Extensions;
 
 namespace WebApiTests.Dto;

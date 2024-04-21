@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.SignalR;
 using WebApi.Dto;
 using WebApi.Extensions;
 using WebApi.Hubs.Extensions;
+using WebApi.Players;
+using WebApi.Results;
 using WebApi.Service;
 
 namespace WebApi.Hubs;
@@ -33,7 +35,7 @@ public class LobbyHub(GameLobbyService lobbyService) : Hub<LobbyHubClient>
         await Clients.Caller.LobbyUpdated(lobby.ToDto());
     }
 
-    public async Task<ActionResult<BoardDto>> Close()
+    public async Task<NullableActionResult<BoardDto>> Close()
     {
         var player = Context.Player();
         var lobbyId = Context.LobbyId();
@@ -46,15 +48,44 @@ public class LobbyHub(GameLobbyService lobbyService) : Hub<LobbyHubClient>
         var result = await lobbyService.Close(lobbyId, player);
         if (result.IsFailed)
         {
-            return ActionResult<BoardDto>.FromErrors(result.Errors);
+            return NullableActionResult<BoardDto>.FromErrors(result.Errors);
         }
 
         var board = result.Value;
-        return ActionResult<BoardDto>.Success(board.ToDto());
+        return NullableActionResult<BoardDto>.Success(board.ToDto());
     }
     
-    private static ActionResult<T> AuthError<T>() where T : class
+    public Task<IEnumerable<AiPlayer>> ListAiPlayers()
     {
-        return ActionResult<T>.Failed("Authorization error!");
+        return Task.FromResult(AiPlayers.List);
+    }
+
+    public async Task<NullableActionResult<GameLobbyDto>> AddAiPlayer(string aiPlayerType)
+    {
+        var lobbyId = Context.LobbyId();
+
+        // Not sure about auth here. 
+        // Maybe we should check here if caller belongs to the lobby
+        // on the other hand in the future lobby AI vs AI games could be possible
+        // then we should allow this action without checking the player
+        // TODO: Think about it
+        if (lobbyId is null)
+        {
+            return AuthError<GameLobbyDto>();
+        }
+
+        var result = await lobbyService.AddAiPlayer(lobbyId, aiPlayerType);
+        if (result.IsFailed)
+        {
+            return NullableActionResult<GameLobbyDto>.FromErrors(result.Errors);
+        }
+
+        var gameLobby = result.Value;
+        return NullableActionResult<GameLobbyDto>.Success(gameLobby.ToDto());
+    }
+    
+    private static NullableActionResult<T> AuthError<T>() where T : class
+    {
+        return NullableActionResult<T>.Failed("Authorization error!");
     }
 }

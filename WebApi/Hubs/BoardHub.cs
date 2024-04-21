@@ -5,6 +5,7 @@ using WebApi.Dto;
 using WebApi.Dto.Response;
 using WebApi.Extensions;
 using WebApi.Hubs.Extensions;
+using WebApi.Results;
 using WebApi.Service;
 
 namespace WebApi.Hubs;
@@ -35,7 +36,7 @@ public class BoardHub(BoardService boardService, ILogger<BoardHub> logger) : Hub
         await Clients.Caller.BoardUpdated(board.ToDto());
     }
     
-    public async Task<ActionResult<BoardDto>> Move(MoveDto move)
+    public async Task<NullableActionResult<BoardDto>> Move(MoveDto move)
     {
         var player = Context.Player();
         var boardId = Context.BoardId();
@@ -50,14 +51,14 @@ public class BoardHub(BoardService boardService, ILogger<BoardHub> logger) : Hub
         var boardResult = await boardService.Move(boardId, player, from, to);
         if (boardResult.IsFailed)
         {
-            return ActionResult<BoardDto>.FromErrors(boardResult.Errors);
+            return NullableActionResult<BoardDto>.FromErrors(boardResult.Errors);
         }
 
         var board = boardResult.Value;
-        return ActionResult<BoardDto>.Success(board.ToDto());
+        return NullableActionResult<BoardDto>.Success(board.ToDto());
     }
 
-    public async Task<ActionResult<IEnumerable<PossibleMove>>> PossibleMoves(PositionDto from)
+    public async Task<NullableActionResult<IEnumerable<PossibleMove>>> PossibleMoves(PositionDto from)
     {
         var player = Context.Player();
         var boardId = Context.BoardId();
@@ -71,15 +72,15 @@ public class BoardHub(BoardService boardService, ILogger<BoardHub> logger) : Hub
         var possibleMovesResult = await boardService.PossibleMoves(boardId, player, position);
         if (possibleMovesResult.IsFailed)
         {
-            return ActionResult<IEnumerable<PossibleMove>>.FromErrors(possibleMovesResult.Errors);
+            return NullableActionResult<IEnumerable<PossibleMove>>.FromErrors(possibleMovesResult.Errors);
         }
 
         var possibleMoves = possibleMovesResult.Value;
-        return ActionResult<IEnumerable<PossibleMove>>.Success(possibleMoves);
+        return NullableActionResult<IEnumerable<PossibleMove>>.Success(possibleMoves);
     }
     
-    private static ActionResult<T> AuthError<T>() where T : class
+    private static NullableActionResult<T> AuthError<T>() where T : class
     {
-        return ActionResult<T>.Failed("Authorization error!");
+        return NullableActionResult<T>.Failed("Authorization error!");
     }
 }

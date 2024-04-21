@@ -1,10 +1,10 @@
-﻿using Domain.Lobby;
+﻿using Contracts.Players;
+using Domain.Lobby;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Dto.Request;
 using WebApi.Dto.Response;
 using WebApi.Extensions;
-using WebApi.Players;
 using WebApi.Repository;
 using WebApi.Service;
 

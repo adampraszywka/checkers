@@ -7,6 +7,7 @@ using WebApi.Dto.Response;
 using WebApi.Extensions;
 using WebApi.Hubs.Extensions;
 using WebApi.Repository;
+using WebApi.Results;
 using WebApi.Service;
 
 namespace WebApi.Hubs;
@@ -26,7 +27,7 @@ public class DashboardHub(GameLobbyService lobbyService, GameLobbyListRepository
         await Clients.Caller.LobbiesUpdated(lobbies.ToDto());
     }
 
-    public async Task<ActionResult<GameLobbyDto>> CreateLobby(string lobbyName)
+    public async Task<NullableActionResult<GameLobbyDto>> CreateLobby(string lobbyName)
     {
         var player = Context.Player();
         if (player is null)
@@ -38,7 +39,7 @@ public class DashboardHub(GameLobbyService lobbyService, GameLobbyListRepository
         return HandleResult(result);
     }
 
-    public async Task<ActionResult<GameLobbyDto>> JoinLobby(string lobbyId)
+    public async Task<NullableActionResult<GameLobbyDto>> JoinLobby(string lobbyId)
     {
         var player = Context.Player();
         if (player is null)
@@ -50,18 +51,18 @@ public class DashboardHub(GameLobbyService lobbyService, GameLobbyListRepository
         return HandleResult(result);
     }
 
-    private static ActionResult<GameLobbyDto> HandleResult(Result<GameLobby> result)
+    private static NullableActionResult<GameLobbyDto> HandleResult(Result<GameLobby> result)
     {
         if (result.IsFailed)
         {
-            return ActionResult<GameLobbyDto>.FromErrors(result.Errors);
+            return NullableActionResult<GameLobbyDto>.FromErrors(result.Errors);
         }
 
-        return ActionResult<GameLobbyDto>.Success(result.Value.ToDto());
+        return NullableActionResult<GameLobbyDto>.Success(result.Value.ToDto());
     }
     
-    private static ActionResult<T> AuthError<T>() where T : class
+    private static NullableActionResult<T> AuthError<T>() where T : class
     {
-        return ActionResult<T>.Failed("Authorization error!");
+        return NullableActionResult<T>.Failed("Authorization error!");
     }
 }

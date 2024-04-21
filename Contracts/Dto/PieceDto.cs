@@ -1,5 +1,4 @@
-﻿
-namespace Contracts.Dto;
+﻿namespace Contracts.Dto;
 
 public class PieceDto
 {

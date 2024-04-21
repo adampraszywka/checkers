@@ -1,8 +1,12 @@
+using AIPlayers.MessageHub;
+using AIPlayers.Players.Dummy;
 using Domain.Chessboard;
 using Domain.Lobby;
 using MassTransit;
+using WebApi.Consumers.AIInterface;
 using WebApi.Consumers.Notification;
 using WebApi.Hubs;
+using WebApi.Players;
 using WebApi.Repository;
 using WebApi.Repository.InMemory;
 using WebApi.Service;
@@ -20,6 +24,7 @@ builder.Services.AddSingleton<InMemoryGameLobbyRepository>();
 builder.Services.AddTransient<GameLobbyRepository>(x => x.GetRequiredService<InMemoryGameLobbyRepository>());
 builder.Services.AddTransient<GameLobbyListRepository>(x => x.GetRequiredService<InMemoryGameLobbyRepository>());
 
+builder.Services.AddScoped<PlayerFactory>();
 builder.Services.AddScoped<BoardService>();
 builder.Services.AddScoped<GameLobbyService>();
 
@@ -27,6 +32,9 @@ builder.Services.AddMassTransit(m =>
 {
     m.AddConsumer<LobbyUpdatedConsumer>();
     m.AddConsumer<BoardUpdatedConsumer>();
+    m.AddConsumer<MoveRequestedConsumer>();
+    m.AddConsumer<AiDummyPlayerConsumer>();
+    m.AddConsumer<Hub>();
     
     m.UsingInMemory((context, cfg) =>
     {

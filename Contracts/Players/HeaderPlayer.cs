@@ -1,13 +1,13 @@
 ﻿using Domain.Shared;
 
-namespace WebApi.Players;
+namespace Contracts.Players;
 
 public record HeaderPlayer : Player
 {
+    public const string TypeValue = "API";
     public const string HeaderName = "PlayerId";
-
     public string Id { get; }
-    public string Type => "API";
+    public string Type => TypeValue;
 
     public HeaderPlayer(string id)
     {

@@ -1,3 +1,3 @@
-﻿namespace WebApi.Dto.Response;
+﻿namespace Contracts.Dto;
 
 public record PositionDto(int Row, int Column);
