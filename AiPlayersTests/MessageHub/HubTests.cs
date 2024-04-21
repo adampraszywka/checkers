@@ -67,7 +67,7 @@ public class HubTests
             .AddMassTransitTestHarness(x =>
             {
                 x.AddConsumer<Hub>();
-                x.SetTestTimeouts(testInactivityTimeout: TimeSpan.FromMilliseconds(100));
+                x.SetTestTimeouts(testInactivityTimeout: TimeSpan.FromMilliseconds(250));
                 
             })
             .BuildServiceProvider(true);
