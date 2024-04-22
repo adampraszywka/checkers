@@ -8,8 +8,8 @@ Current version is available under: [https://thankful-bay-00e121503.5.azurestati
 
 CI/CD process deploys latest version after each commit to main branch.
 
-Preview version is hosted on free Azure App Service Plan. I needs some time to warmup. First request may be a bit slow.
-### Requirementsp
+Preview version is hosted on free Azure App Service Plan. It needs some time to warmup. First request may be a bit slow.
+### Requirements
 - .NET8 SDK
 - Node.js 20.9.0+
 
@@ -25,7 +25,7 @@ Start WebAPI project by the following commands:
 cd WebAPI
 dotnet run
 ```
-By default WebAPI binds to localhost:5125
+By default, WebAPI binds to localhost:5125
 
 #### UI
 
@@ -37,7 +37,12 @@ npm install
 npm run start
 ```
 
-By default Angular development server binds to localhost:4200 and its connected with API running on localhost:5125.
+By default, Angular development server binds to localhost:4200, and it's connected with API running on localhost:5125.
+
+
+### How to write your own AI player
+[TBD]
+
 
 ### Plan
 
@@ -47,16 +52,17 @@ By default Angular development server binds to localhost:4200 and its connected 
 - [X] basic implementation of Man piece moves
 - [ ] basic implementation of King piece moves
 - [X] board UI PoC
-- [ ] in-memory game state storage
-- [ ] game log
+- [X] in-memory game state storage
+- [X] game log
 - [ ] persistent game state storage
-- [ ] use SignalR for Board UI <-> Board API communication
-- [ ] implementation of complex Man piece moves
+- [X] use SignalR for Board UI <-> Board API communication
+- [X] implementation of complex Man piece moves
 - [ ] implementation of complex King piece moves
-- [ ] game flow control (player moves, )
-- [ ] PvP using two different devices/browsers
-- [ ] game lobby
-- [ ] interface for AI driven players
+- [X] game flow control (player moves)
+- [X] PvP using two different devices/browsers
+- [X] game lobby
+- [X] interface for AI driven players
+- [ ] documentation how to write your own AI player
 - [ ] algorithm driven AI player
 - [ ] LLM(s) driven AI player (it may be not the best option but might be funny)
 
