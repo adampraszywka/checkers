@@ -77,8 +77,13 @@ public class GameLobbyService(GameLobbyRepository lobbyRepository, BoardReposito
 
         var playerFactory = new PlayerFactory();
         var guid = Guid.NewGuid().ToString();
-        var player = playerFactory.Create($"AI_{guid}", type);
-        var result = lobby.Join(player);
+        var playerResult = playerFactory.Create($"AI_{guid}", type);
+        if (playerResult.IsFailed)
+        {
+            return Result.Fail(new LobbyAddAiPlayerFailed(playerResult.Errors));
+        }
+        
+        var result = lobby.Join(playerResult.Value);
         if (result.IsFailed)
         {
             return Result.Fail(new LobbyAddAiPlayerFailed(result.Errors));

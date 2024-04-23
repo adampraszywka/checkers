@@ -7,11 +7,12 @@ import {Color} from "../../shared/dto/piece.interface";
 import {ModalResult} from "../../shared/result/modal-result";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {LobbyAddAiPlayerComponent} from "../lobby-add-ai-player/lobby-add-ai-player.component";
+import {ToastrModule, ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-lobby',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ToastrModule],
   providers: [
     LobbyClientService
   ],
@@ -25,14 +26,17 @@ export class LobbyComponent implements OnInit {
   protected readonly LobbyStatus = LobbyStatus;
   protected readonly Color = Color;
 
-  constructor(private readonly client: LobbyClientService, private readonly router: Router, private readonly modal: NgbModal) {}
+  constructor(
+    private readonly client: LobbyClientService,
+    private readonly router: Router,
+    private readonly modal: NgbModal,
+    private readonly toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.client.initialize(this.lobbyId);
     this.client.lobbyUpdatedRequested$.subscribe(x => {
-      console.log(x);
       if (x.status === LobbyStatus.Closed && x.boardId !== null) {
-        this.router.navigate(['board/' + x.boardId])
+        this.router.navigate(['board/' + x.boardId]).then()
       } else {
         this.lobby = x;
       }
@@ -41,7 +45,9 @@ export class LobbyComponent implements OnInit {
 
   onClose() {
     this.client.close().then(x => {
-      console.log(x);
+      if (!x.isSuccessful) {
+        this.toastr.error(x.errorMessage, 'Failed to close lobby');
+      }
     });
   }
 
@@ -52,12 +58,16 @@ export class LobbyComponent implements OnInit {
       component.aiPlayers = x;
 
       modalRef.result.then((x: ModalResult) => {
-        console.log(x)
         if (!x.isFinalized) {
           return;
         }
 
         this.client.addAiPlayer(x.value).then(x => {
+          if (!x.isSuccessful) {
+            this.toastr.error(x.errorMessage, 'Failed to add AI player');
+            return;
+          }
+
           this.lobby = x.value;
         })
       });

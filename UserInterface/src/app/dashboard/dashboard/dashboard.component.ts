@@ -7,11 +7,12 @@ import {Router} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {DashboardLobbyCreateComponent} from "../dashboard-lobby-create/dashboard-lobby-create.component";
 import {ModalResult} from "../../shared/result/modal-result";
+import {ToastrModule, ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ToastrModule],
   providers: [
     {provide: DashboardClientService}
   ],
@@ -26,7 +27,8 @@ export class DashboardComponent implements OnDestroy {
   constructor(
     private readonly clientService: DashboardClientService,
     private readonly router: Router,
-    private readonly modal: NgbModal) {
+    private readonly modal: NgbModal,
+    private readonly toastr: ToastrService) {
     this.lobbiesUpdatedSubscription = clientService.lobbiesUpdatedRequested$.subscribe(x => this.lobbies = x);
   }
 
@@ -35,7 +37,10 @@ export class DashboardComponent implements OnDestroy {
       if (!x.isSuccessful) {
         if (x.errorCode === 'LOBBY_JOIN_FAILED_PLAYER_ALREADY_IN_THE_LOBBY') {
           this.router.navigate(['lobby/' + id]).then();
+          return;
         }
+
+        this.toastr.error(x.errorMessage, 'Failed to join lobby');
       } else {
         const lobbyId = x.value.id;
         this.router.navigate(['lobby/' + lobbyId]).then();
@@ -50,6 +55,11 @@ export class DashboardComponent implements OnDestroy {
       }
 
       this.clientService.createLobby(x.value).then(x => {
+        if (!x.isSuccessful) {
+          this.toastr.error(x.errorMessage, 'Failed to create lobby');
+          return;
+        }
+
         const lobbyId = x.value.id;
         this.router.navigate(['lobby/' + lobbyId]).then()
       })
