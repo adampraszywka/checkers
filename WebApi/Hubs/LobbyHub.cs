@@ -1,6 +1,5 @@
 ﻿using Contracts.Dto;
 using Microsoft.AspNetCore.SignalR;
-using WebApi.Dto;
 using WebApi.Extensions;
 using WebApi.Hubs.Extensions;
 using WebApi.Players;
@@ -11,6 +10,10 @@ namespace WebApi.Hubs;
 
 public class LobbyHub(GameLobbyService lobbyService) : Hub<LobbyHubClient>
 {
+    private const string ClosedFailed = "LOBBY_CLOSED_FAILED";
+    private const string AddAiPlayerFailed = "LOBBY_ADD_AI_PLAYER_FAILED";
+    private const string AuthorizationError = "AUTHORIZATION_ERROR";
+    
     public override async Task OnConnectedAsync()
     {
         var player = Context.Player();
@@ -48,7 +51,7 @@ public class LobbyHub(GameLobbyService lobbyService) : Hub<LobbyHubClient>
         var result = await lobbyService.Close(lobbyId, player);
         if (result.IsFailed)
         {
-            return NullableActionResult<BoardDto>.FromErrors(result.Errors);
+            return NullableActionResult<BoardDto>.FromErrors(result.Errors, ClosedFailed);
         }
 
         var board = result.Value;
@@ -77,7 +80,7 @@ public class LobbyHub(GameLobbyService lobbyService) : Hub<LobbyHubClient>
         var result = await lobbyService.AddAiPlayer(lobbyId, aiPlayerType);
         if (result.IsFailed)
         {
-            return NullableActionResult<GameLobbyDto>.FromErrors(result.Errors);
+            return NullableActionResult<GameLobbyDto>.FromErrors(result.Errors, AddAiPlayerFailed);
         }
 
         var gameLobby = result.Value;
@@ -86,6 +89,6 @@ public class LobbyHub(GameLobbyService lobbyService) : Hub<LobbyHubClient>
     
     private static NullableActionResult<T> AuthError<T>() where T : class
     {
-        return NullableActionResult<T>.Failed("Authorization error!");
+        return NullableActionResult<T>.Failed("Authorization error!", AuthorizationError);
     }
 }

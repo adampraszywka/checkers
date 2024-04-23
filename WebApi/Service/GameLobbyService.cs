@@ -1,6 +1,7 @@
 ﻿using Contracts.Notification;
 using Domain.Chessboard;
 using Domain.Lobby;
+using Domain.Lobby.Errors;
 using Domain.Shared;
 using FluentResults;
 using MassTransit;
@@ -50,6 +51,11 @@ public class GameLobbyService(GameLobbyRepository lobbyRepository, BoardReposito
         }
 
         var result = lobby.Join(player);
+        if (result.HasError<PlayerAlreadyJoined>())
+        {
+            return Result.Fail(new LobbyJoinFailedPlayerAlreadyInLobby());
+        }
+        
         if (result.IsFailed)
         {
             return Result.Fail(new LobbyJoinFailed(result.Errors));
@@ -71,8 +77,13 @@ public class GameLobbyService(GameLobbyRepository lobbyRepository, BoardReposito
 
         var playerFactory = new PlayerFactory();
         var guid = Guid.NewGuid().ToString();
-        var player = playerFactory.Create($"AI_{guid}", type);
-        var result = lobby.Join(player);
+        var playerResult = playerFactory.Create($"AI_{guid}", type);
+        if (playerResult.IsFailed)
+        {
+            return Result.Fail(new LobbyAddAiPlayerFailed(playerResult.Errors));
+        }
+        
+        var result = lobby.Join(playerResult.Value);
         if (result.IsFailed)
         {
             return Result.Fail(new LobbyAddAiPlayerFailed(result.Errors));

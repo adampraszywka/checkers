@@ -16,7 +16,7 @@ public class MoveRequestedConsumer(BoardService boardService, PlayerFactory play
         var from = message.Move.From.ToPosition();
         var to = message.Move.To.ToPosition();
 
-        var result = await boardService.Move(message.BoardId, player, from, to);
+        var result = await boardService.Move(message.BoardId, player.Value, from, to);
         if (result.IsFailed)
         {
             var msg = new MoveFailed(result.Errors.Select(x => x.Message));

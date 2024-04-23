@@ -65,12 +65,13 @@ export class BoardService {
         }
       }
 
-      this.selectedSquare = square;
-      this.squareHighlightChangeRequestedSource.next({position: square.position, type: Highlight.Selected});
+
 
       this.clientService.possibleMoves(square.position).subscribe({
         next: x => {
           if (x.isSuccessful) {
+            this.selectedSquare = square;
+            this.squareHighlightChangeRequestedSource.next({position: square.position, type: Highlight.Selected});
             this.possibleMoves = x.value;
             for (const move of x.value) {
               this.squareHighlightChangeRequestedSource.next({position: move.to, type: Highlight.Target});
