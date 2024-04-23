@@ -4,7 +4,7 @@ import {Lobby, LobbyStatus} from "../../shared/dto/lobby.interface";
 import {DashboardClientService} from "./dashboard-client.service";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbAlert, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {DashboardLobbyCreateComponent} from "../dashboard-lobby-create/dashboard-lobby-create.component";
 import {ModalResult} from "../../shared/result/modal-result";
 import {ToastrModule, ToastrService} from "ngx-toastr";
@@ -12,7 +12,7 @@ import {ToastrModule, ToastrService} from "ngx-toastr";
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, ToastrModule],
+  imports: [CommonModule, ToastrModule, NgbAlert],
   providers: [
     {provide: DashboardClientService}
   ],
