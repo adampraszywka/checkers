@@ -1,6 +1,7 @@
 ﻿using Contracts.Notification;
 using Domain.Chessboard;
 using Domain.Lobby;
+using Domain.Lobby.Errors;
 using Domain.Shared;
 using FluentResults;
 using MassTransit;
@@ -50,6 +51,11 @@ public class GameLobbyService(GameLobbyRepository lobbyRepository, BoardReposito
         }
 
         var result = lobby.Join(player);
+        if (result.HasError<PlayerAlreadyJoined>())
+        {
+            return Result.Fail(new LobbyJoinFailedPlayerAlreadyInLobby());
+        }
+        
         if (result.IsFailed)
         {
             return Result.Fail(new LobbyJoinFailed(result.Errors));

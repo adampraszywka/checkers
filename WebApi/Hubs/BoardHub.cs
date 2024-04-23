@@ -1,8 +1,6 @@
 ﻿using Contracts.Dto;
 using Domain.Chessboard.PieceMoves;
 using Microsoft.AspNetCore.SignalR;
-using WebApi.Dto;
-using WebApi.Dto.Response;
 using WebApi.Extensions;
 using WebApi.Hubs.Extensions;
 using WebApi.Results;
@@ -12,6 +10,10 @@ namespace WebApi.Hubs;
 
 public class BoardHub(BoardService boardService, ILogger<BoardHub> logger) : Hub<BoardHubClient>
 {
+    private const string MoveFailed = "BOARD_MOVE_FAILED";
+    private const string PossibleMovesFailed = "BOARD_POSSIBLE_MOVES_FAILED";
+    private const string AuthorizationError = "AUTHORIZATION_ERROR";
+
     public override async Task OnConnectedAsync()
     {
         var player = Context.Player();
@@ -51,7 +53,7 @@ public class BoardHub(BoardService boardService, ILogger<BoardHub> logger) : Hub
         var boardResult = await boardService.Move(boardId, player, from, to);
         if (boardResult.IsFailed)
         {
-            return NullableActionResult<BoardDto>.FromErrors(boardResult.Errors);
+            return NullableActionResult<BoardDto>.FromErrors(boardResult.Errors, MoveFailed);
         }
 
         var board = boardResult.Value;
@@ -72,7 +74,7 @@ public class BoardHub(BoardService boardService, ILogger<BoardHub> logger) : Hub
         var possibleMovesResult = await boardService.PossibleMoves(boardId, player, position);
         if (possibleMovesResult.IsFailed)
         {
-            return NullableActionResult<IEnumerable<PossibleMove>>.FromErrors(possibleMovesResult.Errors);
+            return NullableActionResult<IEnumerable<PossibleMove>>.FromErrors(possibleMovesResult.Errors, PossibleMovesFailed);
         }
 
         var possibleMoves = possibleMovesResult.Value;
@@ -81,6 +83,6 @@ public class BoardHub(BoardService boardService, ILogger<BoardHub> logger) : Hub
     
     private static NullableActionResult<T> AuthError<T>() where T : class
     {
-        return NullableActionResult<T>.Failed("Authorization error!");
+        return NullableActionResult<T>.Failed("Authorization error!", AuthorizationError);
     }
 }

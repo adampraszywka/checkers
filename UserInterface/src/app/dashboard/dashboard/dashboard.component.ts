@@ -32,8 +32,14 @@ export class DashboardComponent implements OnDestroy {
 
   joinLobby(id: string) {
     this.clientService.join(id).then(x => {
-      const lobbyId = x.value.id;
-      this.router.navigate(['lobby/' + lobbyId])
+      if (!x.isSuccessful) {
+        if (x.errorCode === 'LOBBY_JOIN_FAILED_PLAYER_ALREADY_IN_THE_LOBBY') {
+          this.router.navigate(['lobby/' + id]).then();
+        }
+      } else {
+        const lobbyId = x.value.id;
+        this.router.navigate(['lobby/' + lobbyId]).then();
+      }
     })
   }
 
@@ -45,7 +51,7 @@ export class DashboardComponent implements OnDestroy {
 
       this.clientService.createLobby(x.value).then(x => {
         const lobbyId = x.value.id;
-        this.router.navigate(['lobby/' + lobbyId])
+        this.router.navigate(['lobby/' + lobbyId]).then()
       })
     });
   }
