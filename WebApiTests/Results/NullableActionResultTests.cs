@@ -23,7 +23,7 @@ public class NullableActionResultTests
         Assert.That(result.IsSuccessful, Is.False);
         Assert.That(result.Value, Is.Null);
         Assert.That(result.ErrorMessage, Is.EqualTo("Failed!"));
-        Assert.That(result.ErrorCode, Is.EqualTo("coode"));
+        Assert.That(result.ErrorCode, Is.EqualTo("code"));
     }
     
     [Test]
