@@ -63,8 +63,9 @@ By default, Angular development server binds to localhost:4200, and it's connect
 - [X] game lobby
 - [X] interface for AI driven players
 - [ ] documentation how to write your own AI player
-- [ ] algorithm driven AI player
 - [ ] LLM(s) driven AI player (it may be not the best option but might be funny)
+- [ ] visualize conversation between BOT and LLM
+- [ ] algorithm driven AI player
 
 ### Future plans
 
