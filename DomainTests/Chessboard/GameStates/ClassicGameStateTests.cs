@@ -1,5 +1,4 @@
 ﻿using Domain.Chessboard.GameStates;
-using Domain.Chessboard.Pieces;
 using Domain.Chessboard.Pieces.Classic;
 using Domain.Shared;
 using P = Domain.Chessboard.Position;
