@@ -1,5 +1,11 @@
 <div class="container" *ngIf="board !== null">
+  <div class="row mb-5">
 
+    <ngb-alert type="info">
+      Check out the new debug window for AI Player!
+      It might not be perfect, but it gives you a glimpse of what's going on under the hood. Click <a href="/aistatus/{{boardId}}" target="_blank">here</a> to give it a try and unravel the mysteries of AI!
+    </ngb-alert>
+  </div>
   <div class="row">
     <div class="col-9">
       <div [ngClass]="board.playerColor === Color.Black ? 'rotated' : ''">

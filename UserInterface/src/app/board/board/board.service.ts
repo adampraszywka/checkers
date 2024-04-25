@@ -65,8 +65,6 @@ export class BoardService {
         }
       }
 
-
-
       this.clientService.possibleMoves(square.position).subscribe({
         next: x => {
           if (x.isSuccessful) {

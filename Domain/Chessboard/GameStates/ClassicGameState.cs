@@ -15,6 +15,11 @@ public class ClassicGameState : GameState
 
     public static ClassicGameState New => new(Enumerable.Empty<Move>());
 
+    public static ClassicGameState FromSnapshot(IEnumerable<Move> log)
+    {
+        return new ClassicGameState(log);
+    }
+
     public GameStateSnapshot Snapshot => CreateSnapshot();
 
     public bool IsMoveAllowed(Piece piece)
@@ -27,16 +32,17 @@ public class ClassicGameState : GameState
         _log.Add(new Move(piece, source, target));
     }
 
-    public static ClassicGameState FromSnapshot(IEnumerable<Move> log)
-    {
-        return new ClassicGameState(log);
-    }
-
     private Color GetCurrentPlayerColor()
     {
-        if (_log.Count == 0) return Color.White;
+        if (_log.Count == 0)
+        {
+            return Color.White;
+        }
 
-        if (_log.Last().Piece.Color == Color.White) return Color.Black;
+        if (_log.Last().Piece.Color == Color.White)
+        {
+            return Color.Black;
+        }
 
         return Color.White;
     }
