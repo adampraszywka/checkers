@@ -6,11 +6,12 @@ import {ToastrModule, ToastrService} from "ngx-toastr";
 import {Board} from "../../shared/dto/board.interface";
 import {Color, Type} from "../../shared/dto/piece.interface";
 import {BoardData} from "../dto/board-data.interface";
+import {NgbAlert} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [CommonModule, SquareComponent, ToastrModule],
+    imports: [CommonModule, SquareComponent, ToastrModule, NgbAlert],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
   providers: [

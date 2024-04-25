@@ -4,14 +4,24 @@ using Contracts.Dto;
 using Contracts.Players;
 using MassTransit;
 using Microsoft.Extensions.Logging;
+using Status = Contracts.AiPlayers.AiPlayerStatus;
 
 namespace AIPlayers.Players.Dummy;
 
 public class AiDummyPlayerConsumer(
     IRequestClient<MoveRequested> moveClient, 
+    IPublishEndpoint publishEndpoint,
     ILogger<AiDummyPlayerConsumer> logger) : IConsumer<DummyPlayerGameProgressChanged>
 {
+    private readonly List<Status> _statusUpdates = new();
+    
     public async Task Consume(ConsumeContext<DummyPlayerGameProgressChanged> context)
+    {
+        await HandleMessage(context);
+        await SendStatusNotification(context.Message.Board.Id);
+    }
+
+    private async Task HandleMessage(ConsumeContext<DummyPlayerGameProgressChanged> context)
     {
         var message = context.Message;
         var board = message.Board;
@@ -30,8 +40,7 @@ public class AiDummyPlayerConsumer(
             .OrderByDescending(x => x.Position.Row);
         
         var player = new PlayerDto(playerId, AIDummyPlayer.TypeValue);
-
-
+        
         foreach (var piece in piecesToMove)
         {
             var position = piece.Position;
@@ -49,9 +58,12 @@ public class AiDummyPlayerConsumer(
 
                 var e = new MoveRequested(board.Id, player, move);
                 var response = await moveClient.GetResponse<MoveSucceeded, MoveFailed>(e);
-        
+
+                _statusUpdates.Add(Status.Command("API", $"Move from {position.ToCoordinates()} to {newPosition.ToCoordinates()}"));
+                
                 if (response.Is<MoveSucceeded>(out _))
                 {
+                    _statusUpdates.Add(Status.Result("API", $"Move from {position.ToCoordinates()} to {newPosition.ToCoordinates()} successful"));
                     logger.LogInformation(
                         "AI player {PlayerId} moved piece on board {BoardId} from {Position} to {NewPosition}", 
                         playerId, 
@@ -63,6 +75,7 @@ public class AiDummyPlayerConsumer(
 
                 if (response.Is<MoveFailed>(out var moveFailed))
                 {
+                    _statusUpdates.Add(Status.Result("API", $"Move from {position.ToCoordinates()} to {newPosition.ToCoordinates()} failed: {moveFailed.Message.ErrorMessages.First()}"));
                     logger.LogWarning("AI player {PlayerId} failed to move piece on board {BoardId} from {Position} to {NewPosition}. Reason: {Reason}",
                         playerId,
                         board.Id,
@@ -73,10 +86,10 @@ public class AiDummyPlayerConsumer(
             }
             
         }
-        
-     
-        
-        
+    }
 
+    private async Task SendStatusNotification(string boardId)
+    {
+        await publishEndpoint.Publish(new AiPlayerStatusUpdated(boardId, _statusUpdates));
     }
 }

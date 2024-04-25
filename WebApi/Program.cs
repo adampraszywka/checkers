@@ -34,6 +34,7 @@ builder.Services.AddMassTransit(m =>
     m.AddConsumer<BoardUpdatedConsumer>();
     m.AddConsumer<MoveRequestedConsumer>();
     m.AddConsumer<AiDummyPlayerConsumer>();
+    m.AddConsumer<AiPlayerStatusUpdatedConsumer>();
     m.AddConsumer<Hub>();
     
     m.UsingInMemory((context, cfg) =>
@@ -64,6 +65,7 @@ app.MapGet("/ping", () => new {Result = "pong"});
 app.MapHub<DashboardHub>("/hub_dashboard");
 app.MapHub<BoardHub>("/hub_board");
 app.MapHub<LobbyHub>("/hub_lobby");
+app.MapHub<AiStatusHub>("/hub_aistatus");
 app.MapControllers();
 app.UseCors(devCors);
 app.Run();
