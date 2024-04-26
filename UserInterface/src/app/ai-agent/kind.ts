@@ -1,3 +1,3 @@
 ﻿export enum Kind {
-  Command = 0, Result= 1
+  Command = 0, ResultSuccessful = 1, ResultFailed = 2
 }
