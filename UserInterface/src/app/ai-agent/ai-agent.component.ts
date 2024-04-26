@@ -3,11 +3,15 @@ import {AiStatusClient} from "./ai-status-client.service";
 import {Color, Type} from "../shared/dto/piece.interface";
 import {Kind} from "./kind";
 import {AiPlayerStatus} from "./ai-player-status.interface";
+import {DatePipe, NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-ai-agent[boardId]',
   standalone: true,
-  imports: [],
+  imports: [
+    DatePipe,
+    NgClass
+  ],
   providers: [
     {provide: AiStatusClient }
   ],
@@ -33,6 +37,18 @@ export class AiAgentComponent implements OnInit {
     this.clientService.initialize(this.boardId);
   }
 
+  public badgeClass(kind: Kind): string {
+    switch(kind) {
+      case Kind.Command:
+        return 'badge bg-primary';
+      case Kind.ResultFailed:
+        return 'badge bg-danger';
+      case Kind.ResultSuccessful:
+        return 'badge bg-success';
+      default:
+        return 'badge badge-secondary';
+    }
+  }
 
   protected readonly Type = Type;
   protected readonly Color = Color;

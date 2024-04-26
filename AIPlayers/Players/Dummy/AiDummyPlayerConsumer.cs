@@ -63,7 +63,7 @@ public class AiDummyPlayerConsumer(
                 
                 if (response.Is<MoveSucceeded>(out _))
                 {
-                    _statusUpdates.Add(Status.Result("API", $"Move from {position.ToCoordinates()} to {newPosition.ToCoordinates()} successful"));
+                    _statusUpdates.Add(Status.Successful("API", $"Move from {position.ToCoordinates()} to {newPosition.ToCoordinates()} successful"));
                     logger.LogInformation(
                         "AI player {PlayerId} moved piece on board {BoardId} from {Position} to {NewPosition}", 
                         playerId, 
@@ -75,7 +75,7 @@ public class AiDummyPlayerConsumer(
 
                 if (response.Is<MoveFailed>(out var moveFailed))
                 {
-                    _statusUpdates.Add(Status.Result("API", $"Move from {position.ToCoordinates()} to {newPosition.ToCoordinates()} failed: {moveFailed.Message.ErrorMessages.First()}"));
+                    _statusUpdates.Add(Status.Failed("API", $"Move from {position.ToCoordinates()} to {newPosition.ToCoordinates()} failed: {moveFailed.Message.ErrorMessages.First()}"));
                     logger.LogWarning("AI player {PlayerId} failed to move piece on board {BoardId} from {Position} to {NewPosition}. Reason: {Reason}",
                         playerId,
                         board.Id,

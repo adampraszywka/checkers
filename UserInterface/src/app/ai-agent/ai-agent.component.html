@@ -2,26 +2,35 @@
 
   <div class="row">
 
-    <table class="table">
-      <thead>
-      <tr>
-        <th scope="col">Timestamp</th>
-        <th scope="col">Kind</th>
-        <th scope="col">Context</th>
-        <th scope="col">Data</th>
-      </tr>
-      </thead>
-      <tbody>
-        @for (entry of entries; track entry; let index = $index) {
-          <tr>
-            <td>{{entry.timestamp}}</td>
-            <td>{{Kind[entry.kind]}}</td>
-            <td>{{entry.context}}</td>
-            <td>{{entry.data}}</td>
-          </tr>
-        }
-      </tbody>
-    </table>
+    @if (entries.length !== 0) {
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">Timestamp</th>
+          <th scope="col">Kind</th>
+          <th scope="col">Context</th>
+          <th scope="col">Data</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (entry of entries; track entry; let index = $index) {
+            <tr>
+              <td>{{entry.timestamp | date: 'H:mm:ss' }}</td>
+              <td><span class="badge" [ngClass]="badgeClass(entry.kind)">{{Kind[entry.kind]}}</span></td>
+              <td>{{entry.context}}</td>
+              <td>{{entry.data}}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <div class="text-center">
+        <p>Waiting for data... While you wait, make your move and let the AI respond with theirs!</p>
+        <div class="spinner-border" role="status">
+          <span class="sr-only"></span>
+        </div>
+      </div>
+    }
 
   </div>
 
