@@ -59,28 +59,28 @@ public class AiDummyPlayerConsumer(
                 var e = new MoveRequested(board.Id, player, move);
                 var response = await moveClient.GetResponse<MoveSucceeded, MoveFailed>(e);
 
-                _statusUpdates.Add(Status.Command("API", $"Move from {position.ToCoordinates()} to {newPosition.ToCoordinates()}"));
+                _statusUpdates.Add(Status.Command("API", $"Move from {position.ToName()} to {newPosition.ToName()}"));
                 
                 if (response.Is<MoveSucceeded>(out _))
                 {
-                    _statusUpdates.Add(Status.Successful("API", $"Move from {position.ToCoordinates()} to {newPosition.ToCoordinates()} successful"));
+                    _statusUpdates.Add(Status.Successful("API", $"Move from {position.ToName()} to {newPosition.ToName()} successful"));
                     logger.LogInformation(
                         "AI player {PlayerId} moved piece on board {BoardId} from {Position} to {NewPosition}", 
                         playerId, 
                         board.Id,
-                        position.ToCoordinates(),
-                        newPosition.ToCoordinates());
+                        position.ToName(),
+                        newPosition.ToName());
                     return;
                 }
 
                 if (response.Is<MoveFailed>(out var moveFailed))
                 {
-                    _statusUpdates.Add(Status.Failed("API", $"Move from {position.ToCoordinates()} to {newPosition.ToCoordinates()} failed: {moveFailed.Message.ErrorMessages.First()}"));
+                    _statusUpdates.Add(Status.Failed("API", $"Move from {position.ToName()} to {newPosition.ToName()} failed: {moveFailed.Message.ErrorMessages.First()}"));
                     logger.LogWarning("AI player {PlayerId} failed to move piece on board {BoardId} from {Position} to {NewPosition}. Reason: {Reason}",
                         playerId,
                         board.Id,
-                        position.ToCoordinates(),
-                        newPosition.ToCoordinates(),
+                        position.ToName(),
+                        newPosition.ToName(),
                         moveFailed.Message.ErrorMessages.First());        
                 }
             }

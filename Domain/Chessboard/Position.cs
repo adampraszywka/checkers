@@ -1,4 +1,5 @@
 ﻿using Domain.Chessboard.Configurations;
+using Domain.Shared;
 
 namespace Domain.Chessboard;
 
@@ -65,18 +66,5 @@ public record Position(int Row, int Column)
         return new Position(Row - 1, Column - 1);
     }
 
-    public string Name => $"{MapColumn(Column)}{Row + 1}";
-    private static char MapColumn(int columnNumber)
-    {
-        const int charA = 65;
-        const int charZ = 90;
-        const int supportedColumns = charZ - charA;
-
-        if (columnNumber > supportedColumns)
-        {
-            return '?';
-        }
-
-        return (char) (columnNumber + charA);
-    }
+    public string Name => PositionMapping.Name(Column, Row);
 }

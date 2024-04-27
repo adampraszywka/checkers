@@ -1,4 +1,5 @@
 ﻿using AIPlayers.Players.Dummy;
+using AIPlayers.Players.OpenAIGpt4Turbo;
 using Contracts.AiPlayers;
 using Contracts.Players;
 using MassTransit;
@@ -18,7 +19,15 @@ public class Hub(IPublishEndpoint publishEndpoint, ILogger<Hub> logger): IConsum
         {
             var e = new DummyPlayerGameProgressChanged(board, participant);
             await publishEndpoint.Publish(e);
-            logger.LogInformation("Notified AIDummyPlayer {PlayerId} about board {BoardId} update", participant.Id, board.Id);
+            logger.LogInformation("Notified {Player} {PlayerId} about board {BoardId} update", typeof(AIDummyPlayer), participant.Id, board.Id);
+            return;
+        }
+
+        if (participant.Type == AiOpenAiGpt4TurboPlayer.TypeValue)
+        {
+            var e = new OpenAiGpt4TurboPlayerGameProgressChanged(board, participant);
+            await publishEndpoint.Publish(e);
+            logger.LogInformation("Notified {Player} {PlayerId} about board {BoardId} update", typeof(AiOpenAiGpt4TurboPlayer), participant.Id, board.Id);
             return;
         }
 
