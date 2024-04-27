@@ -6,13 +6,13 @@ using WebApi.Service;
 
 namespace WebApi.Consumers.AIInterface;
 
-public class MoveRequestedConsumer(BoardService boardService, PlayerFactory playerFactory) : IConsumer<MoveRequested>
+public class MoveRequestedConsumer(BoardService boardService) : IConsumer<MoveRequested>
 {
     public async Task Consume(ConsumeContext<MoveRequested> context)
     {
         var message = context.Message;
         
-        var player = playerFactory.Create(message.Player.Id, message.Player.Type);
+        var player = PlayerFactory.Create(message.Player.Id, message.Player.Type);
         var from = message.Move.From.ToPosition();
         var to = message.Move.To.ToPosition();
 

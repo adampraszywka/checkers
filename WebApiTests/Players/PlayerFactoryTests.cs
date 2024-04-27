@@ -11,9 +11,7 @@ public class PlayerFactoryTests
     [TestCase("someType")]
     public void NotSupported(string type)
     {
-        var factory = new PlayerFactory();
-
-        var result = factory.Create("ID", type);
+        var result = PlayerFactory.Create("ID", type);
         
         Assert.That(result.IsFailed, Is.True);
         Assert.That(result.HasError<InvalidAiPlayerType>());
@@ -22,9 +20,7 @@ public class PlayerFactoryTests
     [Test]
     public void CreateDummyAiPlayer()
     {
-        var factory = new PlayerFactory();
-
-        var playerResult = factory.Create("ID", AIDummyPlayer.TypeValue);
+        var playerResult = PlayerFactory.Create("ID", AIDummyPlayer.TypeValue);
         var player = playerResult.Value;
         
         Assert.That(playerResult.IsSuccess);
@@ -35,9 +31,7 @@ public class PlayerFactoryTests
     [Test]
     public void CreateSignalrPlayer()
     {
-        var factory = new PlayerFactory();
-
-        var playerResult = factory.Create("ID", SignalRPlayer.TypeValue);
+        var playerResult = PlayerFactory.Create("ID", SignalRPlayer.TypeValue);
         var player = playerResult.Value;
         
         Assert.That(playerResult.IsSuccess);
@@ -48,9 +42,7 @@ public class PlayerFactoryTests
     [Test]
     public void CreateHeaderPlayer()
     {
-        var factory = new PlayerFactory();
-
-        var playerResult = factory.Create("ID", HeaderPlayer.TypeValue);
+        var playerResult = PlayerFactory.Create("ID", HeaderPlayer.TypeValue);
         var player = playerResult.Value;
 
         Assert.That(playerResult.IsSuccess);

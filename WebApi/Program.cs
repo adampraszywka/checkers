@@ -1,8 +1,11 @@
 using AIPlayers.MessageHub;
 using AIPlayers.Players.Dummy;
+using AIPlayers.Players.OpenAIGpt4Turbo;
+using Contracts.Players;
 using Domain.Chessboard;
 using Domain.Lobby;
 using MassTransit;
+using OpenAI.Extensions;
 using WebApi.Consumers.AIInterface;
 using WebApi.Consumers.Notification;
 using WebApi.Hubs;
@@ -35,6 +38,7 @@ builder.Services.AddMassTransit(m =>
     m.AddConsumer<MoveRequestedConsumer>();
     m.AddConsumer<AiDummyPlayerConsumer>();
     m.AddConsumer<AiPlayerStatusUpdatedConsumer>();
+    m.AddConsumer<OpenAIGpt4TurboPlayerConsumer>();
     m.AddConsumer<Hub>();
     
     m.UsingInMemory((context, cfg) =>
@@ -44,6 +48,11 @@ builder.Services.AddMassTransit(m =>
 });
 
 builder.Services.AddSignalR();
+
+builder.Services.AddOpenAIService(x =>
+{
+    x.ApiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY") ?? "INVALID";
+});
 
 // For PoC development. Needs to be reworked later
 builder.Services.AddCors(o =>

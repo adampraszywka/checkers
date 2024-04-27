@@ -60,7 +60,7 @@ public class LobbyHub(GameLobbyService lobbyService) : Hub<LobbyHubClient>
     
     public Task<IEnumerable<AiPlayer>> ListAiPlayers()
     {
-        return Task.FromResult(AiPlayers.List);
+        return Task.FromResult(PlayerFactory.AvailableAiPlayers);
     }
 
     public async Task<NullableActionResult<GameLobbyDto>> AddAiPlayer(string aiPlayerType)

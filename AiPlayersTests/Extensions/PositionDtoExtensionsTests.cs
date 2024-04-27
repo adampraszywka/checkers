@@ -1,34 +1,10 @@
-﻿using Contracts.Dto;
-using WebApi.Dto.Response;
-using WebApi.Extensions;
+﻿using AIPlayers.Extensions;
+using Contracts.Dto;
 
-namespace WebApiTests.Dto;
+namespace AiPlayersTests.Extensions;
 
-public class PositionDtoTests
+public class PositionDtoExtensionsTests
 {
-    [Test]
-    public void ToPosition()
-    {
-        var dto = new PositionDto(1, 2);
-
-        var position = dto.ToPosition();
-        
-        Assert.That(position.Row, Is.EqualTo(1));
-        Assert.That(position.Column, Is.EqualTo(2));
-    }
-
-    [Test]
-    [TestCase("1")]
-    [TestCase("A")]
-    [TestCase("  ")]
-    [TestCase("55")]
-    [TestCase("A!")]
-    [TestCase("@5")]
-    public void FromNameInvalidName(string name)
-    {
-        Assert.Throws<ArgumentException>(() => PositionDto.FromName("A"));
-    }
-    
     [Test]
     [TestCase(0, 0, "A1")]
     [TestCase(0, 1, "B1")]
@@ -96,11 +72,10 @@ public class PositionDtoTests
     [TestCase(7, 7, "H8")]
     [TestCase(0, 24, "Y1")]
     [TestCase(0, 25, "Z1")]
-    public void FromName(int expectedRow, int expectedColumn, string name)
+    public void PositionNameMapping(int row, int column, string expectedId)
     {
-        var position = PositionDto.FromName(name);
+        var position = new PositionDto(row, column);
         
-        Assert.That(position.Column, Is.EqualTo(expectedColumn));
-        Assert.That(position.Row, Is.EqualTo(expectedRow));
+        Assert.That(position.ToName(), Is.EqualTo(expectedId));
     }
 }
