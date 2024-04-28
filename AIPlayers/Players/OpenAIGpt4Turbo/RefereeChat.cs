@@ -52,7 +52,8 @@ public class RefereeChat(string boardId, IOpenAIService client, IPublishEndpoint
         var refereePrompt = new ChatCompletionCreateRequest
         {
             Model = Model,
-            Messages = chatMessages
+            Messages = chatMessages,
+            Temperature = 0.2f
         };
 
         await PublishStatus(Status.Command(Context, chatMessages.DumpMessages()));
