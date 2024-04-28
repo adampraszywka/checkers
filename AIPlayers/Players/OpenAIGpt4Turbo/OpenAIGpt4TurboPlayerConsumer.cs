@@ -19,6 +19,8 @@ public class OpenAIGpt4TurboPlayerConsumer(
     private const int MaxFindMoveIterations = 3;
     private const int MaxMoveIterations = 3;
 
+    private const bool refefreeEnabled = false;
+    
     public async Task Consume(ConsumeContext<OpenAiGpt4TurboPlayerGameProgressChanged> context)
     {
         var color = context.Message.Participant.Color;
@@ -50,7 +52,7 @@ public class OpenAIGpt4TurboPlayerConsumer(
 
             if (!result.IsSuccessful)
             {
-                playerPrompt = $"$Move failed: {result.ErrorMessage}";
+                playerPrompt = $"Move failed: {result.ErrorMessage}";
             }
             else
             {
@@ -73,17 +75,25 @@ public class OpenAIGpt4TurboPlayerConsumer(
                 logger.LogError("Move Regex match failed for player result: {PlayerResult}", playerResult);
             }
 
-            var refereeChat = new RefereeChat(boardId, openAi, publishEndpoint);
-            var refereeResult = await refereeChat.Check(boardState, currentPlayer, value);
-            var (valid, reason) = ExtractReason(refereeResult);
-            if (!valid)
+            if (refefreeEnabled)
             {
-                playerPrompt = $"Suggested move is invalid: {reason}";
+                var refereeChat = new RefereeChat(boardId, openAi, publishEndpoint);
+                var refereeResult = await refereeChat.Check(boardState, currentPlayer, value);
+                var (valid, reason) = ExtractReason(refereeResult);
+                if (!valid)
+                {
+                    playerPrompt = $"Suggested move is invalid: {reason}";
+                }
+                else
+                {
+                    return (from, to);
+                }
             }
             else
             {
                 return (from, to);
             }
+            
 
             counter++;
         }

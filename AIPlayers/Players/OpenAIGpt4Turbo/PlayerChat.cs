@@ -16,11 +16,11 @@ public class PlayerChat(string boardId, IOpenAIService client, IPublishEndpoint 
 
         You expect following parameters to decide about the best possible move:
         - current state of the board
-        - color of the player whoose turn is to player
+        - color of the player whoose turn is to play
 
         {Rules.BoardFormat}
 
-        YOU PROVIDE NEXT MOVE IN THE FOLLOWING FORMAT:
+        You list possible moves and than provide the best possible MOVE IN THE FOLLOWING FORMAT:
         ```format
         MOVE <SOURCE> TO <DESTINATION>";
 
@@ -30,7 +30,7 @@ public class PlayerChat(string boardId, IOpenAIService client, IPublishEndpoint 
     {
         _messages.Add(ChatMessage.FromUser(prompt));
         
-        var playerPrompt = new ChatCompletionCreateRequest {Model = Model, Messages = _messages};
+        var playerPrompt = new ChatCompletionCreateRequest {Model = Model, Messages = _messages, Temperature = 0.2f};
 
         await PublishStatus(Status.Command(Context, _messages.DumpMessages()));
         
