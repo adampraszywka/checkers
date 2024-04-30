@@ -21,8 +21,8 @@ public class PlayerFactory
 
     public static IEnumerable<AiPlayer> AvailableAiPlayers =>
     [
-        new(AIDummyPlayer.TypeValue, nameof(AIDummyPlayer)),
-        new(AiOpenAiGpt4TurboPlayer.TypeValue, nameof(AiOpenAiGpt4TurboPlayer))
+        new(AiOpenAiGpt4TurboPlayer.TypeValue, nameof(AiOpenAiGpt4TurboPlayer)),
+        new(AIDummyPlayer.TypeValue, nameof(AIDummyPlayer))
     ];
     
     private static Player? CreatePlayer(string id, string type)
