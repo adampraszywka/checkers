@@ -10,7 +10,7 @@ public class PlayerChat(string boardId, IOpenAIService client, IPublishEndpoint 
 {
     private const string Model = "gpt-4-turbo";
     private const string Context = "GPT-Player";
-    private const string SystemPrompt = $@"You are the checkers master. Your job is to choose the best possible next move.
+    private const string SystemPrompt = $@"You are the checkers master. You choose the best possible next move.
         User provides you information about whoose turn to play is.
         {Rules.Game}
 
