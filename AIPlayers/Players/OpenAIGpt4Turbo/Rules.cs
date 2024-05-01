@@ -4,7 +4,6 @@ public static class Rules
 {
     public const string Game = @"
         Game rules:    
-        - There are no kings        
         - Pieces are placed on dark squares
         - Capture is mandatory, if possible
         - Piece can be moved diagonally by one square, in case they don't capture
