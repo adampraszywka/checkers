@@ -33,8 +33,11 @@ export class AiAgentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.boardId)
     this.clientService.initialize(this.boardId);
+  }
+
+  public replaceNewLine(value: string): string {
+    return value.replace(/\n/g, '<br>');
   }
 
   public badgeClass(kind: Kind): string {

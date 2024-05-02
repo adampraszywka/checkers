@@ -18,7 +18,7 @@
               <td>{{entry.timestamp | date: 'H:mm:ss' }}</td>
               <td><span class="badge" [ngClass]="badgeClass(entry.kind)">{{Kind[entry.kind]}}</span></td>
               <td>{{entry.context}}</td>
-              <td>{{entry.data}}</td>
+              <td [innerHTML]="replaceNewLine(entry.data)"></td>
             </tr>
           }
         </tbody>
