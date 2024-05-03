@@ -1,7 +1,6 @@
 using AIPlayers.MessageHub;
 using AIPlayers.Players.Dummy;
 using AIPlayers.Players.OpenAIGpt4Turbo;
-using Contracts.Players;
 using Domain.Chessboard;
 using Domain.Lobby;
 using MassTransit;
@@ -36,11 +35,13 @@ builder.Services.AddMassTransit(m =>
     m.AddConsumer<LobbyUpdatedConsumer>();
     m.AddConsumer<BoardUpdatedConsumer>();
     m.AddConsumer<MoveRequestedConsumer>();
-    m.AddConsumer<AiDummyPlayerConsumer>();
     m.AddConsumer<AiPlayerStatusUpdatedConsumer>();
-    m.AddConsumer<OpenAIGpt4TurboPlayerConsumer>();
+
     m.AddConsumer<Hub>();
     
+    m.AddConsumer<AiDummyPlayerConsumer>();
+    m.AddConsumer<OpenAIGpt4TurboPlayerConsumer>();
+
     m.UsingInMemory((context, cfg) =>
     {
         cfg.ConfigureEndpoints(context);
