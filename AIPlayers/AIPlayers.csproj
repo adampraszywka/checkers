@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Anthropic.SDK" Version="3.2.1" />
       <PackageReference Include="Betalgo.OpenAI" Version="8.1.1" />
       <PackageReference Include="MassTransit" Version="8.2.1" />
     </ItemGroup>

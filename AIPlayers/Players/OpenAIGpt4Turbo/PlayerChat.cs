@@ -1,4 +1,5 @@
-﻿using Contracts.AiPlayers;
+﻿using AIPlayers.Players.Shared;
+using Contracts.AiPlayers;
 using MassTransit;
 using OpenAI.Interfaces;
 using OpenAI.ObjectModels.RequestModels;

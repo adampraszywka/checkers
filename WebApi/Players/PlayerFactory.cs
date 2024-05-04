@@ -21,7 +21,8 @@ public class PlayerFactory
 
     public static IEnumerable<AiPlayer> AvailableAiPlayers =>
     [
-        new(AiOpenAiGpt4TurboPlayer.TypeValue, nameof(AiOpenAiGpt4TurboPlayer)),
+        new(OpenAiGpt4TurboPlayer.TypeValue, nameof(OpenAiGpt4TurboPlayer)),
+        new(AnthropicClaudePlayer.TypeValue, nameof(AnthropicClaudePlayer)),
         new(AIDummyPlayer.TypeValue, nameof(AIDummyPlayer))
     ];
     
@@ -30,7 +31,8 @@ public class PlayerFactory
         return type switch
         {
             AIDummyPlayer.TypeValue => new AIDummyPlayer(id),
-            AiOpenAiGpt4TurboPlayer.TypeValue => new AiOpenAiGpt4TurboPlayer(id),
+            OpenAiGpt4TurboPlayer.TypeValue => new OpenAiGpt4TurboPlayer(id),
+            AnthropicClaudePlayer.TypeValue => new AnthropicClaudePlayer(id),
             HeaderPlayer.TypeValue => new HeaderPlayer(id),
             SignalRPlayer.TypeValue => new SignalRPlayer(id),
             _ => null
