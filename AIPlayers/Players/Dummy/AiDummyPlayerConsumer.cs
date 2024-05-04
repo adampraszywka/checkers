@@ -11,17 +11,17 @@ namespace AIPlayers.Players.Dummy;
 public class AiDummyPlayerConsumer(
     IRequestClient<MoveRequested> moveClient, 
     IPublishEndpoint publishEndpoint,
-    ILogger<AiDummyPlayerConsumer> logger) : IConsumer<DummyPlayerGameProgressChanged>
+    ILogger<AiDummyPlayerConsumer> logger) : IConsumer<DummyPlayerGameStateChanged>
 {
     private readonly List<Status> _statusUpdates = new();
     
-    public async Task Consume(ConsumeContext<DummyPlayerGameProgressChanged> context)
+    public async Task Consume(ConsumeContext<DummyPlayerGameStateChanged> context)
     {
         await HandleMessage(context);
         await SendStatusNotification(context.Message.Board.Id);
     }
 
-    private async Task HandleMessage(ConsumeContext<DummyPlayerGameProgressChanged> context)
+    private async Task HandleMessage(ConsumeContext<DummyPlayerGameStateChanged> context)
     {
         var message = context.Message;
         var board = message.Board;

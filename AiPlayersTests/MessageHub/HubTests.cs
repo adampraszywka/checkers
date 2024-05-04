@@ -46,7 +46,7 @@ public class HubTests
         
         Assert.That(await harness.Consumed.Any<GameProgressChanged>(), Is.True);
 
-        var result = await harness.Published.SelectAsync<DummyPlayerGameProgressChanged>().FirstOrDefault();
+        var result = await harness.Published.SelectAsync<DummyPlayerGameStateChanged>().FirstOrDefault();
         var message = result.Context.Message;
         Assert.Multiple(() =>
         {

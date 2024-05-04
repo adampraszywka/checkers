@@ -1,6 +1,8 @@
 using AIPlayers.MessageHub;
+using AIPlayers.Players.AnthropicClaude;
 using AIPlayers.Players.Dummy;
 using AIPlayers.Players.OpenAIGpt4Turbo;
+using Anthropic.SDK;
 using Domain.Chessboard;
 using Domain.Lobby;
 using MassTransit;
@@ -40,7 +42,8 @@ builder.Services.AddMassTransit(m =>
     m.AddConsumer<Hub>();
     
     m.AddConsumer<AiDummyPlayerConsumer>();
-    m.AddConsumer<OpenAIGpt4TurboPlayerConsumer>();
+    m.AddConsumer<OpenAIGpt4TurboConsumer>();
+    m.AddConsumer<AntrophicClaudePlayerConsumer>();
 
     m.UsingInMemory((context, cfg) =>
     {
@@ -49,6 +52,10 @@ builder.Services.AddMassTransit(m =>
 });
 
 builder.Services.AddSignalR();
+
+
+builder.Services.AddTransient<APIAuthentication>(_ => new APIAuthentication(Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY") ?? "INVALID"));
+builder.Services.AddHttpClient<AnthropicClient>();
 
 builder.Services.AddOpenAIService(x =>
 {

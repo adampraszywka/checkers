@@ -1,7 +1,7 @@
 ﻿using AIPlayers.Extensions;
 using Contracts.Dto;
 
-namespace AIPlayers.Players.OpenAIGpt4Turbo;
+namespace AIPlayers.Players.Shared;
 
 public static class BoardDtoExtensions
 {

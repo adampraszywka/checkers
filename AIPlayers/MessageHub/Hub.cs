@@ -1,4 +1,5 @@
-﻿using AIPlayers.Players.Dummy;
+﻿using AIPlayers.Players.AnthropicClaude;
+using AIPlayers.Players.Dummy;
 using AIPlayers.Players.OpenAIGpt4Turbo;
 using Contracts.AiPlayers;
 using Contracts.Players;
@@ -17,17 +18,25 @@ public class Hub(IPublishEndpoint publishEndpoint, ILogger<Hub> logger): IConsum
         
         if (participant.Type == AIDummyPlayer.TypeValue)
         {
-            var e = new DummyPlayerGameProgressChanged(board, participant);
+            var e = new DummyPlayerGameStateChanged(board, participant);
             await publishEndpoint.Publish(e);
             logger.LogInformation("Notified {Player} {PlayerId} about board {BoardId} update", typeof(AIDummyPlayer), participant.Id, board.Id);
             return;
         }
 
-        if (participant.Type == AiOpenAiGpt4TurboPlayer.TypeValue)
+        if (participant.Type == OpenAiGpt4TurboPlayer.TypeValue)
         {
-            var e = new OpenAiGpt4TurboPlayerGameProgressChanged(board, participant);
+            var e = new OpenAiGpt4TurboPlayerGameStateChanged(board, participant);
             await publishEndpoint.Publish(e);
-            logger.LogInformation("Notified {Player} {PlayerId} about board {BoardId} update", typeof(AiOpenAiGpt4TurboPlayer), participant.Id, board.Id);
+            logger.LogInformation("Notified {Player} {PlayerId} about board {BoardId} update", typeof(OpenAiGpt4TurboPlayer), participant.Id, board.Id);
+            return;
+        }
+        
+        if (participant.Type == AnthropicClaudePlayer.TypeValue)
+        {
+            var e = new AntrophicClaudeGamePlayerGameStateChanged(board, participant);
+            await publishEndpoint.Publish(e);
+            logger.LogInformation("Notified {Player} {PlayerId} about board {BoardId} update", typeof(AnthropicClaudePlayer), participant.Id, board.Id);
             return;
         }
 

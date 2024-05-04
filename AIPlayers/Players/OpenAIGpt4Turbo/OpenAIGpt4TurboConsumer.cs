@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using AIPlayers.Extensions;
+using AIPlayers.Players.Shared;
 using Contracts.AiPlayers;
 using Contracts.Dto;
 using Contracts.Players;
@@ -10,18 +11,19 @@ using Status = Contracts.AiPlayers.AiPlayerStatus;
 
 namespace AIPlayers.Players.OpenAIGpt4Turbo;
 
-public class OpenAIGpt4TurboPlayerConsumer(
-    ILogger<OpenAIGpt4TurboPlayerConsumer> logger,
+public class OpenAIGpt4TurboConsumer(
+    ILogger<OpenAIGpt4TurboConsumer> logger,
     IOpenAIService openAi,
     IPublishEndpoint publishEndpoint,
-    IRequestClient<MoveRequested> moveClient) : IConsumer<OpenAiGpt4TurboPlayerGameProgressChanged>
+    IRequestClient<MoveRequested> moveClient) : IConsumer<OpenAiGpt4TurboPlayerGameStateChanged>
 {
+    
     private const int MaxFindMoveIterations = 3;
     private const int MaxMoveIterations = 3;
 
     private const bool refefreeEnabled = false;
     
-    public async Task Consume(ConsumeContext<OpenAiGpt4TurboPlayerGameProgressChanged> context)
+    public async Task Consume(ConsumeContext<OpenAiGpt4TurboPlayerGameStateChanged> context)
     {
         var color = context.Message.Participant.Color;
         var board = context.Message.Board;
@@ -104,7 +106,7 @@ public class OpenAIGpt4TurboPlayerConsumer(
     private async Task<(bool IsSuccessful, string ErrorMessage)> Move(PositionDto from, PositionDto to, string playerId, string boardId)
     {
         var move = new MoveDto(from, to);
-        var player = new PlayerDto(playerId, AiOpenAiGpt4TurboPlayer.TypeValue);
+        var player = new PlayerDto(playerId, OpenAiGpt4TurboPlayer.TypeValue);
         var e = new MoveRequested(boardId, player, move);
         var response = await moveClient.GetResponse<MoveSucceeded, MoveFailed>(e);
 
