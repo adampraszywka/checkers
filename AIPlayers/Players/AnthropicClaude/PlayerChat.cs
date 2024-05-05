@@ -21,8 +21,8 @@ public class PlayerChat(string boardId, AnthropicClient client, IPublishEndpoint
         {Rules.BoardFormat}
 
         You list possible moves and than provide the best possible MOVE IN THE FOLLOWING FORMAT:
-        ```format
-        MOVE <SOURCE> TO <DESTINATION>";
+        
+        BEST MOVE IS [SOURCE] TO [DESTINATION]";
 
     private readonly List<Message> _messages = [];
 

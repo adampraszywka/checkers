@@ -119,7 +119,7 @@ public class AntrophicClaudePlayerConsumer(
 
     private bool TryExtractMove(string input, out string raw, out string from, out string to)
     {
-        const string pattern = @"(?<=\bMOVE\s)(\w+\d+)\sTO\s(\w+\d+)";
+        const string pattern = @"(?<=\bBEST MOVE IS\s)(\w+\d+)\sTO\s(\w+\d+)";
         
         var match = Regex.Match(input, pattern);
 
@@ -137,26 +137,6 @@ public class AntrophicClaudePlayerConsumer(
         
         return true;
     }
-    
-    private (bool IsValid, string Reason) ExtractReason(string input)
-    {
-        if (input.Contains("Valid: Yes"))
-        {
-            return (true, "");
-        }
-        
-        const string pattern = "(?<=Reason: )(.*)";
-
-        var match = Regex.Match(input, pattern);
-
-        if (!match.Success)
-        {
-            return (false, "Unparsable reason");
-        }
-
-        return (false, match.Value);
-    }
-    
     
     private async Task PublishStatus(string boardId, Status status)
     {
