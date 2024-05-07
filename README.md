@@ -27,6 +27,9 @@ dotnet run
 ```
 By default, WebAPI binds to localhost:5125
 
+LLM based AI players require access to the OpenAI API for GPT-4 based player and Antrophic API for Claude 3 based player. 
+You need to provide your own API keys in OPENAI_API_KEY and ANTROPHIC_API_KEY environment variables.
+
 #### UI
 
 Start Angular development server by the following commands:
