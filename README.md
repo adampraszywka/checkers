@@ -28,7 +28,8 @@ dotnet run
 By default, WebAPI binds to localhost:5125
 
 LLM based AI players require access to the OpenAI API for GPT-4 based player and Antrophic API for Claude 3 based player. 
-You need to provide your own API keys in OPENAI_API_KEY and ANTROPHIC_API_KEY environment variables.
+You need to provide your own API keys either by setting environment variables or by providing them in the appsettings.json file.
+
 
 #### UI
 
