@@ -15,6 +15,12 @@ public class ClassicWhiteKingMoves : PieceMove
                 positionRightForward = positionRightForward.RightForward();
                 if (positionRightForward.IsWithinBoard(boardSnapshot.BoardSize))
                 {
+                    var piece = boardSnapshot.At(positionRightForward);
+                    if (piece is not null)
+                    {
+                        break;
+                    }
+
                     affectedSquaresRightForward.Add(positionRightForward);
                     var move = new PossibleMove(positionRightForward, new List<Position>(affectedSquaresRightForward), 0);
                     result.Add(move);
@@ -30,6 +36,12 @@ public class ClassicWhiteKingMoves : PieceMove
                 positionLeftForward = positionLeftForward.LeftForward();
                 if (positionLeftForward.IsWithinBoard(boardSnapshot.BoardSize))
                 {
+                    var piece = boardSnapshot.At(positionLeftForward);
+                    if (piece is not null)
+                    {
+                        break;
+                    }
+
                     affectedSquaresLeftForward.Add(positionLeftForward);
                     var move = new PossibleMove(positionLeftForward, new List<Position>(affectedSquaresLeftForward), 0);
                     result.Add(move);
@@ -46,6 +58,12 @@ public class ClassicWhiteKingMoves : PieceMove
                 positionLeftBackward = positionLeftBackward.LeftBackward();
                 if (positionLeftBackward.IsWithinBoard(boardSnapshot.BoardSize))
                 {
+                    var piece = boardSnapshot.At(positionLeftBackward);
+                    if (piece is not null)
+                    {
+                        break;
+                    }
+                    
                     affectedSquaresLeftBackward.Add(positionLeftBackward);
                     var move = new PossibleMove(positionLeftBackward, new List<Position>(affectedSquaresLeftBackward), 0);
                     result.Add(move);
@@ -61,6 +79,12 @@ public class ClassicWhiteKingMoves : PieceMove
                 positionRightBackward = positionRightBackward.RightBackward();
                 if (positionRightBackward.IsWithinBoard(boardSnapshot.BoardSize))
                 {
+                    var piece = boardSnapshot.At(positionRightBackward);
+                    if (piece is not null)
+                    {
+                        break;
+                    }
+
                     affectedSquaresRightBackward.Add(positionRightBackward);
                     var move = new PossibleMove(positionRightBackward, new List<Position>(affectedSquaresRightBackward), 0);
                     result.Add(move);
