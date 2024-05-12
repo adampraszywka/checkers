@@ -11,7 +11,7 @@ public class ClassicWhiteKingMovesTests
 {
     [Test]
     [TestCaseSource(typeof(WhiteKingMoves))]
-    public void KingMovesDiagonallyInEvertDirection(PieceCaptureTestCase testCase)
+    public void KingMovesDiagonallyInAllDirections(PieceCaptureTestCase testCase)
     {
         var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
         var pieceMoves = new ClassicWhiteKingMoves();
