@@ -4,7 +4,7 @@ using P = Domain.Chessboard.Position;
 
 namespace DomainTests.Chessboard.PieceMoves.Classic.TestData;
 
-public class WhiteKingCaptures : IEnumerable
+public class KingCaptures : IEnumerable
 {
     public IEnumerator GetEnumerator()
     {

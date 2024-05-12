@@ -10,7 +10,7 @@ namespace DomainTests.Chessboard.PieceMoves.Classic;
 public class ClassicWhiteKingMovesTests
 {
     [Test]
-    [TestCaseSource(typeof(WhiteKingSimpleMoves))]
+    [TestCaseSource(typeof(KingSimpleMoves))]
     public void SimpleMoves(PieceCaptureTestCase testCase)
     {
         var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
@@ -22,7 +22,7 @@ public class ClassicWhiteKingMovesTests
     }
     
     [Test]
-    [TestCaseSource(typeof(WhiteKingBlockedMoves))]
+    [TestCaseSource(typeof(KingBlockedMoves))]
     public void BlockedMoves(PieceCaptureTestCase testCase)
     {
         var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
@@ -34,7 +34,7 @@ public class ClassicWhiteKingMovesTests
     }
     
     [Test]
-    [TestCaseSource(typeof(WhiteKingCaptures))]
+    [TestCaseSource(typeof(KingCaptures))]
     public void Captures(PieceCaptureTestCase testCase)
     {
         var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
