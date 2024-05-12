@@ -7,14 +7,14 @@ using DomainTests.Extensions;
 
 namespace DomainTests.Chessboard.PieceMoves.Classic;
 
-public class ClassicWhiteKingMovesTests
+public class ClassicBlackKingMovesTests
 {
     [Test]
     [TestCaseSource(typeof(KingSimpleMoves))]
     public void SimpleMoves(PieceCaptureTestCase testCase)
     {
-        var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
-        var pieceMoves = new ClassicWhiteKingMoves();
+        var board = testCase.BuildBoard(Color.Black, Color.White, Color.Black);
+        var pieceMoves = new ClassicBlackKingMoves();
 
         var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
@@ -25,8 +25,8 @@ public class ClassicWhiteKingMovesTests
     [TestCaseSource(typeof(KingBlockedMoves))]
     public void BlockedMoves(PieceCaptureTestCase testCase)
     {
-        var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
-        var pieceMoves = new ClassicWhiteKingMoves();
+        var board = testCase.BuildBoard(Color.Black, Color.White, Color.Black);
+        var pieceMoves = new ClassicBlackKingMoves();
 
         var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
@@ -37,8 +37,8 @@ public class ClassicWhiteKingMovesTests
     [TestCaseSource(typeof(KingCaptures))]
     public void Captures(PieceCaptureTestCase testCase)
     {
-        var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
-        var pieceMoves = new ClassicWhiteKingMoves();
+        var board = testCase.BuildBoard(Color.Black, Color.White, Color.Black);
+        var pieceMoves = new ClassicBlackKingMoves();
 
         var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
 
@@ -80,7 +80,7 @@ public class ClassicWhiteKingMovesTests
     [TestCase(Position.R8, Position.H)]
     public void UpdateNotRequired(int row, int column)
     {
-        var pieceMoves = new ClassicWhiteKingMoves();
+        var pieceMoves = new ClassicBlackKingMoves();
 
         Assert.That(pieceMoves.UpgradeRequired(new Position(row, column)), Is.False);
     }
