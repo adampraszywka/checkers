@@ -10,8 +10,32 @@ namespace DomainTests.Chessboard.PieceMoves.Classic;
 public class ClassicWhiteKingMovesTests
 {
     [Test]
-    [TestCaseSource(typeof(WhiteKingMoves))]
-    public void KingMovesDiagonallyInAllDirections(PieceCaptureTestCase testCase)
+    [TestCaseSource(typeof(WhiteKingSimpleMoves))]
+    public void SimpleMoves(PieceCaptureTestCase testCase)
+    {
+        var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
+        var pieceMoves = new ClassicWhiteKingMoves();
+
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
+
+        MoveAssert.AreEqual(testCase.Moves, moves);
+    }
+    
+    [Test]
+    [TestCaseSource(typeof(WhiteKingBlockedMoves))]
+    public void BlockedMoves(PieceCaptureTestCase testCase)
+    {
+        var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
+        var pieceMoves = new ClassicWhiteKingMoves();
+
+        var moves = pieceMoves.PossibleMoves(testCase.Source, board.Snapshot);
+
+        MoveAssert.AreEqual(testCase.Moves, moves);
+    }
+    
+    [Test]
+    [TestCaseSource(typeof(WhiteKingCaptures))]
+    public void Captures(PieceCaptureTestCase testCase)
     {
         var board = testCase.BuildBoard(Color.White, Color.Black, Color.White);
         var pieceMoves = new ClassicWhiteKingMoves();
