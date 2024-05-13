@@ -1,16 +1,15 @@
-﻿using AIPlayers.Players.Shared;
-using Contracts.AiPlayers;
+﻿using Contracts.AiPlayers;
 using MassTransit;
 using OpenAI.Interfaces;
 using OpenAI.ObjectModels.RequestModels;
 using Status = Contracts.AiPlayers.AiPlayerStatus;
 
-namespace AIPlayers.Players.OpenAIGpt4Turbo;
+namespace AIPlayers.Players.OpenAIGpt4o;
 
 public class RefereeChat(string boardId, IOpenAIService client, IPublishEndpoint publishEndpoint)
 {
-    private const string Model = "gpt-4-turbo";
-    private const string Context = "GPT4-Referee";
+    private const string Model = "gpt-4o";
+    private const string Context = "GPT4o-Referee";
     private const string SystemPrompt = $@"You are a checkers referee. 
             Your job is to decide weather of not move is valid and provide a reason why it's not valid if it's not valid.
             {Rules.Game}
@@ -57,7 +56,7 @@ public class RefereeChat(string boardId, IOpenAIService client, IPublishEndpoint
             Temperature = 0.2f
         };
 
-        await PublishStatus(Status.Command(Context, chatMessages.DumpMessages()));
+        await PublishStatus(Status.Command(Context, OpenAIGpt4Turbo.ChatMessageExtensions.DumpMessages(chatMessages)));
 
         var response = await client.ChatCompletion.CreateCompletion(refereePrompt);
         var responseContent = response.Choices.First().Message.Content!;

@@ -1,6 +1,7 @@
 using AIPlayers.MessageHub;
 using AIPlayers.Players.AnthropicClaude;
 using AIPlayers.Players.Dummy;
+using AIPlayers.Players.OpenAIGpt4o;
 using AIPlayers.Players.OpenAIGpt4Turbo;
 using Anthropic.SDK;
 using Domain.Chessboard;
@@ -57,6 +58,7 @@ builder.Services.AddMassTransit(m =>
     m.AddConsumer<AiDummyPlayerConsumer>();
     m.AddConsumer<OpenAIGpt4TurboConsumer>();
     m.AddConsumer<AntrophicClaudePlayerConsumer>();
+    m.AddConsumer<OpenAIGpt4oConsumer>();
 
     m.UsingInMemory((context, cfg) =>
     {

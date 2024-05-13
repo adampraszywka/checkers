@@ -1,16 +1,15 @@
-﻿using AIPlayers.Players.Shared;
-using Contracts.AiPlayers;
+﻿using Contracts.AiPlayers;
 using MassTransit;
 using OpenAI.Interfaces;
 using OpenAI.ObjectModels.RequestModels;
 using Status = Contracts.AiPlayers.AiPlayerStatus;
 
-namespace AIPlayers.Players.OpenAIGpt4Turbo;
+namespace AIPlayers.Players.OpenAIGpt4o;
 
 public class PlayerChat(string boardId, IOpenAIService client, IPublishEndpoint publishEndpoint)
 {
-    private const string Model = "gpt-4-turbo";
-    private const string Context = "GPT4-Player";
+    private const string Model = "gpt-4o";
+    private const string Context = "GPT4o-Player";
     private const string SystemPrompt = $@"You are the checkers master. You choose the best possible next move.
         User provides you information about whoose turn to play is.
         {Rules.Game}
@@ -33,7 +32,7 @@ public class PlayerChat(string boardId, IOpenAIService client, IPublishEndpoint 
         
         var playerPrompt = new ChatCompletionCreateRequest {Model = Model, Messages = _messages, Temperature = 0.2f};
 
-        await PublishStatus(Status.Command(Context, _messages.DumpMessages()));
+        await PublishStatus(Status.Command(Context, OpenAIGpt4Turbo.ChatMessageExtensions.DumpMessages(_messages)));
         
         var result = await client.ChatCompletion.CreateCompletion(playerPrompt);
         var resultContent = result.Choices.First().Message.Content!;

@@ -1,5 +1,6 @@
 ﻿using AIPlayers.Players.AnthropicClaude;
 using AIPlayers.Players.Dummy;
+using AIPlayers.Players.OpenAIGpt4o;
 using AIPlayers.Players.OpenAIGpt4Turbo;
 using Contracts.AiPlayers;
 using Contracts.Players;
@@ -27,6 +28,15 @@ public class Hub(IPublishEndpoint publishEndpoint, ILogger<Hub> logger): IConsum
         if (participant.Type == OpenAiGpt4TurboPlayer.TypeValue)
         {
             var e = new OpenAiGpt4TurboPlayerGameStateChanged(board, participant);
+            await publishEndpoint.Publish(e);
+            logger.LogInformation("Notified {Player} {PlayerId} about board {BoardId} update", typeof(OpenAiGpt4TurboPlayer), participant.Id, board.Id);
+            return;
+        }
+        
+
+        if (participant.Type == OpenAiGpt4oPlayer.TypeValue)
+        {
+            var e = new OpenAiGpt4oPlayerGameStateChanged(board, participant);
             await publishEndpoint.Publish(e);
             logger.LogInformation("Notified {Player} {PlayerId} about board {BoardId} update", typeof(OpenAiGpt4TurboPlayer), participant.Id, board.Id);
             return;
