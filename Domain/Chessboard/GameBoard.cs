@@ -135,7 +135,7 @@ public class GameBoard : Board
 
         if (!movesForPlayer.Any(x => x.From == source && x.To == move.To))
         {
-            return Result.Fail(new UnderperformingCaptureError(source, movesForPlayer.Select(x => x.To)));
+            return Result.Fail(new UnderperformingCaptureError(source, movesForPlayer.Select(x => x.From)));
         }
 
         foreach (var affectedSquarePosition in move.AffectedSquares)
