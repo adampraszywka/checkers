@@ -45,10 +45,29 @@ npm run start
 
 By default, Angular development server binds to localhost:4200, and it's connected with API running on localhost:5125.
 
+### Available AI players
+
+#### Random player
+Random player is a simple AI player that makes random moves. It's a good starting point for developing your own AI player.
+
+#### GPT-4 player
+GPT-4 player is an AI player based on the OpenAI GPT-4 model. It uses the OpenAI GP-4 model to generate the next move.
+Results are not always optimal, but it's a good example of how to use LLMs in the game.
+
+#### Claude 3 player
+
+Claude 3 player is an AI player based on the Antrophic Claude 3 model. It uses the Antrophic Claude 3 model to generate the next move.
+Works similar to GPT-4 player. Results are a bit worse than GPT-4 player.
+
+#### GPT-4o player
+
+GPT-4o player is an AI player based on the OpenAI GPT-4 model. It uses the OpenAI GP-4 model to generate the next move.
+It's faster than GPT-4 player, but results are not so good as GPT-4 player.
 
 ### How to write your own AI player
-[TBD]
 
+[TBD]
+Instructions how to write your own AI player will be provided, after AI player interface will be refactored.
 
 ### Plan
 
