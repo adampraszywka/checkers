@@ -35,7 +35,7 @@ public class PlayerFactory
             OpenAiGpt4TurboPlayer.TypeValue => new OpenAiGpt4TurboPlayer(id),
             OpenAiGpt4oPlayer.TypeValue => new OpenAiGpt4oPlayer(id),
             AnthropicClaudePlayer.TypeValue => new AnthropicClaudePlayer(id),
-            HeaderPlayer.TypeValue => new HeaderPlayer(id),
+            ApiPlayer.TypeValue => new ApiPlayer(id),
             SignalRPlayer.TypeValue => new SignalRPlayer(id),
             _ => null
         };

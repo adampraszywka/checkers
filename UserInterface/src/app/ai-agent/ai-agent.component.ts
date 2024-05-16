@@ -53,6 +53,19 @@ export class AiAgentComponent implements OnInit {
     }
   }
 
+  public kind(kind: Kind): string {
+    switch(kind) {
+      case Kind.Command:
+        return 'CMD';
+      case Kind.ResultFailed:
+        return 'FAIL';
+      case Kind.ResultSuccessful:
+        return 'OK';
+      default:
+        return 'Unknown';
+    }
+  }
+
   protected readonly Type = Type;
   protected readonly Color = Color;
   protected readonly Kind = Kind;

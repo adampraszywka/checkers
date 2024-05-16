@@ -1,57 +1,32 @@
 <div class="container" *ngIf="board !== null">
-  <div class="row mb-5">
-
-    <ngb-alert type="info">
-      Check out the new debug window for AI Player!
-      It might not be perfect, but it gives you a glimpse of what's going on under the hood. Click <a href="/aistatus/{{boardId}}" target="_blank">here</a> to give it a try and unravel the mysteries of AI!
-    </ngb-alert>
-  </div>
   <div class="row">
-    <div class="col-9">
-      <div [ngClass]="board.playerColor === Color.Black ? 'rotated' : ''">
-        @for(squares of board.board.squares; track squares; let row = $index) {
-          <div class="row g-0">
-            @for (square of squares; track square; let column = $index) {
-              <app-square class="col" [square]="square" [row]="row" [column]="column"></app-square>
-            }
-          </div>
-        }
+    <div class="col-8">
+
+      <div class="row">
+        <div [ngClass]="board.playerColor === Color.Black ? 'rotated' : ''">
+          @for(squares of board.board.squares; track squares; let row = $index) {
+            <div class="row g-0">
+              @for (square of squares; track square; let column = $index) {
+                <app-square class="col" [square]="square" [row]="row" [column]="column"></app-square>
+              }
+            </div>
+          }
         </div>
       </div>
 
-    <div class="col-3">
-      <p class="text-center">It's the turn to move the {{ Color[board.board.currentPlayer] }} piece.</p>
-
-      <div class="mt-2">
-           <table class="table">
-             <thead>
-             <tr>
-               <th>#</th>
-               <th scope="col">Piece</th>
-               <th scope="col">From</th>
-               <th scope="col">To</th>
-             </tr>
-             </thead>
-             <tbody>
-               @for (entry of board.board.moveLog.slice().reverse(); track entry; let index = $index) {
-                 <tr>
-                   <td>{{board.board.moveLog.length - index}}</td>
-                   <td>
-                     <span class="badge" [ngClass]="entry.piece.color === Color.Black ? 'bg-black' : 'bg-light text-dark'">
-                       {{ Type[entry.piece.type] }}
-                     </span>
-                   </td>
-                   <td>{{entry.from.name}}</td>
-                   <td>{{entry.to.name}}</td>
-                 </tr>
-               }
-             </tbody>
-           </table>
-      </div>
+      @if (this.botPlayerParticipates()) {
+        <div class="row">
+          <app-move-log [moveLog]="board.board.moveLog"></app-move-log>
+        </div>
+      }
 
     </div>
-
+      <div class="col-4" >
+        @if (this.botPlayerParticipates()) {
+          <app-ai-agent [boardId]="boardId"></app-ai-agent>
+        } @else {
+          <app-move-log [moveLog]="board.board.moveLog"></app-move-log>
+        }
+      </div>
   </div>
-
-
 </div>

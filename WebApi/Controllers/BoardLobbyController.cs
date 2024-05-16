@@ -10,7 +10,7 @@ namespace WebApi.Controllers;
 public class BoardLobbyController(GameLobbyRepository lobbyRepository, BoardRepository boardRepository) : ControllerBase
 {
     [HttpPost("/lobby/{lobbyId}/close")]
-    public async Task<IActionResult> Close([FromRoute] string lobbyId, [FromHeader(Name = HeaderPlayer.HeaderName)] string playerId)
+    public async Task<IActionResult> Close([FromRoute] string lobbyId, [FromHeader(Name = ApiPlayer.HeaderName)] string playerId)
     {
         var lobby = await lobbyRepository.Get(lobbyId);
         if (lobby is null)
@@ -18,7 +18,7 @@ public class BoardLobbyController(GameLobbyRepository lobbyRepository, BoardRepo
             return NotFound();
         }
 
-        var player = new HeaderPlayer(playerId);
+        var player = new ApiPlayer(playerId);
         var boardFactory = new ClassicBoardFactory();
         var closeResult = lobby.Close(player, boardFactory);
         if (closeResult.IsFailed)
