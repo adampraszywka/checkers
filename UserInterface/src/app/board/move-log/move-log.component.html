@@ -1,0 +1,24 @@
+<table class="table">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th scope="col">Piece</th>
+    <th scope="col">From</th>
+    <th scope="col">To</th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (entry of moveLog.slice().reverse(); track entry; let index = $index) {
+      <tr>
+        <td>{{moveLog.length - index}}</td>
+        <td>
+                     <span class="badge" [ngClass]="entry.piece.color === Color.Black ? 'bg-black' : 'bg-light text-dark'">
+                       {{ Type[entry.piece.type] }}
+                     </span>
+        </td>
+        <td>{{entry.from.name}}</td>
+        <td>{{entry.to.name}}</td>
+      </tr>
+    }
+  </tbody>
+</table>
