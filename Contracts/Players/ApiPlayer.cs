@@ -2,14 +2,15 @@
 
 namespace Contracts.Players;
 
-public record HeaderPlayer : Player
+public record ApiPlayer : Player
 {
     public const string TypeValue = "API";
     public const string HeaderName = "PlayerId";
     public string Id { get; }
     public string Type => TypeValue;
+    public bool Bot => false;
 
-    public HeaderPlayer(string id)
+    public ApiPlayer(string id)
     {
         if (string.IsNullOrWhiteSpace(id))
         {

@@ -6,7 +6,7 @@ namespace WebApi.Extensions;
 
 public static class ParticipantExtensions
 {
-    public static ParticipantDto ToDto(this Participant p) => new() {Id = p.Player.Id, Color = p.Color.ToDto()};
+    public static ParticipantDto ToDto(this Participant p) => new() {Id = p.Player.Id, Color = p.Color.ToDto(), Bot = p.Player.Bot};
     public static IEnumerable<ParticipantDto> ToDto(this IEnumerable<Participant> p) => p.Select(x => x.ToDto());
 
     

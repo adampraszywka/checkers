@@ -18,6 +18,7 @@ public static class ParticipantTestData
     private record TestPlayer(string Id) : Player
     {
         public string Type => "Test";
+        public bool Bot => false;
     }
 }
 

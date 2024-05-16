@@ -42,11 +42,11 @@ public class PlayerFactoryTests
     [Test]
     public void CreateHeaderPlayer()
     {
-        var playerResult = PlayerFactory.Create("ID", HeaderPlayer.TypeValue);
+        var playerResult = PlayerFactory.Create("ID", ApiPlayer.TypeValue);
         var player = playerResult.Value;
 
         Assert.That(playerResult.IsSuccess);
-        Assert.That(player, Is.TypeOf<HeaderPlayer>());
+        Assert.That(player, Is.TypeOf<ApiPlayer>());
         Assert.That(player.Id, Is.EqualTo("ID"));
     }
 }

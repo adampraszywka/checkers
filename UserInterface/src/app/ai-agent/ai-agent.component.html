@@ -6,7 +6,6 @@
       <table class="table">
         <thead>
         <tr>
-          <th scope="col">Timestamp</th>
           <th scope="col">Kind</th>
           <th scope="col">Context</th>
           <th scope="col">Data</th>
@@ -15,8 +14,7 @@
         <tbody>
           @for (entry of entries; track entry; let index = $index) {
             <tr>
-              <td>{{entry.timestamp | date: 'H:mm:ss' }}</td>
-              <td><span class="badge" [ngClass]="badgeClass(entry.kind)">{{Kind[entry.kind]}}</span></td>
+              <td><span class="badge" [ngClass]="badgeClass(entry.kind)">{{kind(entry.kind)}}</span></td>
               <td>{{entry.context}}</td>
               <td [innerHTML]="replaceNewLine(entry.data)"></td>
             </tr>

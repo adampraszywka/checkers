@@ -6,4 +6,5 @@ public record OpenAiGpt4TurboPlayer(string Id) : Player
 {
     public const string TypeValue = "AI_OpenAiGpt4Turbo";
     public string Type => TypeValue;
+    public bool Bot => true;
 }

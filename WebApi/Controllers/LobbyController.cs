@@ -32,9 +32,9 @@ public class LobbyController(GameLobbyListRepository lobbyListRepository, GameLo
     }
 
     [HttpPost("/lobby")]
-    public async Task<IActionResult> Create([FromBody] CreateLobbyRequest request, [FromHeader(Name = HeaderPlayer.HeaderName)] string playerId)
+    public async Task<IActionResult> Create([FromBody] CreateLobbyRequest request, [FromHeader(Name = ApiPlayer.HeaderName)] string playerId)
     {
-        var player = new HeaderPlayer(playerId);
+        var player = new ApiPlayer(playerId);
         var createResult = await lobbyService.Create(player, request.Name);
 
         if (!createResult.IsSuccess)
@@ -45,9 +45,9 @@ public class LobbyController(GameLobbyListRepository lobbyListRepository, GameLo
     }
     
     [HttpPost("/lobby/{lobbyId}/join")]
-    public async Task<IActionResult> Join(string lobbyId, [FromHeader(Name = HeaderPlayer.HeaderName)] string playerId)
+    public async Task<IActionResult> Join(string lobbyId, [FromHeader(Name = ApiPlayer.HeaderName)] string playerId)
     {
-        var player = new HeaderPlayer(playerId);
+        var player = new ApiPlayer(playerId);
         var joinResult = await lobbyService.Join(lobbyId, player);
 
         if (joinResult.IsFailed)
