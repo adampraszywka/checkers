@@ -58,7 +58,7 @@ public class BoardService(BoardRepository boardRepository, IPublishEndpoint publ
 
         await boardRepository.Save(board);
 
-        var notification = new BoardUpdated(board.ToDto(), board.Participants.ToNotifiableDto());
+        var notification = new BoardUpdated(board.ToDto(), board.Participants.List.ToDto());
         await publishEndpoint.Publish(notification);
         
         return Result.Ok(board); 

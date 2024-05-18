@@ -1,4 +1,5 @@
-﻿using Contracts.Dto;
+﻿using AIPlayers.Players;
+using Contracts.Dto;
 using Microsoft.AspNetCore.SignalR;
 using WebApi.Extensions;
 using WebApi.Hubs.Extensions;
@@ -8,7 +9,7 @@ using WebApi.Service;
 
 namespace WebApi.Hubs;
 
-public class LobbyHub(GameLobbyService lobbyService) : Hub<LobbyHubClient>
+public class LobbyHub(GameLobbyService lobbyService, AlgorithmConfiguration algorithmConfiguration) : Hub<LobbyHubClient>
 {
     private const string ClosedFailed = "LOBBY_CLOSED_FAILED";
     private const string AddAiPlayerFailed = "LOBBY_ADD_AI_PLAYER_FAILED";
@@ -58,12 +59,12 @@ public class LobbyHub(GameLobbyService lobbyService) : Hub<LobbyHubClient>
         return NullableActionResult<BoardDto>.Success(board.ToDto());
     }
     
-    public Task<IEnumerable<AiPlayer>> ListAiPlayers()
+    public Task<IEnumerable<AIPlayerDto>> ListAiPlayers()
     {
-        return Task.FromResult(PlayerFactory.AvailableAiPlayers);
+        return Task.FromResult(algorithmConfiguration.Available.ToDto());
     }
 
-    public async Task<NullableActionResult<GameLobbyDto>> AddAiPlayer(string aiPlayerType)
+    public async Task<NullableActionResult<GameLobbyDto>> AddAiPlayer(string algorithm)
     {
         var lobbyId = Context.LobbyId();
 
@@ -77,7 +78,8 @@ public class LobbyHub(GameLobbyService lobbyService) : Hub<LobbyHubClient>
             return AuthError<GameLobbyDto>();
         }
 
-        var result = await lobbyService.AddAiPlayer(lobbyId, aiPlayerType);
+        var configuration = new Dictionary<string, string>();
+        var result = await lobbyService.AddAiPlayer(lobbyId, algorithm, configuration);
         if (result.IsFailed)
         {
             return NullableActionResult<GameLobbyDto>.FromErrors(result.Errors, AddAiPlayerFailed);

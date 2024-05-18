@@ -2,4 +2,4 @@
 
 namespace Contracts.Notification;
 
-public record BoardUpdated(BoardDto Board, IEnumerable<NotifiableParticipantDto> NotifiableParticipants);
+public record BoardUpdated(BoardDto Board, IEnumerable<ParticipantDto> NotifiableParticipants);

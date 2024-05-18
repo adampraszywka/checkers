@@ -1,5 +1,5 @@
-﻿using Contracts.Players;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
+using WebApi.Players;
 
 namespace WebApi.Hubs.Extensions;
 

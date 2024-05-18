@@ -14,7 +14,7 @@ public class GameLobby(string id, string name)
     
     public string Id { get; } = id;
     public string Name { get; } = name;
-    public int MaxPlayers { get; } = RequiredPlayerCount;
+    public int MaxPlayers => RequiredPlayerCount;
     public LobbyStatus Status { get; private set; } = LobbyStatus.WaitingForPlayers;
     public string? BoardId => _boardId;
     
