@@ -2,4 +2,4 @@
 
 namespace Contracts.AiPlayers;
 
-public record MoveRequested(string BoardId, PlayerDto Player, MoveDto Move);
+public record MoveRequested(string BoardId, string PlayerId, MoveDto Move);

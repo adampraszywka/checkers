@@ -1,8 +1,11 @@
+using AIPlayers.Algorithms.AnthropicClaude;
+using AIPlayers.Algorithms.Dummy;
+using AIPlayers.Algorithms.OpenAIGpt4o;
+using AIPlayers.Algorithms.OpenAIGpt4Turbo;
+using AIPlayers.Extensions;
 using AIPlayers.MessageHub;
-using AIPlayers.Players.AnthropicClaude;
-using AIPlayers.Players.Dummy;
-using AIPlayers.Players.OpenAIGpt4o;
-using AIPlayers.Players.OpenAIGpt4Turbo;
+using AIPlayers.Players;
+using AIPlayers.Repository;
 using Anthropic.SDK;
 using Domain.Chessboard;
 using Domain.Lobby;
@@ -36,15 +39,17 @@ builder.Services.AddOptionsWithValidateOnStart<OpenAISettings>()
 builder.Services.AddControllers();
 
 // InMemory repositories need to be declared as singleton
+builder.Services.AddSingleton<AIPlayerRepository, InMemoryAIPlayerRepository>();
 builder.Services.AddSingleton<BoardRepository, InMemoryBoardRepository>();
 builder.Services.AddSingleton<InMemoryGameLobbyRepository>();
 
 builder.Services.AddTransient<GameLobbyRepository>(x => x.GetRequiredService<InMemoryGameLobbyRepository>());
 builder.Services.AddTransient<GameLobbyListRepository>(x => x.GetRequiredService<InMemoryGameLobbyRepository>());
 
-builder.Services.AddScoped<PlayerFactory>();
 builder.Services.AddScoped<BoardService>();
 builder.Services.AddScoped<GameLobbyService>();
+
+builder.Services.AddAIPlayers();
 
 builder.Services.AddMassTransit(m =>
 {
@@ -54,11 +59,6 @@ builder.Services.AddMassTransit(m =>
     m.AddConsumer<AiPlayerStatusUpdatedConsumer>();
 
     m.AddConsumer<Hub>();
-    
-    m.AddConsumer<AiDummyPlayerConsumer>();
-    m.AddConsumer<OpenAIGpt4TurboConsumer>();
-    m.AddConsumer<AntrophicClaudePlayerConsumer>();
-    m.AddConsumer<OpenAIGpt4oConsumer>();
 
     m.UsingInMemory((context, cfg) =>
     {

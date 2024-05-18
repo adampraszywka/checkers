@@ -1,4 +1,6 @@
-﻿using Contracts.Notification;
+﻿using AIPlayers.Players;
+using AIPlayers.Repository;
+using Contracts.Notification;
 using Domain.Chessboard;
 using Domain.Lobby;
 using Domain.Lobby.Errors;
@@ -6,12 +8,16 @@ using Domain.Shared;
 using FluentResults;
 using MassTransit;
 using WebApi.Extensions;
-using WebApi.Players;
 using WebApi.Service.Errors;
 
 namespace WebApi.Service;
 
-public class GameLobbyService(GameLobbyRepository lobbyRepository, BoardRepository boardRepository, IPublishEndpoint publishEndpoint)
+public class GameLobbyService(
+    GameLobbyRepository lobbyRepository,
+    BoardRepository boardRepository,
+    AIPlayerRepository aiPlayerRepository,
+    AlgorithmPlayerFactory algorithmPlayerFactory,
+    IPublishEndpoint publishEndpoint)
 {
     public async Task<Result<GameLobby>> Get(string lobbyId)
     {
@@ -67,7 +73,7 @@ public class GameLobbyService(GameLobbyRepository lobbyRepository, BoardReposito
         return Result.Ok(lobby);
     }
     
-    public async Task<Result<GameLobby>> AddAiPlayer(string lobbyId, string type)
+    public async Task<Result<GameLobby>> AddAiPlayer(string lobbyId, string algorithm, Dictionary<string, string> configuration)
     {
         var lobby = await lobbyRepository.Get(lobbyId);
         if (lobby is null)
@@ -76,18 +82,19 @@ public class GameLobbyService(GameLobbyRepository lobbyRepository, BoardReposito
         }
 
         var guid = Guid.NewGuid().ToString();
-        var playerResult = PlayerFactory.Create($"AI_{guid}", type);
-        if (playerResult.IsFailed)
+        var player = algorithmPlayerFactory.Create(guid, algorithm, configuration);
+        if (player is null)
         {
-            return Result.Fail(new LobbyAddAiPlayerFailed(playerResult.Errors));
+            return Result.Fail(new LobbyAddAiPlayerFailed("Cannot create AI player"));
         }
-        
-        var result = lobby.Join(playerResult.Value);
+
+        var result = lobby.Join(player);
         if (result.IsFailed)
         {
             return Result.Fail(new LobbyAddAiPlayerFailed(result.Errors));
         }
 
+        await aiPlayerRepository.Save(player);
         await lobbyRepository.Save(lobby);
         await LobbyUpdateNotification(lobby);
 

@@ -1,9 +1,9 @@
 ﻿using Contracts.Dto;
-using Contracts.Players;
 using Domain.Chessboard;
 using Microsoft.AspNetCore.Mvc;
 
 using WebApi.Extensions;
+using WebApi.Players;
 using WebApi.Service;
 
 namespace WebApi.Controllers;

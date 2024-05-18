@@ -1,4 +1,5 @@
-﻿using Domain.Shared;
+﻿using Domain.Chessboard;
+using Domain.Shared;
 using FluentResults;
 
 namespace WebApi.Service.Errors;

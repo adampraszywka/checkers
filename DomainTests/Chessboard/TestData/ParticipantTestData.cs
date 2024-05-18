@@ -15,11 +15,7 @@ public static class ParticipantTestData
         }
     }
 
-    private record TestPlayer(string Id) : Player
-    {
-        public string Type => "Test";
-        public bool Bot => false;
-    }
+    private record TestPlayer(string Id, string Type = "TEST") : Player;
 }
 
 public record AllParticipants(Player White, Player Black, Player NotParticipating, IEnumerable<Participant> All);

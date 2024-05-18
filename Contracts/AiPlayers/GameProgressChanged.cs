@@ -2,4 +2,4 @@
 
 namespace Contracts.AiPlayers;
 
-public record GameProgressChanged(BoardDto Board, NotifiableParticipantDto Participant);
+public record GameProgressChanged(BoardDto Board, ParticipantDto Participant);
