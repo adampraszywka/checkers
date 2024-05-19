@@ -5,35 +5,33 @@ using AIPlayers.Algorithms.OpenAIGpt4Turbo;
 using AIPlayers.MessageHub;
 using AIPlayers.Players;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace AIPlayers.Extensions;
 
 public static class ServiceCollectionExtension
 {
-    public static void AddAIPlayers(this IServiceCollection services)
-    {
-        services.AddScoped<AlgorithmPlayers>();
-        services.AddScoped<AlgorithmConfiguration>(x => x.GetRequiredService<AlgorithmPlayers>());
-        services.AddScoped<AlgorithmPlayerFactory>(x => x.GetRequiredService<AlgorithmPlayers>());
-        services.AddScoped<AIAlgorithmFactory>(x => x.GetRequiredService<AlgorithmPlayers>());
-        
-        services.AddTransient<AntrophicClaude>();
-        services.AddTransient<DummyAi>();
-        services.AddTransient<OpenAiGpt4o>();
-        services.AddTransient<OpenAiGpt4Turbo>();
-
-        services.AddTransient<AlgorithmPlayers>(x =>
-        {
-            var algorithms = new List<Algorithm>
-            {
-                new(typeof(DummyAi)),
-                new(typeof(OpenAiGpt4o)),
-                new(typeof(OpenAiGpt4Turbo)),
-                new(typeof(AntrophicClaude)),
-            };
     
-            var serviceProvider = x.GetRequiredService<IServiceProvider>();
+    public static void AddAiPlayer<T>(this IServiceCollection services) where T : class, AIAlgorithm
+    {
+        services.TryAddAiPlayersInfrastructure();
+        
+        services.AddTransient<AIAlgorithm, T>(x => x.GetRequiredService<T>());
+        services.AddTransient<T>();
+    }
+
+    private static void TryAddAiPlayersInfrastructure(this IServiceCollection services)
+    {
+        services.TryAddTransient<AlgorithmConfiguration>(x => x.GetRequiredService<AlgorithmPlayers>());
+        services.TryAddTransient<AlgorithmPlayerFactory>(x => x.GetRequiredService<AlgorithmPlayers>());
+        services.TryAddTransient<AIAlgorithmFactory>(x => x.GetRequiredService<AlgorithmPlayers>());
+        services.TryAddTransient<AlgorithmPlayers>(p =>
+        {
+            var aiAlgorithms = p.GetRequiredService<IEnumerable<AIAlgorithm>>();
+            var algorithms = aiAlgorithms.Select(x => new Algorithm(x.GetType())); //
+            var serviceProvider = p.GetRequiredService<IServiceProvider>();
             return new AlgorithmPlayers(algorithms, serviceProvider);
         });
     }
+    
 }

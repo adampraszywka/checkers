@@ -1,6 +1,6 @@
 ﻿namespace AIPlayers.Players;
 
-public record Algorithm(Type Implementation)
+public record Algorithm(Type Value)
 {
-    public string Name => Implementation.Name;   
+    public string Name => Value.Name;   
 }
