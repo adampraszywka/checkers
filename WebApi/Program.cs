@@ -49,7 +49,10 @@ builder.Services.AddTransient<GameLobbyListRepository>(x => x.GetRequiredService
 builder.Services.AddScoped<BoardService>();
 builder.Services.AddScoped<GameLobbyService>();
 
-builder.Services.AddAIPlayers();
+builder.Services.AddAiPlayer<DummyAi>();
+builder.Services.AddAiPlayer<AntrophicClaude>();
+builder.Services.AddAiPlayer<OpenAiGpt4o>();
+builder.Services.AddAiPlayer<OpenAiGpt4Turbo>();
 
 builder.Services.AddMassTransit(m =>
 {
@@ -95,6 +98,8 @@ builder.Services.AddCors(o =>
 });
 
 var app = builder.Build();
+
+app.Services.GetRequiredService<AlgorithmPlayers>();
 
 app.MapGet("/ping", () => new {Result = "pong"});
 app.MapHub<DashboardHub>("/hub_dashboard");

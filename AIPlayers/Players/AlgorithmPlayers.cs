@@ -26,6 +26,6 @@ public class AlgorithmPlayers(IEnumerable<Algorithm> algorithms, IServiceProvide
             throw new ArgumentException("Algorithm not found");
         }
 
-        return (AIAlgorithm) serviceProvider.GetRequiredService(type.Implementation);
+        return (AIAlgorithm) serviceProvider.GetRequiredService(type.Value);
     }
 }
