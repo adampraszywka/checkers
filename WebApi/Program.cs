@@ -99,8 +99,6 @@ builder.Services.AddCors(o =>
 
 var app = builder.Build();
 
-app.Services.GetRequiredService<AlgorithmPlayers>();
-
 app.MapGet("/ping", () => new {Result = "pong"});
 app.MapHub<DashboardHub>("/hub_dashboard");
 app.MapHub<BoardHub>("/hub_board");
