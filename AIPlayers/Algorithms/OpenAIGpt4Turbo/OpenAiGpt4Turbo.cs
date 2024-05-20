@@ -108,7 +108,7 @@ public class OpenAiGpt4Turbo(IOpenAIService openAi, ILogger<OpenAiGpt4Turbo> log
         }
         var error = result.Errors.First().Message ?? "Unknown error";
         await services.StatusPublisher.Publish(Status.Failed("API", $"Move from {from.ToName()} to {to.ToName()} failed: {error}"));
-        return (true, "");
+        return (false, error);
     }
 
     private bool TryExtractMove(string input, out string raw, out string from, out string to)
