@@ -11,8 +11,8 @@ namespace AIPlayers.Algorithms.OpenAIGpt4o;
 
 public class OpenAiGpt4o(ILogger<OpenAiGpt4o> logger, IOpenAIService openAi) : AIAlgorithm
 {
-    private const int MaxFindMoveIterations = 3;
-    private const int MaxMoveIterations = 3;
+    private const int MaxFindMoveIterations = 5;
+    private const int MaxMoveIterations = 5;
 
     private const bool RefereeEnabled = false;
     
