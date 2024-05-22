@@ -66,8 +66,37 @@ It's faster than GPT-4 player, but results are not so good as GPT-4 player.
 
 ### How to write your own AI player
 
-[TBD]
-Instructions how to write your own AI player will be provided, after AI player interface will be refactored.
+To write your own AI player, you need to implement the AIAlgorithm interface.
+
+Base for AI Player implementation is AIAlgorithm interface.
+    
+    public interface AIAlgorithm
+    {
+        public Task Move(ParticipantDto participant, BoardDto board, Services services);
+    }
+
+There is only one method (Move) that needs to be implemented. It takes three parameters:
+- ParticipantDto - information about the player (bot) that is making the move
+- BoardDto - current board state. It contains information about the board and provides access to game log.
+- Services - services that can be used by the AI player. So far there are two services available:
+    - MoveClient - service that can be used to make a move. 
+    - StatusPublisher - service that can be used to publish status messages to the game AI debug window
+
+Once you implement the AIAlgorithm interface, you need to register your AI player in DI container. You can do it using one of AddAIPlayer overloads in the Startup class. 
+
+External dependencies can be injected into the AI player using the constructor and provided by the DI container.
+
+For simple AI player registration use:
+
+    builder.Services.AddAiPlayer<OpenAiGpt4o>();
+
+For more complex AI player registration use overload with implementation factory:
+
+    builder.Services.AddAiPlayer<OpenAiGpt4o>(x =>
+        new OpenAiGpt4o(x.GetRequiredService<ILogger<OpenAiGpt4o>>(), x.GetRequiredService<IOpenAIService>()));
+    
+
+
 
 ### Plan
 

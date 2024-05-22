@@ -7,7 +7,7 @@ namespace AIPlayers.Extensions;
 
 public static class ServiceCollectionExtension
 {
-    public static void AddAIPlayer<T>(this IServiceCollection services, Func<IServiceProvider, T> implementationFactory) where T : class, AIAlgorithm
+    public static void AddAiPlayer<T>(this IServiceCollection services, Func<IServiceProvider, T> implementationFactory) where T : class, AIAlgorithm
     {
         services.TryAddAiPlayersInfrastructure();
 
