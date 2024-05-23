@@ -30,7 +30,8 @@ public class Hub(
         
         var moveClient = new MassTransitMoveClient(client, loggerFactory.CreateLogger<MassTransitMoveClient>(), board.Id, participant.Id);
         var publisher = new MassTransitStatusPublisher(board.Id, publishEndpoint);
-        var services = new Services(moveClient, publisher);
+        var configuration = new Configuration(player.Configuration);
+        var services = new Services(moveClient, publisher, configuration);
 
         await playerImplementation.Move(participant, board, services);
     }
