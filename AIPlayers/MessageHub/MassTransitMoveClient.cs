@@ -7,19 +7,19 @@ using Microsoft.Extensions.Logging;
 
 namespace AIPlayers.MessageHub;
 
-public class MassTransitMoveClient(IRequestClient<MoveRequested> client, ILogger<MassTransitMoveClient> logger, string boardId, string playerId) : MoveClient
+public class MassTransitMoveClient(IRequestClient<MoveRequested> client, ILogger<MassTransitMoveClient> logger, ScopedHubContext context) : MoveClient
 {
     public async Task<Result> Move(MoveDto move)
     {
-        var e = new MoveRequested(boardId, playerId, move);
+        var e = new MoveRequested(context.BoardId, context.PlayerId, move);
         var response = await client.GetResponse<MoveSucceeded, MoveFailed>(e);
         
         if (response.Is<MoveSucceeded>(out _))
         {
             logger.LogInformation(
                 "AI player {PlayerId} moved piece on board {BoardId} from {Position} to {NewPosition}", 
-                playerId, 
-                boardId,
+                context.PlayerId, 
+                context.BoardId,
                 move.From.ToName(),
                 move.To.ToName());
             return Result.Ok();
@@ -28,8 +28,8 @@ public class MassTransitMoveClient(IRequestClient<MoveRequested> client, ILogger
         if (response.Is<MoveFailed>(out var moveFailed))
         {
             logger.LogWarning("AI player {PlayerId} failed to move piece on board {BoardId} from {Position} to {NewPosition}. Reason: {Reason}",
-                playerId,
-                boardId,
+                context.PlayerId,
+                context.BoardId,
                 move.From.ToName(),
                 move.To.ToName(),
                 string.Join(", ", moveFailed.Message.ErrorMessages));

@@ -9,12 +9,17 @@ using Status = Contracts.AiPlayers.AiPlayerStatus;
 
 namespace AIPlayers.Algorithms.AnthropicClaude;
 
-public class AntrophicClaude(AnthropicClient client, ILogger<AntrophicClaude> logger) : AIAlgorithm
+public class AntrophicClaude(
+    AnthropicClient client, 
+    ILogger<AntrophicClaude> logger,
+    MoveClient moveClient,
+    StatusPublisher statusPublisher, 
+    AiAlgorithmConfiguration configuration) : AIAlgorithm
 {
     private const int MaxFindMoveIterations = 3;
     private const int MaxMoveIterations = 3;
     
-    public async Task Move(ParticipantDto participant, BoardDto board, Services services)
+    public async ValueTask Move(ParticipantDto participant, BoardDto board)
     {
         var color = participant.Color;
         if (color != board.CurrentPlayer)
@@ -26,7 +31,7 @@ public class AntrophicClaude(AnthropicClient client, ILogger<AntrophicClaude> lo
         var boardState = board.ToBoardState();
         var currentPlayer = $"Current player: {color}";
         
-        var playerChat = new PlayerChat(client, services.StatusPublisher);
+        var playerChat = new PlayerChat(client, statusPublisher);
         var playerPrompt = $"{boardState}\n{currentPlayer}";
         
         var counter = 0;
@@ -37,7 +42,7 @@ public class AntrophicClaude(AnthropicClient client, ILogger<AntrophicClaude> lo
             var from = PositionDto.FromName(f);
             var to = PositionDto.FromName(t);
             
-            var result = await Move(from, to, services);
+            var result = await Move(from, to);
 
             if (!result.IsSuccessful)
             {
@@ -70,21 +75,21 @@ public class AntrophicClaude(AnthropicClient client, ILogger<AntrophicClaude> lo
         return ("", "");
     }
 
-    private async Task<(bool IsSuccessful, string ErrorMessage)> Move(PositionDto from, PositionDto to, Services services)
+    private async Task<(bool IsSuccessful, string ErrorMessage)> Move(PositionDto from, PositionDto to)
     {
         var move = new MoveDto(from, to);
-        var response = await services.MoveClient.Move(move);
+        var response = await moveClient.Move(move);
 
-        await services.StatusPublisher.Publish(Status.Command("API", $"Move from {from.ToName()} to {to.ToName()}"));
+        await statusPublisher.Publish(Status.Command("API", $"Move from {from.ToName()} to {to.ToName()}"));
 
         if (response.IsSuccess)
         {
-            await services.StatusPublisher.Publish(Status.Successful("API", $"Move from {from.ToName()} to {to.ToName()} successful"));
+            await statusPublisher.Publish(Status.Successful("API", $"Move from {from.ToName()} to {to.ToName()} successful"));
             return (true, "");
         }
         
         var error = response.Errors.First().Message ?? "Unknown error";
-        await services.StatusPublisher.Publish(Status.Failed("API", $"Move from {from.ToName()} to {to.ToName()} failed: {error}"));
+        await statusPublisher.Publish(Status.Failed("API", $"Move from {from.ToName()} to {to.ToName()} failed: {error}"));
         return (false, error);
     }
 
