@@ -1,16 +1,14 @@
 ﻿using AIPlayers.Repository;
 using Contracts.AiPlayers;
 using MassTransit;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace AIPlayers.MessageHub;
 
 public class Hub(
-    AIAlgorithmFactory algorithmFactory,
     AIPlayerRepository aiPlayerRepository,
-    ILoggerFactory loggerFactory,
-    IRequestClient<MoveRequested> client,
-    IPublishEndpoint publishEndpoint,
+    IServiceScopeFactory scopeFactory,
     ILogger<Hub> logger): IConsumer<GameProgressChanged>
 {
     public async Task Consume(ConsumeContext<GameProgressChanged> context)
@@ -26,13 +24,17 @@ public class Hub(
             return;
         }
         
-        var playerImplementation = algorithmFactory.Create(player);
+        using var scope = scopeFactory.CreateScope();
         
-        var moveClient = new MassTransitMoveClient(client, loggerFactory.CreateLogger<MassTransitMoveClient>(), board.Id, participant.Id);
-        var publisher = new MassTransitStatusPublisher(board.Id, publishEndpoint);
-        var configuration = new Configuration(player.Configuration);
-        var services = new Services(moveClient, publisher, configuration);
-
-        await playerImplementation.Move(participant, board, services);
+        var algorithmFactory = scope.ServiceProvider.GetRequiredService<AIAlgorithmFactory>();
+        
+        var scopedContext = scope.ServiceProvider.GetRequiredService<ScopedHubContext>();
+        scopedContext.Configure(board.Id, participant.Id);
+        
+        var scopedConfiguration = scope.ServiceProvider.GetRequiredService<ScopedConfiguration>();
+        scopedConfiguration.Configure(player.Configuration);
+        
+        var playerImplementation = algorithmFactory.Create(player);
+        await playerImplementation.Move(participant, board);
     }
 }

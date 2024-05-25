@@ -6,10 +6,8 @@ using Status = Contracts.AiPlayers.AiPlayerStatus;
 
 namespace AIPlayers.Algorithms.OpenAIGpt4o;
 
-public class PlayerChat(IOpenAIService client, StatusPublisher statusPublisher)
+public class PlayerChat(IOpenAIService client, StatusPublisher statusPublisher, OpenAiGpt4oConfiguration configuration)
 {
-    private const string Model = "gpt-4o";
-    private const string Context = "GPT4o-Player";
     private const string SystemPrompt = $@"You are the checkers master. You choose the best possible next move.
         User provides you information about whoose turn to play is.
         {Rules.Game}
@@ -30,7 +28,7 @@ public class PlayerChat(IOpenAIService client, StatusPublisher statusPublisher)
     {
         _messages.Add(ChatMessage.FromUser(prompt));
         
-        var playerPrompt = new ChatCompletionCreateRequest {Model = Model, Messages = _messages, Temperature = 0.2f};
+        var playerPrompt = new ChatCompletionCreateRequest {Model = configuration.Model, Messages = _messages, Temperature = configuration.Temperature};
 
         await statusPublisher.Publish(Status.Command(Context, _messages.DumpMessages()));
         
@@ -43,4 +41,6 @@ public class PlayerChat(IOpenAIService client, StatusPublisher statusPublisher)
 
         return resultContent;
     }
+    
+    private string Context => configuration.Model + "-Player";
 }

@@ -6,11 +6,14 @@ using Status = Contracts.AiPlayers.AiPlayerStatus;
 
 namespace AIPlayers.Algorithms.Dummy;
 
-public class DummyAi(ILogger<DummyAi> logger) : AIAlgorithm
+public class DummyAi(ILogger<DummyAi> logger,     
+    MoveClient moveClient,
+    StatusPublisher statusPublisher, 
+    AiAlgorithmConfiguration configuration) : AIAlgorithm
 {
     private readonly List<Status> _statusUpdates = new();
     
-    public async Task Move(ParticipantDto participant, BoardDto board, Services services)
+    public async ValueTask Move(ParticipantDto participant, BoardDto board)
     {
         var color = participant.Color;
         if (color != board.CurrentPlayer)
@@ -38,7 +41,7 @@ public class DummyAi(ILogger<DummyAi> logger) : AIAlgorithm
             {
                 // Try to the left
                 var move = new MoveDto(position, newPosition);
-                var result = await services.MoveClient.Move(move);
+                var result = await moveClient.Move(move);
 
                 _statusUpdates.Add(Status.Command("API", $"Move from {position.ToName()} to {newPosition.ToName()}"));
 
@@ -54,7 +57,7 @@ public class DummyAi(ILogger<DummyAi> logger) : AIAlgorithm
             
         }
         
-        await services.StatusPublisher.Publish(_statusUpdates);
+        await statusPublisher.Publish(_statusUpdates);
     }
     
 }

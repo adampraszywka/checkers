@@ -9,14 +9,20 @@ using Status = Contracts.AiPlayers.AiPlayerStatus;
 
 namespace AIPlayers.Algorithms.OpenAIGpt4Turbo;
 
-public class OpenAiGpt4Turbo(IOpenAIService openAi, ILogger<OpenAiGpt4Turbo> logger) : AIAlgorithm
+public class OpenAiGpt4Turbo(
+    IOpenAIService openAi,
+    ILogger<OpenAiGpt4Turbo> logger,
+    MoveClient moveClient,
+    StatusPublisher statusPublisher, 
+    AiAlgorithmConfiguration configuration
+    ) : AIAlgorithm
 {
     private const int MaxFindMoveIterations = 5;
     private const int MaxMoveIterations = 5;
 
     private const bool RefereeEnabled = false;
 
-    public async Task Move(ParticipantDto participant, BoardDto board, Services services)
+    public async ValueTask Move(ParticipantDto participant, BoardDto board)
     {
         var color = participant.Color;
         if (color != board.CurrentPlayer)
@@ -28,18 +34,18 @@ public class OpenAiGpt4Turbo(IOpenAIService openAi, ILogger<OpenAiGpt4Turbo> log
         var boardState = board.ToBoardState();
         var currentPlayer = $"Current player: {color}";
         
-        var playerChat = new PlayerChat(openAi, services.StatusPublisher);
+        var playerChat = new PlayerChat(openAi, statusPublisher);
         var playerPrompt = $"{boardState}\n{currentPlayer}";
         
         var counter = 0;
         while (counter < MaxMoveIterations)
         {
-            var (f, t) = await FindMove(playerChat, services, boardState, currentPlayer, playerPrompt);
+            var (f, t) = await FindMove(playerChat, boardState, currentPlayer, playerPrompt);
 
             var from = PositionDto.FromName(f);
             var to = PositionDto.FromName(t);
             
-            var result = await Move(from, to, services);
+            var result = await Move(from, to);
 
             if (!result.IsSuccessful)
             {
@@ -56,7 +62,7 @@ public class OpenAiGpt4Turbo(IOpenAIService openAi, ILogger<OpenAiGpt4Turbo> log
 
 
 
-    private async Task<(string From, string To)> FindMove(PlayerChat playerChat, Services services, string boardState, string currentPlayer, string initialPlayerPrompt)
+    private async Task<(string From, string To)> FindMove(PlayerChat playerChat, string boardState, string currentPlayer, string initialPlayerPrompt)
     {
         var playerPrompt = initialPlayerPrompt;
         var counter = 0;
@@ -70,7 +76,7 @@ public class OpenAiGpt4Turbo(IOpenAIService openAi, ILogger<OpenAiGpt4Turbo> log
 
             if (RefereeEnabled)
             {
-                var refereeChat = new RefereeChat(openAi, services.StatusPublisher);
+                var refereeChat = new RefereeChat(openAi, statusPublisher);
                 var refereeResult = await refereeChat.Check(boardState, currentPlayer, value);
                 var (valid, reason) = ExtractReason(refereeResult);
                 if (!valid)
@@ -94,20 +100,20 @@ public class OpenAiGpt4Turbo(IOpenAIService openAi, ILogger<OpenAiGpt4Turbo> log
         return ("", "");
     }
 
-    private async Task<(bool IsSuccessful, string ErrorMessage)> Move(PositionDto from, PositionDto to, Services services)
+    private async Task<(bool IsSuccessful, string ErrorMessage)> Move(PositionDto from, PositionDto to)
     {
         var move = new MoveDto(from, to);
-        var result = await services.MoveClient.Move(move);
+        var result = await moveClient.Move(move);
         
-        await services.StatusPublisher.Publish(Status.Command("API", $"Move from {from.ToName()} to {to.ToName()}"));
+        await statusPublisher.Publish(Status.Command("API", $"Move from {from.ToName()} to {to.ToName()}"));
 
         if (result.IsSuccess)
         {
-            await services.StatusPublisher.Publish(Status.Successful("API", $"Move from {from.ToName()} to {to.ToName()} successful"));
+            await statusPublisher.Publish(Status.Successful("API", $"Move from {from.ToName()} to {to.ToName()} successful"));
             return (true, "");
         }
         var error = result.Errors.First().Message ?? "Unknown error";
-        await services.StatusPublisher.Publish(Status.Failed("API", $"Move from {from.ToName()} to {to.ToName()} failed: {error}"));
+        await statusPublisher.Publish(Status.Failed("API", $"Move from {from.ToName()} to {to.ToName()} failed: {error}"));
         return (false, error);
     }
 

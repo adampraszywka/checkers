@@ -9,38 +9,55 @@ using Status = Contracts.AiPlayers.AiPlayerStatus;
 
 namespace AIPlayers.Algorithms.OpenAIGpt4o;
 
-public class OpenAiGpt4o(ILogger<OpenAiGpt4o> logger, IOpenAIService openAi) : AIAlgorithm
+public class OpenAiGpt4o : AIAlgorithm
 {
+    private readonly ILogger<OpenAiGpt4o> _logger;
+    private readonly IOpenAIService _openAi;
+    private readonly MoveClient _moveClient;
+    private readonly StatusPublisher _statusPublisher;
+    private readonly OpenAiGpt4oConfiguration _configuration;
+
+    public OpenAiGpt4o(ILogger<OpenAiGpt4o> logger,
+        IOpenAIService openAi,
+        MoveClient moveClient,
+        StatusPublisher statusPublisher, 
+        AiAlgorithmConfiguration configuration)
+    {
+        _logger = logger;
+        _openAi = openAi;
+        _moveClient = moveClient;
+        _statusPublisher = statusPublisher;
+        _configuration = new(configuration.Entries);
+    }
+
     private const int MaxFindMoveIterations = 5;
     private const int MaxMoveIterations = 5;
-
-    private const bool RefereeEnabled = false;
     
-    public async Task Move(ParticipantDto participant, BoardDto board, Services services)
+    public async ValueTask Move(ParticipantDto participant, BoardDto board)
     {
         var color = participant.Color;
         
         if (color != board.CurrentPlayer)
         {
-            logger.LogInformation("It's not the AI player's turn");
+            _logger.LogInformation("It's not the AI player's turn");
             return;
         }
         
         var boardState = board.ToBoardState();
         var currentPlayer = $"Current player: {color}";
         
-        var playerChat = new PlayerChat(openAi, services.StatusPublisher);
+        var playerChat = new PlayerChat(_openAi, _statusPublisher, _configuration);
         var playerPrompt = $"{boardState}\n{currentPlayer}";
         
         var counter = 0;
         while (counter < MaxMoveIterations)
         {
-            var (f, t) = await FindMove(playerChat, boardState, currentPlayer, playerPrompt, services);
+            var (f, t) = await FindMove(playerChat, boardState, currentPlayer, playerPrompt);
 
             var from = PositionDto.FromName(f);
             var to = PositionDto.FromName(t);
             
-            var result = await Move(from, to, services);
+            var result = await Move(from, to);
 
             if (!result.IsSuccessful)
             {
@@ -55,7 +72,7 @@ public class OpenAiGpt4o(ILogger<OpenAiGpt4o> logger, IOpenAIService openAi) : A
         }    
     }
 
-    private async Task<(string From, string To)> FindMove(PlayerChat playerChat, string boardState, string currentPlayer, string initialPlayerPrompt, Services services)
+    private async Task<(string From, string To)> FindMove(PlayerChat playerChat, string boardState, string currentPlayer, string initialPlayerPrompt)
     {
         var playerPrompt = initialPlayerPrompt;
         var counter = 0;
@@ -64,12 +81,12 @@ public class OpenAiGpt4o(ILogger<OpenAiGpt4o> logger, IOpenAIService openAi) : A
             var playerResult = await playerChat.Prompt(playerPrompt);
             if (!TryExtractMove(playerResult, out var value, out var from, out var to))
             {
-                logger.LogError("Move Regex match failed for player result: {PlayerResult}", playerResult);
+                _logger.LogError("Move Regex match failed for player result: {PlayerResult}", playerResult);
             }
 
-            if (RefereeEnabled)
+            if (_configuration.RefereeEnabled)
             {
-                var refereeChat = new RefereeChat(openAi, services.StatusPublisher);
+                var refereeChat = new RefereeChat(_openAi, _statusPublisher);
                 var refereeResult = await refereeChat.Check(boardState, currentPlayer, value);
                 var (valid, reason) = ExtractReason(refereeResult);
                 if (!valid)
@@ -93,21 +110,21 @@ public class OpenAiGpt4o(ILogger<OpenAiGpt4o> logger, IOpenAIService openAi) : A
         return ("", "");
     }
 
-    private async Task<(bool IsSuccessful, string ErrorMessage)> Move(PositionDto from, PositionDto to, Services services)
+    private async Task<(bool IsSuccessful, string ErrorMessage)> Move(PositionDto from, PositionDto to)
     {
         var move = new MoveDto(from, to);
-        var response = await services.MoveClient.Move(move);
+        var response = await _moveClient.Move(move);
 
-        await services.StatusPublisher.Publish(Status.Command("API", $"Move from {from.ToName()} to {to.ToName()}"));
+        await _statusPublisher.Publish(Status.Command("API", $"Move from {from.ToName()} to {to.ToName()}"));
 
         if (response.IsSuccess)
         {
-            await services.StatusPublisher.Publish(Status.Successful("API", $"Move from {from.ToName()} to {to.ToName()} successful"));
+            await _statusPublisher.Publish(Status.Successful("API", $"Move from {from.ToName()} to {to.ToName()} successful"));
             return (true, "");
         }
         
         var error = response.Errors.First().Message ?? "Unknown error";
-        await services.StatusPublisher.Publish(Status.Failed("API", $"Move from {from.ToName()} to {to.ToName()} failed: {error}"));
+        await _statusPublisher.Publish(Status.Failed("API", $"Move from {from.ToName()} to {to.ToName()} failed: {error}"));
         return (false, error);
     }
 

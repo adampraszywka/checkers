@@ -54,6 +54,7 @@ builder.Services.AddAiPlayer<AntrophicClaude>();
 builder.Services.AddAiPlayer<OpenAiGpt4o>();
 builder.Services.AddAiPlayer<OpenAiGpt4Turbo>();
 
+
 builder.Services.AddMassTransit(m =>
 {
     m.AddConsumer<LobbyUpdatedConsumer>();
