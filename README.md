@@ -78,14 +78,14 @@ Base for AI Player implementation is AIAlgorithm interface.
 There is only one method (Move) that needs to be implemented. It takes three parameters:
 - ParticipantDto - information about the player (bot) that is making the move
 - BoardDto - current board state. It contains information about the board and provides access to game log.
-- Services - services that can be used by the AI player. So far there are two services available:
-    - MoveClient - service that can be used to make a move. 
-    - StatusPublisher - service that can be used to publish status messages to the game AI debug window
 
-Once you implement the AIAlgorithm interface, you need to register your AI player in DI container. You can do it using one of AddAIPlayer overloads in the Startup class. 
+There are three interfaces that can be used in the AI player implementation:
+- AiAlgorithmConfiguration - provides access to configuration settings. It contains Dictionary<string, string> with configuration settings. It's up to the AI player to validate and use these settings.
+- MoveClient - provides access to the Board API. It can be used to make a move on the board. In case of invalid move, it returns Result with an error.
+- StatusPublisher - provides access to the AI debug window notification. It can be used to report AI player progress or debug information.
 
-External dependencies can be injected into the AI player using the constructor and provided by the DI container.
-
+Once you implement the AIAlgorithm interface, you need to register your AI player in DI container.
+You can do it using one of AddAIPlayer overloads in the Program.cs file.
 For simple AI player registration use:
 
     builder.Services.AddAiPlayer<OpenAiGpt4o>();
@@ -94,9 +94,77 @@ For more complex AI player registration use overload with implementation factory
 
     builder.Services.AddAiPlayer<OpenAiGpt4o>(x =>
         new OpenAiGpt4o(x.GetRequiredService<ILogger<OpenAiGpt4o>>(), x.GetRequiredService<IOpenAIService>()));
+
+Platform dependencies like AiAlgorithmConfiguration, MoveClient, and StatusPublisher are registered in the DI container and can be injected into the AI player. You don't need to register them manually.
+You can register any other dependency that your AI player needs in the DI container. They will be injected into the AI player.
+
+### Minimal AI player implementation
+
+Create your Ai player class that implements AIAlgorithm interface.
+
+    public class Example(MoveClient client, StatusPublisher statusPublisher, AiAlgorithmConfiguration configuration) : AIAlgorithm
+    {
+        private readonly Random _random = new();
+        private readonly ExampleConfiguration _configuration = new(configuration);
+
+        public async ValueTask Move(ParticipantDto participant, BoardDto board)
+        {
+            if (participant.Color != board.CurrentPlayer)
+            {
+                // It's not my turn, nothing to do here
+                return;
+            }
+
+            // Here you can implement your AI algorithm
+            // For now, let's just make a random move
+            // Square is a 2D array, so we need to flatten it to get a list of all squares for easier manipulation
+            var flatListOfSquares = board.Squares.SelectMany(square => square).ToList();
     
+            // Get all squares with player's pieces
+            var playerPieceSquares = flatListOfSquares
+                .Where(x => x.Piece is not null && x.Piece.Color == participant.Color)
+                .ToList();
+            
+            // Get all empty squares
+            var emptySquares = flatListOfSquares.Where(x => x.Piece is null).ToList();
+            
+            for (var retry = 0; retry < _configuration.MaxRetries; retry++)
+            {
+                // Get random player's piece square
+                var randomPlayerPieceSquare = playerPieceSquares[_random.Next(playerPieceSquares.Count - 1)];
+                // Get random empty square
+                var randomEmptySquare = emptySquares[_random.Next(emptySquares.Count - 1)];
+            
+                // Send move to the board
+                var move = new MoveDto(randomPlayerPieceSquare.Position, randomEmptySquare.Position);
+                var result = await client.Move(move);
+                if (result.IsFailed)
+                {
+                    await statusPublisher.Publish(AiPlayerStatus.Failed("API", result.Errors.First().Message));
+                }
+            
+                await statusPublisher.Publish(AiPlayerStatus.Successful("API", "Move was successful"));
+            }
+        }
 
+        private record ExampleConfiguration
+        {
+            private readonly AiAlgorithmConfiguration _configuration;
+    
+            public ExampleConfiguration(AiAlgorithmConfiguration configuration)
+            {
+                _configuration = configuration;
+            }
+            
+            public int MaxRetries => int.TryParse(_configuration.Entries.GetValueOrDefault("MaxRetries"), out var maxRetries) ? maxRetries : 3;
+        }
+    }
 
+and register it in the DI container:
+
+    builder.Services.AddAiPlayer<Example>();
+
+That's all. Your AI player is ready to play. New entry will appear in the AI player list in the game lobby.
 
 ### Plan
 
