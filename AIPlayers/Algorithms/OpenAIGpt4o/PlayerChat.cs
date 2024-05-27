@@ -8,8 +8,8 @@ namespace AIPlayers.Algorithms.OpenAIGpt4o;
 
 public class PlayerChat(IOpenAIService client, StatusPublisher statusPublisher, OpenAiGpt4oConfiguration configuration)
 {
-    private const string SystemPrompt = $@"You are the checkers master. You choose the best possible next move.
-        User provides you information about whoose turn to play is.
+    private const string SystemPrompt = $@"You are the checkers master.
+
         {Rules.Game}
 
         You expect following parameters to decide about the best possible move:

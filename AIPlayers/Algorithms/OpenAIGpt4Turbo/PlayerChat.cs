@@ -10,8 +10,8 @@ public class PlayerChat(IOpenAIService client, StatusPublisher statusPublisher)
 {
     private const string Model = "gpt-4-turbo";
     private const string Context = "GPT4-Player";
-    private const string SystemPrompt = $@"You are the checkers master. You choose the best possible next move.
-        User provides you information about whoose turn to play is.
+    private const string SystemPrompt = $@"You are the checkers master. 
+
         {Rules.Game}
 
         You expect following parameters to decide about the best possible move:
