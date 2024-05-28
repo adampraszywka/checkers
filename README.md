@@ -1,15 +1,26 @@
 # Smart Checkers
 
-![screenshot](logo.png)
+<p align="center">
+    <img src="logo.png">
+</p>
 
-This open-source project focuses on developing a Checkers game application with two main objectives. The first is to enable human players to compete against each other on different devices seamlessly. The second objective is to design a versatile interface for various AI-driven players, including algorithms, pre-trained neural networks, and Large Language Models (LLMs), facilitating innovative gameplay and strategy development, despite LLMs traditionally not being tailored for such applications. We're excited about exploring the intersection of classic game strategy and cutting-edge AI, and we welcome contributors interested in pushing the boundaries of what's possible in game AI.
-### Demo
+![MIT License](License-MIT-green.svg)
+![https://100commitow.pl](100-commitow-green.svg)
+
+This project focuses on developing a platform for playing Checkers. There are two main objectives. 
+
+First one is to enable human players to compete against each other on different devices seamlessly.
+
+The other one is to enable human players to compete against AI-driven players. AI-driven players can be implemented using various algorithms, pre-trained neural networks, and Large Language Models (LLMs).
+Smart Checkers platform provides a simple interface for AI players that can be implemented using different technologies. 
+
+## Demo
 Current version is available under: [https://thankful-bay-00e121503.5.azurestaticapps.net/](https://thankful-bay-00e121503.5.azurestaticapps.net/)
 
 CI/CD process deploys latest version after each commit to main branch.
 
 Preview version is hosted on free Azure App Service Plan. It needs some time to warmup. First request may be a bit slow.
-### Requirements
+## Requirements
 - .NET8 SDK
 - Node.js 20.9.0+
 
@@ -17,7 +28,7 @@ Preview version is hosted on free Azure App Service Plan. It needs some time to 
 
 There are two components that need to be started separately.
 
-#### API
+### API
 
 Start WebAPI project by the following commands:
 
@@ -33,7 +44,7 @@ You need to provide your own API keys either by setting environment variables or
 If you don't provide API keys, LLM based AI players will be unavailable.
 
 
-#### UI
+### UI
 
 Start Angular development server by the following commands:
 
@@ -45,26 +56,26 @@ npm run start
 
 By default, Angular development server binds to localhost:4200, and it's connected with API running on localhost:5125.
 
-### Available AI players
+## Available AI players
 
-#### Random player
-Random player is a simple AI player that makes random moves. It's a good starting point for developing your own AI player.
+### Dummy player
+Dummy player is a simple AI player that makes random moves. It's a good starting point for developing your own AI player.
 
-#### GPT-4 player
+### GPT-4 player
 GPT-4 player is an AI player based on the OpenAI GPT-4 model. It uses the OpenAI GP-4 model to generate the next move.
 Results are not always optimal, but it's a good example of how to use LLMs in the game.
 
-#### Claude 3 player
+### Claude 3 player
 
 Claude 3 player is an AI player based on the Antrophic Claude 3 model. It uses the Antrophic Claude 3 model to generate the next move.
 Works similar to GPT-4 player. Results are a bit worse than GPT-4 player.
 
-#### GPT-4o player
+### GPT-4o player
 
 GPT-4o player is an AI player based on the OpenAI GPT-4 model. It uses the OpenAI GP-4 model to generate the next move.
 It's faster than GPT-4 player, but results are not so good as GPT-4 player.
 
-### How to write your own AI player
+## How to write your own AI player
 
 To write your own AI player, you need to implement the AIAlgorithm interface.
 
@@ -72,10 +83,10 @@ Base for AI Player implementation is AIAlgorithm interface.
     
     public interface AIAlgorithm
     {
-        public Task Move(ParticipantDto participant, BoardDto board, Services services);
+        public Task Move(ParticipantDto participant, BoardDto board);
     }
 
-There is only one method (Move) that needs to be implemented. It takes three parameters:
+There is only one method (Move) that needs to be implemented. It takes two parameters:
 - ParticipantDto - information about the player (bot) that is making the move
 - BoardDto - current board state. It contains information about the board and provides access to game log.
 
@@ -95,8 +106,8 @@ For more complex AI player registration use overload with implementation factory
     builder.Services.AddAiPlayer<OpenAiGpt4o>(x =>
         new OpenAiGpt4o(x.GetRequiredService<ILogger<OpenAiGpt4o>>(), x.GetRequiredService<IOpenAIService>()));
 
-Platform dependencies like AiAlgorithmConfiguration, MoveClient, and StatusPublisher are registered in the DI container and can be injected into the AI player. You don't need to register them manually.
-You can register any other dependency that your AI player needs in the DI container. They will be injected into the AI player.
+Platform dependencies like AiAlgorithmConfiguration, MoveClient, and StatusPublisher are registered in the DI container by the platform and can be injected into the AI player. You don't need to register them manually.
+You can register any other dependency that your AI player requires in the DI container.
 
 ### Minimal AI player implementation
 
@@ -166,7 +177,7 @@ and register it in the DI container:
 
 That's all. Your AI player is ready to play. New entry will appear in the AI player list in the game lobby.
 
-### Plan
+## Plan
 
 - [X] CI process
 - [X] CD process
@@ -189,7 +200,7 @@ That's all. Your AI player is ready to play. New entry will appear in the AI pla
 - [X] visualize conversation between BOT and LLM
 - [ ] algorithm driven AI player
 
-### Future plans
+## Future plans
 
 - [ ] TBD 
 
