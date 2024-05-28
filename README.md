@@ -83,7 +83,7 @@ Base for AI Player implementation is AIAlgorithm interface.
     
     public interface AIAlgorithm
     {
-        public Task Move(ParticipantDto participant, BoardDto board, Services services);
+        public Task Move(ParticipantDto participant, BoardDto board);
     }
 
 There is only one method (Move) that needs to be implemented. It takes three parameters:
