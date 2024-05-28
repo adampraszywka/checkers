@@ -86,7 +86,7 @@ Base for AI Player implementation is AIAlgorithm interface.
         public Task Move(ParticipantDto participant, BoardDto board);
     }
 
-There is only one method (Move) that needs to be implemented. It takes three parameters:
+There is only one method (Move) that needs to be implemented. It takes two parameters:
 - ParticipantDto - information about the player (bot) that is making the move
 - BoardDto - current board state. It contains information about the board and provides access to game log.
 
@@ -106,8 +106,8 @@ For more complex AI player registration use overload with implementation factory
     builder.Services.AddAiPlayer<OpenAiGpt4o>(x =>
         new OpenAiGpt4o(x.GetRequiredService<ILogger<OpenAiGpt4o>>(), x.GetRequiredService<IOpenAIService>()));
 
-Platform dependencies like AiAlgorithmConfiguration, MoveClient, and StatusPublisher are registered in the DI container and can be injected into the AI player. You don't need to register them manually.
-You can register any other dependency that your AI player needs in the DI container. They will be injected into the AI player.
+Platform dependencies like AiAlgorithmConfiguration, MoveClient, and StatusPublisher are registered in the DI container by the platform and can be injected into the AI player. You don't need to register them manually.
+You can register any other dependency that your AI player requires in the DI container.
 
 ### Minimal AI player implementation
 
