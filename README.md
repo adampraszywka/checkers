@@ -1,6 +1,9 @@
 # Smart Checkers
 
-![screenshot](logo.png)
+<p align="center">
+    <img src="logo.png">
+</p>
+
 ![MIT License](License-MIT-green.svg)
 ![https://100commitow.pl](100-commitow-green.svg)
 
