@@ -109,6 +109,7 @@ For more complex AI player registration use overload with implementation factory
 Platform dependencies like AiAlgorithmConfiguration, MoveClient, and StatusPublisher are registered in the DI container by the platform and can be injected into the AI player. You don't need to register them manually.
 You can register any other dependency that your AI player requires in the DI container.
 
+
 ### Minimal AI player implementation
 
 Create your Ai player class that implements AIAlgorithm interface.
@@ -183,7 +184,7 @@ That's all. Your AI player is ready to play. New entry will appear in the AI pla
 - [X] CD process
 - [X] basic board API implementation
 - [X] basic implementation of Man piece moves
-- [ ] basic implementation of King piece moves
+- [X] basic implementation of King piece moves
 - [X] board UI PoC
 - [X] in-memory game state storage
 - [X] game log
@@ -195,8 +196,8 @@ That's all. Your AI player is ready to play. New entry will appear in the AI pla
 - [X] PvP using two different devices/browsers
 - [X] game lobby
 - [X] interface for AI driven players
-- [ ] documentation how to write your own AI player
-- [ ] LLM(s) driven AI player (it may be not the best option but might be funny)
+- [X] documentation how to write your own AI player
+- [X] LLM(s) driven AI player (it may be not the best option but might be funny)
 - [X] visualize conversation between BOT and LLM
 - [ ] algorithm driven AI player
 
