@@ -52,7 +52,7 @@ builder.Services.AddScoped<GameLobbyService>();
 builder.Services.AddAiPlayer<DummyAi>();
 builder.Services.AddAiPlayer<AntrophicClaude>();
 builder.Services.AddAiPlayer<OpenAiGpt4o>();
-builder.Services.AddAiPlayer<OpenAiGpt4Turbo>();
+builder.Services.AddAiPlayer<OpenAiGpt4Turbo, OpenAiGpt4oConfiguration>();
 
 
 builder.Services.AddMassTransit(m =>

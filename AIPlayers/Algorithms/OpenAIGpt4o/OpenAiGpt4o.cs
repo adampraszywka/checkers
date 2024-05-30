@@ -21,13 +21,13 @@ public class OpenAiGpt4o : AIAlgorithm
         IOpenAIService openAi,
         MoveClient moveClient,
         StatusPublisher statusPublisher, 
-        AiAlgorithmConfiguration configuration)
+        OpenAiGpt4oConfiguration configuration)
     {
         _logger = logger;
         _openAi = openAi;
         _moveClient = moveClient;
         _statusPublisher = statusPublisher;
-        _configuration = new(configuration.Entries);
+        _configuration = configuration;
     }
 
     private const int MaxFindMoveIterations = 5;

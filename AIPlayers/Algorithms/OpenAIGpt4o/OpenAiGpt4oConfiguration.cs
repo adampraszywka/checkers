@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using AIPlayers.MessageHub;
 
 namespace AIPlayers.Algorithms.OpenAIGpt4o;
 
@@ -17,9 +18,9 @@ public record OpenAiGpt4oConfiguration
     private const string ModelGpt4Turbo = "gpt-4-turbo";
     private const string ModelGpt4o = "gpt-4o";
     
-    public OpenAiGpt4oConfiguration(Dictionary<string, string> genericConfiguration)
+    public OpenAiGpt4oConfiguration(AiAlgorithmConfiguration configuration)
     {
-        if (genericConfiguration.TryGetValue(TemperatureField, out var temp) && float.TryParse(temp.Replace(',', '.'), CultureInfo.InvariantCulture, out var temperature))
+        if (configuration.Entries.TryGetValue(TemperatureField, out var temp) && float.TryParse(temp.Replace(',', '.'), CultureInfo.InvariantCulture, out var temperature))
         {
             Temperature = temperature;
         }
@@ -28,8 +29,8 @@ public record OpenAiGpt4oConfiguration
             Temperature = DefaultTemperature;
         }
 
-        Model = ParseModel(genericConfiguration.GetValueOrDefault(ModelField));
-        RefereeEnabled = genericConfiguration.TryGetValue(RefereeField, out var refereeEnabled) && bool.TryParse(refereeEnabled, out var referee) && referee;
+        Model = ParseModel(configuration.Entries.GetValueOrDefault(ModelField));
+        RefereeEnabled = configuration.Entries.TryGetValue(RefereeField, out var refereeEnabled) && bool.TryParse(refereeEnabled, out var referee) && referee;
     }
 
     private string ParseModel(string? value)

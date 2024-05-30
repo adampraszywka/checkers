@@ -7,18 +7,24 @@ namespace AIPlayers.Extensions;
 
 public static class ServiceCollectionExtension
 {
-    public static void AddAiPlayer<T>(this IServiceCollection services, Func<IServiceProvider, T> implementationFactory) where T : class, AIAlgorithm
+    public static void AddAiPlayer<TPlayer>(this IServiceCollection services, Func<IServiceProvider, TPlayer> implementationFactory) where TPlayer : class, AIAlgorithm
     {
         services.TryAddAiPlayersInfrastructure();
 
         services.AddTransient(implementationFactory);
     }
     
-    public static void AddAiPlayer<T>(this IServiceCollection services) where T : class, AIAlgorithm
+    public static void AddAiPlayer<TPlayer>(this IServiceCollection services) where TPlayer : class, AIAlgorithm
     {
         services.TryAddAiPlayersInfrastructure();
 
-        services.AddScoped<T>();
+        services.AddScoped<TPlayer>();
+    }
+    
+    public static void AddAiPlayer<TPlayer, TDependency>(this IServiceCollection services) where TPlayer : class, AIAlgorithm where TDependency : class
+    {
+        services.AddAiPlayer<TPlayer>();
+        services.AddScoped<TDependency>();
     }
 
     private static void TryAddAiPlayersInfrastructure(this IServiceCollection services)
