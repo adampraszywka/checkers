@@ -1,4 +1,5 @@
 ﻿using AIPlayers.Algorithms.OpenAIGpt4o;
+using AIPlayers.MessageHub;
 
 namespace AiPlayersTests.Algorithms.OpenAIGpt4o;
 
@@ -8,7 +9,7 @@ public class OpenAiGpt4oConfigurationTests
     public void DefaultValues()
     {
         var genericConfiguration = new Dictionary<string, string>();
-        var configuration = new OpenAiGpt4oConfiguration(genericConfiguration);
+        var configuration = new OpenAiGpt4oConfiguration(new TestConfiguration(genericConfiguration));
         
         Assert.That(configuration.Temperature, Is.EqualTo(0.2f));
         Assert.That(configuration.Model, Is.EqualTo("gpt-4o"));
@@ -25,7 +26,7 @@ public class OpenAiGpt4oConfigurationTests
            { "refereeEnabled", "true" }
         };
 
-        var configuration = new OpenAiGpt4oConfiguration(genericConfiguration);
+        var configuration = new OpenAiGpt4oConfiguration(new TestConfiguration(genericConfiguration));
         
         Assert.That(configuration.Temperature, Is.EqualTo(0.5f));
         Assert.That(configuration.Model, Is.EqualTo("gpt-4o"));
@@ -53,7 +54,7 @@ public class OpenAiGpt4oConfigurationTests
             { "model", value }
         };
         
-        var configuration = new OpenAiGpt4oConfiguration(genericConfiguration);
+        var configuration = new OpenAiGpt4oConfiguration(new TestConfiguration(genericConfiguration));
         
         Assert.That(configuration.Model, Is.EqualTo(expected));
     }
@@ -79,7 +80,7 @@ public class OpenAiGpt4oConfigurationTests
             { "temperature", value }
         };
         
-        var configuration = new OpenAiGpt4oConfiguration(genericConfiguration);
+        var configuration = new OpenAiGpt4oConfiguration(new TestConfiguration(genericConfiguration));
         
         Assert.That(configuration.Temperature, Is.EqualTo(expected));
     }
@@ -104,8 +105,14 @@ public class OpenAiGpt4oConfigurationTests
             { "refereeEnabled", value }
         };
         
-        var configuration = new OpenAiGpt4oConfiguration(genericConfiguration);
+        var configuration = new OpenAiGpt4oConfiguration(new TestConfiguration(genericConfiguration));
         
         Assert.That(configuration.RefereeEnabled, Is.EqualTo(expected));
     }
+
+    private class TestConfiguration(Dictionary<string, string> values) : AiAlgorithmConfiguration
+    {
+        public Dictionary<string, string> Entries => values;
+    }
+    
 }
