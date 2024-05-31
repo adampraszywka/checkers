@@ -4,7 +4,6 @@ using AIPlayers.Algorithms.OpenAIGpt4o;
 using AIPlayers.Algorithms.OpenAIGpt4Turbo;
 using AIPlayers.Extensions;
 using AIPlayers.MessageHub;
-using AIPlayers.Players;
 using AIPlayers.Repository;
 using Anthropic.SDK;
 using Domain.Chessboard;
@@ -17,7 +16,6 @@ using OpenAI.Managers;
 using WebApi.Consumers.AIInterface;
 using WebApi.Consumers.Notification;
 using WebApi.Hubs;
-using WebApi.Players;
 using WebApi.Repository;
 using WebApi.Repository.InMemory;
 using WebApi.Service;
@@ -36,6 +34,9 @@ builder.Services.AddOptionsWithValidateOnStart<OpenAISettings>()
     .ValidateDataAnnotations()
     .Bind(builder.Configuration.GetSection(OpenAISettings.Key));
 
+builder.Services.AddOptionsWithValidateOnStart<InMemoryStorageSettings>()
+    .Bind(builder.Configuration.GetSection(InMemoryStorageSettings.Key));
+
 builder.Services.AddControllers();
 
 // InMemory repositories need to be declared as singleton
@@ -49,10 +50,10 @@ builder.Services.AddTransient<GameLobbyListRepository>(x => x.GetRequiredService
 builder.Services.AddScoped<BoardService>();
 builder.Services.AddScoped<GameLobbyService>();
 
-builder.Services.AddAiPlayer<DummyAi>();
-builder.Services.AddAiPlayer<AntrophicClaude>();
-builder.Services.AddAiPlayer<OpenAiGpt4o>();
 builder.Services.AddAiPlayer<OpenAiGpt4Turbo, OpenAiGpt4oConfiguration>();
+builder.Services.AddAiPlayer<OpenAiGpt4o>();
+builder.Services.AddAiPlayer<AntrophicClaude>();
+builder.Services.AddAiPlayer<DummyAi>();
 
 
 builder.Services.AddMassTransit(m =>
