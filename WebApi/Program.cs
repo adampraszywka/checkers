@@ -49,10 +49,10 @@ builder.Services.AddTransient<GameLobbyListRepository>(x => x.GetRequiredService
 builder.Services.AddScoped<BoardService>();
 builder.Services.AddScoped<GameLobbyService>();
 
-builder.Services.AddAiPlayer<DummyAi>();
-builder.Services.AddAiPlayer<AntrophicClaude>();
-builder.Services.AddAiPlayer<OpenAiGpt4o>();
 builder.Services.AddAiPlayer<OpenAiGpt4Turbo, OpenAiGpt4oConfiguration>();
+builder.Services.AddAiPlayer<OpenAiGpt4o>();
+builder.Services.AddAiPlayer<AntrophicClaude>();
+builder.Services.AddAiPlayer<DummyAi>();
 
 
 builder.Services.AddMassTransit(m =>
