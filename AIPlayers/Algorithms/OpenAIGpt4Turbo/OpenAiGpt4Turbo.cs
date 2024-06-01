@@ -58,6 +58,8 @@ public class OpenAiGpt4Turbo(
             
             counter++;
         }
+
+        await statusPublisher.Publish(Status.Failed("AI", $"Failed to make a move after {MaxMoveIterations} attempts. The AI Player will not make a next move. Check AI log for more details."));
     }
 
 

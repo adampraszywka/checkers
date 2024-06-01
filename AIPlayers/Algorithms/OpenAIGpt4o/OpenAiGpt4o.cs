@@ -9,27 +9,12 @@ using Status = Contracts.AiPlayers.AiPlayerStatus;
 
 namespace AIPlayers.Algorithms.OpenAIGpt4o;
 
-public class OpenAiGpt4o : AIAlgorithm
+public class OpenAiGpt4o(ILogger<OpenAiGpt4o> logger,
+    IOpenAIService openAi,
+    MoveClient moveClient,
+    StatusPublisher statusPublisher, 
+    OpenAiGpt4oConfiguration configuration) : AIAlgorithm
 {
-    private readonly ILogger<OpenAiGpt4o> _logger;
-    private readonly IOpenAIService _openAi;
-    private readonly MoveClient _moveClient;
-    private readonly StatusPublisher _statusPublisher;
-    private readonly OpenAiGpt4oConfiguration _configuration;
-
-    public OpenAiGpt4o(ILogger<OpenAiGpt4o> logger,
-        IOpenAIService openAi,
-        MoveClient moveClient,
-        StatusPublisher statusPublisher, 
-        OpenAiGpt4oConfiguration configuration)
-    {
-        _logger = logger;
-        _openAi = openAi;
-        _moveClient = moveClient;
-        _statusPublisher = statusPublisher;
-        _configuration = configuration;
-    }
-
     private const int MaxFindMoveIterations = 5;
     private const int MaxMoveIterations = 5;
     
@@ -39,14 +24,14 @@ public class OpenAiGpt4o : AIAlgorithm
         
         if (color != board.CurrentPlayer)
         {
-            _logger.LogInformation("It's not the AI player's turn");
+            logger.LogInformation("It's not the AI player's turn");
             return;
         }
         
         var boardState = board.ToBoardState();
         var currentPlayer = $"Current player: {color}";
         
-        var playerChat = new PlayerChat(_openAi, _statusPublisher, _configuration);
+        var playerChat = new PlayerChat(openAi, statusPublisher, configuration);
         var playerPrompt = $"{boardState}\n{currentPlayer}";
         
         var counter = 0;
@@ -70,6 +55,8 @@ public class OpenAiGpt4o : AIAlgorithm
             
             counter++;
         }    
+        
+        await statusPublisher.Publish(Status.Failed("AI", $"Failed to make a move after {MaxMoveIterations} attempts. The AI Player will not make a next move. Check AI log for more details."));
     }
 
     private async Task<(string From, string To)> FindMove(PlayerChat playerChat, string boardState, string currentPlayer, string initialPlayerPrompt)
@@ -81,12 +68,12 @@ public class OpenAiGpt4o : AIAlgorithm
             var playerResult = await playerChat.Prompt(playerPrompt);
             if (!TryExtractMove(playerResult, out var value, out var from, out var to))
             {
-                _logger.LogError("Move Regex match failed for player result: {PlayerResult}", playerResult);
+                logger.LogError("Move Regex match failed for player result: {PlayerResult}", playerResult);
             }
 
-            if (_configuration.RefereeEnabled)
+            if (configuration.RefereeEnabled)
             {
-                var refereeChat = new RefereeChat(_openAi, _statusPublisher);
+                var refereeChat = new RefereeChat(openAi, statusPublisher);
                 var refereeResult = await refereeChat.Check(boardState, currentPlayer, value);
                 var (valid, reason) = ExtractReason(refereeResult);
                 if (!valid)
@@ -113,18 +100,18 @@ public class OpenAiGpt4o : AIAlgorithm
     private async Task<(bool IsSuccessful, string ErrorMessage)> Move(PositionDto from, PositionDto to)
     {
         var move = new MoveDto(from, to);
-        var response = await _moveClient.Move(move);
+        var response = await moveClient.Move(move);
 
-        await _statusPublisher.Publish(Status.Command("API", $"Move from {from.ToName()} to {to.ToName()}"));
+        await statusPublisher.Publish(Status.Command("API", $"Move from {from.ToName()} to {to.ToName()}"));
 
         if (response.IsSuccess)
         {
-            await _statusPublisher.Publish(Status.Successful("API", $"Move from {from.ToName()} to {to.ToName()} successful"));
+            await statusPublisher.Publish(Status.Successful("API", $"Move from {from.ToName()} to {to.ToName()} successful"));
             return (true, "");
         }
         
         var error = response.Errors.First().Message ?? "Unknown error";
-        await _statusPublisher.Publish(Status.Failed("API", $"Move from {from.ToName()} to {to.ToName()} failed: {error}"));
+        await statusPublisher.Publish(Status.Failed("API", $"Move from {from.ToName()} to {to.ToName()} failed: {error}"));
         return (false, error);
     }
 
