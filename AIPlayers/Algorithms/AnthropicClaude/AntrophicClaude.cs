@@ -55,6 +55,9 @@ public class AntrophicClaude(
             
             counter++;
         }
+        
+        await statusPublisher.Publish(Status.Failed("AI", $"Failed to make a move after {MaxMoveIterations} attempts. The AI Player will not make a next move. Check AI log for more details."));
+
     }
 
     private async Task<(string From, string To)> FindMove(PlayerChat playerChat, string initialPlayerPrompt)
