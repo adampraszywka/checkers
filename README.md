@@ -109,6 +109,11 @@ For more complex AI player registration use overload with implementation factory
 Platform dependencies like AiAlgorithmConfiguration, MoveClient, and StatusPublisher are registered in the DI container by the platform and can be injected into the AI player. You don't need to register them manually.
 You can register any other dependency that your AI player requires in the DI container.
 
+### Conceptual diagram
+
+<p align="center">
+    <img src="checkers.drawio.png">
+</p>
 
 ### Minimal AI player implementation
 
