@@ -8,7 +8,7 @@ namespace AIPlayers.Algorithms.OpenAIGpt4o;
 
 public class PlayerChat(IOpenAIService client, StatusPublisher statusPublisher, OpenAiGpt4oConfiguration configuration)
 {
-    private const string SystemPrompt = $@"You are the checkers master.
+    private const string SystemPrompt = $@"You are the checkers master. You just drank a cup of coffee and are ready to play.
 
         {Rules.Game}
 
@@ -18,7 +18,7 @@ public class PlayerChat(IOpenAIService client, StatusPublisher statusPublisher, 
 
         {Rules.BoardFormat}
 
-        You list possible moves and than provide the best possible MOVE IN THE FOLLOWING FORMAT:
+        You take a deep breath, list possible moves and than provide the best possible MOVE IN THE FOLLOWING FORMAT:
         ```format
         MOVE <SOURCE> TO <DESTINATION>";
 
