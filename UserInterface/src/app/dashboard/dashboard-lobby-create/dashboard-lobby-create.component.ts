@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
 import {ModalResult} from "../../shared/result/modal-result";
@@ -13,10 +13,8 @@ import {ModalResult} from "../../shared/result/modal-result";
   styleUrl: './dashboard-lobby-create.component.scss'
 })
 export class DashboardLobbyCreateComponent {
-  public name: FormControl<string>;
-  constructor(public readonly modal: NgbActiveModal) {
-    this.name = new FormControl<string>('', {nonNullable: true});
-  }
+  modal = inject(NgbActiveModal);
+  name: FormControl<string> = new FormControl<string>('', {nonNullable: true});
 
   onCancel(): void {
     this.modal.close(new ModalResult(null));
