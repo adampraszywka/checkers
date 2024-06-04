@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy} from '@angular/core';
+import {Component, inject, input, OnDestroy, signal} from '@angular/core';
 import {NgClass, NgIf} from "@angular/common";
 import {PieceComponent} from "../piece/piece.component";
 import {BoardService} from "../board/board.service";
@@ -18,17 +18,19 @@ import {Square} from "../../shared/dto/square.interface";
   styleUrl: './square.component.scss'
 })
 export class SquareComponent implements OnDestroy {
-  @Input() square!: Square;
-  @Input() row!: number;
-  @Input() column!: number;
+  service = inject(BoardService);
 
-  private highlight: Highlight = Highlight.None;
+  square = input<Square>({id: '', position: {row: 0, column: 0}, piece: null});
+  row = input<number>(0);
+  column = input<number>(0);
+
+  highlight = signal(Highlight.None);
   private readonly highlightSubscription: Subscription;
 
-  public constructor(private readonly service: BoardService) {
+  public constructor() {
     this.highlightSubscription = this.service.squareHighlightChangeRequested$.subscribe(x => {
-      if (x.position.row === this.square.position.row && x.position.column === this.square.position.column) {
-        this.highlight = x.type;
+      if (x.position.row === this.square().position.row && x.position.column === this.square().position.column) {
+        this.highlight.set(x.type);
       }
     })
   }
@@ -38,18 +40,18 @@ export class SquareComponent implements OnDestroy {
   }
 
   public isBlackSquare(): boolean {
-    if (this.row % 2 !== 0) {
-      return this.column % 2 === 0;
+    if (this.row() % 2 !== 0) {
+      return this.column() % 2 === 0;
     }
 
-    return this.column % 2 !== 0;
+    return this.column() % 2 !== 0;
   }
 
   public getCssClass(): string {
-    if (this.highlight === Highlight.None) {
+    if (this.highlight()== Highlight.None) {
       return this.isBlackSquare() ? 'black' : 'white';
     }
-    else if (this.highlight === Highlight.Selected) {
+    else if (this.highlight() === Highlight.Selected) {
       return 'selected';
     }
     else {
@@ -58,6 +60,6 @@ export class SquareComponent implements OnDestroy {
   }
 
   public onClick(): void {
-    this.service.select(this.square);
+    this.service.select(this.square());
   }
 }

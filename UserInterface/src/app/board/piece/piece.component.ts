@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {NgClass} from "@angular/common";
 import {Color, Piece, Type} from "../../shared/dto/piece.interface";
 
@@ -12,13 +12,15 @@ import {Color, Piece, Type} from "../../shared/dto/piece.interface";
   styleUrl: './piece.component.scss'
 })
 export class PieceComponent {
-  @Input() piece!: Piece;
+
+  piece = input<Piece>({id: '', color: Color.Black, type: Type.Man});
+
   protected readonly Color = Color;
 
   public get cssClasses(): string {
-    const color = this.piece.color === Color.Black ? 'black' : 'white';
+    const color = this.piece().color === Color.Black ? 'black' : 'white';
 
-    if (this.piece.type === Type.Man) {
+    if (this.piece().type === Type.Man) {
       return `${color} man`
     }
 

@@ -8,13 +8,13 @@
   </tr>
   </thead>
   <tbody>
-    @for (entry of moveLog.slice().reverse(); track entry; let index = $index) {
+    @for (entry of moveLog(); track entry; let index = $index) {
       <tr>
-        <td>{{moveLog.length - index}}</td>
+        <td>{{moveLogLength() - index}}</td>
         <td>
-                     <span class="badge" [ngClass]="entry.piece.color === Color.Black ? 'bg-black' : 'bg-light text-dark'">
-                       {{ Type[entry.piece.type] }}
-                     </span>
+               <span class="badge" [ngClass]="entry.piece.color === Color.Black ? 'bg-black' : 'bg-light text-dark'">
+                 {{ Type[entry.piece.type] }}
+               </span>
         </td>
         <td>{{entry.from.name}}</td>
         <td>{{entry.to.name}}</td>
