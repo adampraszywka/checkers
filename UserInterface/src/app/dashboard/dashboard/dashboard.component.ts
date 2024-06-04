@@ -20,7 +20,6 @@ import {toSignal} from "@angular/core/rxjs-interop";
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
-
   clientService = inject(DashboardClientService);
   router = inject(Router);
   modal = inject(NgbModal);
