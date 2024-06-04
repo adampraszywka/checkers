@@ -3,9 +3,11 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {PieceComponent} from './piece.component';
 import {By} from "@angular/platform-browser";
 import {Color, Type} from "../../shared/dto/piece.interface";
+import {ComponentRef} from "@angular/core";
 
 describe('PieceComponent', () => {
   let component: PieceComponent;
+  let componentRef: ComponentRef<PieceComponent>;
   let fixture: ComponentFixture<PieceComponent>;
 
   beforeEach(async () => {
@@ -16,8 +18,9 @@ describe('PieceComponent', () => {
 
     fixture = TestBed.createComponent(PieceComponent);
     component = fixture.componentInstance;
+    componentRef = fixture.componentRef;
 
-    component.piece = {id: '', color: Color.Black, type: Type.Man};
+    componentRef.setInput('piece', {id: '', color: Color.Black, type: Type.Man})
 
     fixture.detectChanges();
   });
@@ -27,7 +30,7 @@ describe('PieceComponent', () => {
   });
 
   it('white man', () => {
-    component.piece = {id: '', color: Color.White, type: Type.Man};
+    componentRef.setInput('piece', {id: '', color: Color.White, type: Type.Man});
     fixture.detectChanges();
     const classes = fixture.debugElement.query(By.css('div')).classes;
 
@@ -35,7 +38,7 @@ describe('PieceComponent', () => {
   })
 
   it('white king', () => {
-    component.piece = {id: '', color: Color.White, type: Type.King};
+    componentRef.setInput('piece', {id: '', color: Color.White, type: Type.King});
     fixture.detectChanges();
     const classes = fixture.debugElement.query(By.css('div')).classes;
 
@@ -43,7 +46,7 @@ describe('PieceComponent', () => {
   })
 
   it('black man', () => {
-    component.piece = {id: '', color: Color.Black, type: Type.Man};
+    componentRef.setInput('piece', {id: '', color: Color.Black, type: Type.Man});
     fixture.detectChanges();
     const classes = fixture.debugElement.query(By.css('div')).classes;
 
@@ -51,7 +54,7 @@ describe('PieceComponent', () => {
   })
 
   it('black king', () => {
-    component.piece = {id: '', color: Color.Black, type: Type.King};
+    componentRef.setInput('piece', {id: '', color: Color.Black, type: Type.King});
     fixture.detectChanges();
     const classes = fixture.debugElement.query(By.css('div')).classes;
 

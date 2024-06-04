@@ -1,8 +1,6 @@
-﻿import {Injectable} from "@angular/core";
+﻿import {computed, inject, Injectable, signal} from "@angular/core";
 import {Observable, Subject} from "rxjs";
 import {BoardClientService} from "../services/board-client.service";
-import {HighlightRequested} from "../events/highlight-requested.interface";
-import {Highlight} from "../square/highlight.enum";
 import {HttpErrorResponse} from "@angular/common/http";
 import {Square} from "../../shared/dto/square.interface";
 import {PossibleMove} from "../../shared/dto/possiblemove.interface";
@@ -14,26 +12,17 @@ import {BoardData} from "../dto/board-data.interface";
 
 @Injectable()
 export class BoardService {
+  clientService = inject(BoardClientService);
+  idProvider = inject(PlayerIdProvider);
 
-  private selectedSquare: Square|null = null;
-  private possibleMoves: PossibleMove[]|null = null;
+  selectedSquare = signal<Square|null>(null)
+  possibleMoves = signal<PossibleMove[]>([] as PossibleMove[]);
+  board = computed<BoardData>(() => this.toBoardData(this.clientService.board()!));
 
   private readonly errorNotificationSource: Subject<string> = new Subject<string>();
-  private readonly boardUpdatedSource: Subject<BoardData> = new Subject<BoardData>();
-  private readonly squareHighlightChangeRequestedSource: Subject<HighlightRequested> = new Subject<HighlightRequested>();
-
   public readonly errorNotificationRequested$: Observable<string> = this.errorNotificationSource.asObservable();
-  public readonly boardUpdateRequested$: Observable<BoardData> = this.boardUpdatedSource.asObservable();
-  public readonly squareHighlightChangeRequested$: Observable<HighlightRequested> = this.squareHighlightChangeRequestedSource.asObservable();
-
-  public constructor(private readonly clientService: BoardClientService, private readonly idProvider: PlayerIdProvider) {
-  }
 
   public initialize(boardId: string): void {
-    this.clientService.dashboardUpdatedRequested.subscribe(board => {
-      const boardData = this.toBoardData(board);
-      this.boardUpdatedSource.next(boardData);
-    });
     this.clientService.initialize(boardId);
   }
 
@@ -55,26 +44,14 @@ export class BoardService {
 
   public select(square: Square) {
     if (square.piece !== null) {
-      if (this.selectedSquare !== null) {
-        this.squareHighlightChangeRequestedSource.next({position: this.selectedSquare.position, type: Highlight.None});
-      }
-
-      if (this.possibleMoves !== null) {
-        for(const move of this.possibleMoves) {
-          this.squareHighlightChangeRequestedSource.next({position: move.to, type: Highlight.None});
-        }
-      }
-
       this.clientService.possibleMoves(square.position).subscribe({
         next: x => {
           if (x.isSuccessful) {
-            this.selectedSquare = square;
-            this.squareHighlightChangeRequestedSource.next({position: square.position, type: Highlight.Selected});
-            this.possibleMoves = x.value;
-            for (const move of x.value) {
-              this.squareHighlightChangeRequestedSource.next({position: move.to, type: Highlight.Target});
-            }
+            this.selectedSquare.set(square);
+            this.possibleMoves.set(x.value)
           } else {
+            this.selectedSquare.set(null);
+            this.possibleMoves.set([]);
             this.errorNotificationSource.next(x.errorMessage);
           }
         },
@@ -82,15 +59,17 @@ export class BoardService {
     });
     }
 
-    if (this.selectedSquare !== null && square.piece === null) {
-      const move: Move = {from: this.selectedSquare.position, to: square.position};
+    if (this.selectedSquare() !== null && square.piece === null) {
+      const selectedSquare: Square = this.selectedSquare()!;
+      const move: Move = {from: selectedSquare.position, to: square.position};
       this.clientService.move(move).subscribe({
         next: x => {
           if (x.isSuccessful) {
-            const boardData = this.toBoardData(x.value);
-            this.boardUpdatedSource.next(boardData)
-            this.selectedSquare = null;
+            this.selectedSquare.set(null);
+            this.possibleMoves.set([]);
           } else {
+            this.selectedSquare.set(null);
+            this.possibleMoves.set([]);
             this.errorNotificationSource.next(x.errorMessage);
           }
         },

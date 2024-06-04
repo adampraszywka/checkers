@@ -1,8 +1,7 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {Lobby, LobbyStatus} from "../../shared/dto/lobby.interface";
 import {DashboardClientService} from "./dashboard-client.service";
-import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {NgbAlert, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {DashboardLobbyCreateComponent} from "../dashboard-lobby-create/dashboard-lobby-create.component";
@@ -19,18 +18,13 @@ import {ToastrModule, ToastrService} from "ngx-toastr";
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent implements OnDestroy {
+export class DashboardComponent {
+  clientService = inject(DashboardClientService);
+  router = inject(Router);
+  modal = inject(NgbModal);
+  toastr = inject(ToastrService);
 
-  public lobbies: Lobby[] = [];
-  private readonly lobbiesUpdatedSubscription: Subscription;
-
-  constructor(
-    private readonly clientService: DashboardClientService,
-    private readonly router: Router,
-    private readonly modal: NgbModal,
-    private readonly toastr: ToastrService) {
-    this.lobbiesUpdatedSubscription = clientService.lobbiesUpdatedRequested$.subscribe(x => this.lobbies = x);
-  }
+  lobbies = computed<Lobby[]>(() => this.clientService.lobbies());
 
   joinLobby(id: string) {
     this.clientService.join(id).then(x => {
@@ -64,11 +58,6 @@ export class DashboardComponent implements OnDestroy {
         this.router.navigate(['lobby/' + lobbyId]).then()
       })
     });
-  }
-
-
-  ngOnDestroy(): void {
-    this.lobbiesUpdatedSubscription.unsubscribe();
   }
 
   protected readonly LobbyStatus = LobbyStatus;

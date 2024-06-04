@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, computed, inject, Input, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {SquareComponent} from "../square/square.component";
 import {BoardService} from "./board.service";
@@ -21,13 +21,14 @@ import {MoveLogComponent} from "../move-log/move-log.component";
 })
 export class BoardComponent implements OnInit {
   @Input() boardId!: string;
-  public board: BoardData|null = null;
 
-  public constructor(private readonly service: BoardService, private readonly toastr: ToastrService) {
-    service.boardUpdateRequested$.subscribe(x => {
-      this.board = x;
-    });
-    service.errorNotificationRequested$.subscribe(x => toastr.error(x));
+  service = inject(BoardService);
+  toastr = inject(ToastrService);
+
+  board = computed<BoardData>(() => this.service.board()!);
+
+  public constructor() {
+    this.service.errorNotificationRequested$.subscribe(x => this.toastr.error(x));
   }
 
   ngOnInit(): void {
@@ -35,11 +36,11 @@ export class BoardComponent implements OnInit {
   }
 
   public botPlayerParticipates(): boolean {
-    if (this.board === null) {
+    if (this.board() === null) {
       return false;
     }
 
-    return this.board.board.participants.find(x => x.bot) !== undefined;
+    return this.board()!.board.participants.find(x => x.bot) !== undefined;
   }
 
   protected readonly Color = Color;

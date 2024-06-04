@@ -6,7 +6,7 @@
     <div class="col">
       <h1>Lobbies</h1>
       <div class="mt-5">
-        @if (lobbies.length > 0) {
+        @if (lobbies().length > 0) {
           <table class="table">
             <thead>
             <tr>
@@ -16,7 +16,7 @@
             </tr>
             </thead>
             <tbody>
-              @for (lobby of lobbies; track lobby.id) {
+              @for (lobby of lobbies(); track lobby.id) {
                 <tr>
                   <td class="align-middle">{{lobby.name}}</td>
                   <td class="align-middle">{{lobby.players}}/{{lobby.maxPlayers}}</td>
