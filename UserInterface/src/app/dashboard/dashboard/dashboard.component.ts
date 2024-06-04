@@ -1,13 +1,12 @@
-import {Component, inject} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {CommonModule} from "@angular/common";
-import {LobbyStatus} from "../../shared/dto/lobby.interface";
+import {Lobby, LobbyStatus} from "../../shared/dto/lobby.interface";
 import {DashboardClientService} from "./dashboard-client.service";
 import {Router} from "@angular/router";
 import {NgbAlert, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {DashboardLobbyCreateComponent} from "../dashboard-lobby-create/dashboard-lobby-create.component";
 import {ModalResult} from "../../shared/result/modal-result";
 import {ToastrModule, ToastrService} from "ngx-toastr";
-import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-dashboard',
@@ -25,7 +24,7 @@ export class DashboardComponent {
   modal = inject(NgbModal);
   toastr = inject(ToastrService);
 
-  lobbies = toSignal(this.clientService.lobbiesUpdatedRequested$, {initialValue: []});
+  lobbies = computed<Lobby[]>(() => this.clientService.lobbies());
 
   joinLobby(id: string) {
     this.clientService.join(id).then(x => {
