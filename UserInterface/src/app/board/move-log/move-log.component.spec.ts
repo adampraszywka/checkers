@@ -14,7 +14,6 @@ describe('MoveLogComponent', () => {
 
     fixture = TestBed.createComponent(MoveLogComponent);
     component = fixture.componentInstance;
-    component.moveLog = [];
     fixture.detectChanges();
   });
 

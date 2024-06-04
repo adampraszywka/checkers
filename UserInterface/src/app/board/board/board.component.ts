@@ -1,4 +1,4 @@
-import {Component, computed, inject, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, computed, inject, Input, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {SquareComponent} from "../square/square.component";
 import {BoardService} from "./board.service";
@@ -8,7 +8,6 @@ import {BoardData} from "../dto/board-data.interface";
 import {NgbAlert} from "@ng-bootstrap/ng-bootstrap";
 import {AiAgentComponent} from "../../ai-agent/ai-agent.component";
 import {MoveLogComponent} from "../move-log/move-log.component";
-import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-board',

@@ -37,15 +37,7 @@ export class SquareComponent {
     return Highlight.None;
   })
 
-  public isBlackSquare(): boolean {
-    if (this.row() % 2 !== 0) {
-      return this.column() % 2 === 0;
-    }
-
-    return this.column() % 2 !== 0;
-  }
-
-  public getCssClass(): string {
+  cssClasses = computed<string>(() => {
     if (this.highlight()== Highlight.None) {
       return this.isBlackSquare() ? 'black' : 'white';
     }
@@ -55,6 +47,14 @@ export class SquareComponent {
     else {
       return 'target';
     }
+  });
+
+  public isBlackSquare(): boolean {
+    if (this.row() % 2 !== 0) {
+      return this.column() % 2 === 0;
+    }
+
+    return this.column() % 2 !== 0;
   }
 
   public onClick(): void {

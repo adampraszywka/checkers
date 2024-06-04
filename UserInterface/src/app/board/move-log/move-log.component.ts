@@ -13,7 +13,6 @@ import {CommonModule} from "@angular/common";
   styleUrl: './move-log.component.scss'
 })
 export class MoveLogComponent {
-
   moveLog = input([] as MoveLogEntry[], {
     transform: (x: MoveLogEntry[]) => x.slice().reverse()
   });

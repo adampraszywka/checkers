@@ -15,7 +15,7 @@ import {ActionResult} from "../../shared/dto/action-result.interface";
 export class BoardClientService {
   private hubConnection!: HubConnection;
 
-  private readonly dashboardUpdatedSource: Subject<Board  > = new Subject<Board>();
+  private readonly dashboardUpdatedSource: Subject<Board> = new Subject<Board>();
   public readonly dashboardUpdatedRequested: Observable<Board> = this.dashboardUpdatedSource.asObservable();
 
   constructor(private readonly config: ApiConfiguration, private readonly playerIdProvider: PlayerIdProvider) {
