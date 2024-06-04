@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import {from, Observable, Subject} from "rxjs";
+import {inject, Injectable, signal} from '@angular/core';
+import {from, Observable} from "rxjs";
 import {ApiConfiguration} from "../../app.config";
 import {Board} from "../../shared/dto/board.interface";
 import {Position} from "../../shared/dto/position.interface";
@@ -8,18 +8,22 @@ import {Move} from "../../shared/dto/move.interface";
 import {HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 import {PlayerIdProvider} from "../../shared/authorization/playerid-provider.service";
 import {ActionResult} from "../../shared/dto/action-result.interface";
+import {Color} from "../../shared/dto/piece.interface";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoardClientService {
-  private hubConnection!: HubConnection;
+  config = inject(ApiConfiguration);
+  playerIdProvider = inject(PlayerIdProvider);
 
-  private readonly dashboardUpdatedSource: Subject<Board> = new Subject<Board>();
-  public readonly dashboardUpdatedRequested: Observable<Board> = this.dashboardUpdatedSource.asObservable();
-
-  constructor(private readonly config: ApiConfiguration, private readonly playerIdProvider: PlayerIdProvider) {
+  emptyBoard: Board = {
+    id: '', moveLog: [], participants: [], squares: [], currentPlayer: Color.White, columns: 0, rows: 0
   }
+
+  board = signal<Board>(this.emptyBoard);
+
+  private hubConnection!: HubConnection;
 
   public initialize(boardId: string): void {
     const playerId = this.playerIdProvider.get();
@@ -31,7 +35,7 @@ export class BoardClientService {
       .then(() => {console.log("SignalR alive!")})
       .catch(err => console.log('Error while starting SignalR connection: ', err));
 
-    this.hubConnection.on('BoardUpdated', (board: Board) => this.dashboardUpdatedSource.next(board));
+    this.hubConnection.on('BoardUpdated', (board: Board) => this.board.set(board));
   }
 
   public possibleMoves(position: Position): Observable<ActionResult<PossibleMove[]>> {

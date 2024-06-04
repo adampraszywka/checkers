@@ -1,4 +1,4 @@
-﻿import {inject, Injectable, signal} from "@angular/core";
+﻿import {computed, inject, Injectable, signal} from "@angular/core";
 import {Observable, Subject} from "rxjs";
 import {BoardClientService} from "../services/board-client.service";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -17,13 +17,12 @@ export class BoardService {
 
   selectedSquare = signal<Square|null>(null)
   possibleMoves = signal<PossibleMove[]>([] as PossibleMove[]);
-  board = signal<BoardData|null>(null);
+  board = computed<BoardData>(() => this.toBoardData(this.clientService.board()!));
 
   private readonly errorNotificationSource: Subject<string> = new Subject<string>();
   public readonly errorNotificationRequested$: Observable<string> = this.errorNotificationSource.asObservable();
 
   public initialize(boardId: string): void {
-    this.clientService.dashboardUpdatedRequested.subscribe(x => this.board.set(this.toBoardData(x)));
     this.clientService.initialize(boardId);
   }
 
@@ -66,8 +65,6 @@ export class BoardService {
       this.clientService.move(move).subscribe({
         next: x => {
           if (x.isSuccessful) {
-            const boardData = this.toBoardData(x.value);
-            this.board.set(boardData);
             this.selectedSquare.set(null);
             this.possibleMoves.set([]);
           } else {
