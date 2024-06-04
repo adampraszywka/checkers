@@ -1,9 +1,10 @@
-import {Component, inject, Input, OnInit} from '@angular/core';
+import {Component, computed, inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {SquareComponent} from "../square/square.component";
 import {BoardService} from "./board.service";
 import {ToastrModule, ToastrService} from "ngx-toastr";
 import {Color, Type} from "../../shared/dto/piece.interface";
+import {BoardData} from "../dto/board-data.interface";
 import {NgbAlert} from "@ng-bootstrap/ng-bootstrap";
 import {AiAgentComponent} from "../../ai-agent/ai-agent.component";
 import {MoveLogComponent} from "../move-log/move-log.component";
@@ -25,7 +26,7 @@ export class BoardComponent implements OnInit {
   service = inject(BoardService);
   toastr = inject(ToastrService);
 
-  board = toSignal(this.service.boardUpdateRequested$, {initialValue: null});
+  board = computed<BoardData>(() => this.service.board()!);
 
   public constructor() {
     this.service.errorNotificationRequested$.subscribe(x => this.toastr.error(x));

@@ -1,9 +1,8 @@
-import {Component, inject, input, OnDestroy, signal} from '@angular/core';
+import {Component, computed, inject, input} from '@angular/core';
 import {NgClass, NgIf} from "@angular/common";
 import {PieceComponent} from "../piece/piece.component";
 import {BoardService} from "../board/board.service";
 import {Highlight} from "./highlight.enum";
-import {Subscription} from "rxjs";
 import {Square} from "../../shared/dto/square.interface";
 
 @Component({
@@ -17,27 +16,26 @@ import {Square} from "../../shared/dto/square.interface";
   templateUrl: './square.component.html',
   styleUrl: './square.component.scss'
 })
-export class SquareComponent implements OnDestroy {
+export class SquareComponent {
   service = inject(BoardService);
 
   square = input<Square>({id: '', position: {row: 0, column: 0}, piece: null});
   row = input<number>(0);
   column = input<number>(0);
 
-  highlight = signal(Highlight.None);
-  private readonly highlightSubscription: Subscription;
+  highlight = computed(() => {
+    const me = this.square()!;
 
-  public constructor() {
-    this.highlightSubscription = this.service.squareHighlightChangeRequested$.subscribe(x => {
-      if (x.position.row === this.square().position.row && x.position.column === this.square().position.column) {
-        this.highlight.set(x.type);
-      }
-    })
-  }
+    if (this.service.selectedSquare()?.id === me.id) {
+      return Highlight.Selected;
+    }
 
-  ngOnDestroy(): void {
-    this.highlightSubscription.unsubscribe();
-  }
+    if (this.service.possibleMoves().find(x => x.to.row === me.position.row && x.to.column === me.position.column)) {
+      return Highlight.Target;
+    }
+
+    return Highlight.None;
+  })
 
   public isBlackSquare(): boolean {
     if (this.row() % 2 !== 0) {
