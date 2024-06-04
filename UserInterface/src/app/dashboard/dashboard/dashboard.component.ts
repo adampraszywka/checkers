@@ -1,8 +1,7 @@
-import {Component, inject, OnDestroy} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {CommonModule} from "@angular/common";
-import {Lobby, LobbyStatus} from "../../shared/dto/lobby.interface";
+import {LobbyStatus} from "../../shared/dto/lobby.interface";
 import {DashboardClientService} from "./dashboard-client.service";
-import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {NgbAlert, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {DashboardLobbyCreateComponent} from "../dashboard-lobby-create/dashboard-lobby-create.component";
