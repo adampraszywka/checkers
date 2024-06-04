@@ -5,9 +5,11 @@ import {By} from "@angular/platform-browser";
 import {BoardService} from "../board/board.service";
 import {HttpClientModule} from "@angular/common/http";
 import {ApiConfiguration} from "../../app.config";
+import {ComponentRef} from "@angular/core";
 
 describe('SquareComponent', () => {
   let component: SquareComponent;
+  let componentRef: ComponentRef<SquareComponent>;
   let fixture: ComponentFixture<SquareComponent>;
 
   beforeEach(async () => {
@@ -19,12 +21,13 @@ describe('SquareComponent', () => {
 
     fixture = TestBed.createComponent(SquareComponent);
     component = fixture.componentInstance;
+    componentRef = fixture.componentRef;
   });
 
   it('should create', () => {
-    component.square = {id: 'ID', piece: null, position: {row: 0, column: 0}};
-    component.row = 0;
-    component.column = 0;
+    componentRef.setInput('square', {id: 'ID', piece: null, position: {row: 0, column: 0}})
+    componentRef.setInput('row', 0);
+    componentRef.setInput('column', 0);
 
     fixture.detectChanges();
 
@@ -57,9 +60,9 @@ describe('SquareComponent', () => {
   ]
 
   it.each(squareColorCases)('square background color', ({row, column, expected}) => {
-    component.square = {id: 'ID', piece: null, position: {row: 0, column: 0}};
-    component.row = row;
-    component.column = column;
+    componentRef.setInput('square',{id: 'ID', piece: null, position: {row: 0, column: 0}});
+    componentRef.setInput('row', row);
+    componentRef.setInput('column', column);
 
     fixture.detectChanges();
 
