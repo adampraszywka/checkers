@@ -17,14 +17,14 @@ import {Square} from "../../shared/dto/square.interface";
   styleUrl: './square.component.scss'
 })
 export class SquareComponent {
-  service = inject(BoardService);
+  private readonly service = inject(BoardService);
 
-  square = input<Square>({id: '', position: {row: 0, column: 0}, piece: null});
-  row = input<number>(0);
-  column = input<number>(0);
+  readonly square = input<Square>({id: '', position: {row: 0, column: 0}, piece: null});
+  readonly row = input<number>(0);
+  readonly column = input<number>(0);
 
-  highlight = computed(() => {
-    const me = this.square()!;
+  readonly highlight = computed(() => {
+    const me = this.square();
 
     if (this.service.selectedSquare()?.id === me.id) {
       return Highlight.Selected;
@@ -37,7 +37,7 @@ export class SquareComponent {
     return Highlight.None;
   })
 
-  cssClasses = computed<string>(() => {
+  readonly cssClasses = computed<string>(() => {
     if (this.highlight()== Highlight.None) {
       return this.isBlackSquare() ? 'black' : 'white';
     }
@@ -49,7 +49,7 @@ export class SquareComponent {
     }
   });
 
-  public isBlackSquare(): boolean {
+  private isBlackSquare(): boolean {
     if (this.row() % 2 !== 0) {
       return this.column() % 2 === 0;
     }

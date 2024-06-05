@@ -12,8 +12,8 @@ import {Color, Piece, Type} from "../../shared/dto/piece.interface";
   styleUrl: './piece.component.scss'
 })
 export class PieceComponent {
-  piece = input<Piece>({id: '', color: Color.Black, type: Type.Man});
-  cssClasses = computed<string>(() => {
+  readonly piece = input<Piece>({id: '', color: Color.Black, type: Type.Man});
+  readonly cssClasses = computed<string>(() => {
     const color = this.piece().color === Color.Black ? 'black' : 'white';
 
     if (this.piece().type === Type.Man) {

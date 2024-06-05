@@ -19,12 +19,12 @@ import {ToastrModule, ToastrService} from "ngx-toastr";
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
-  clientService = inject(DashboardClientService);
-  router = inject(Router);
-  modal = inject(NgbModal);
-  toastr = inject(ToastrService);
+  private readonly clientService = inject(DashboardClientService);
+  private router = inject(Router);
+  private readonly modal = inject(NgbModal);
+  private readonly toastr = inject(ToastrService);
 
-  lobbies = computed<Lobby[]>(() => this.clientService.lobbies());
+  readonly lobbies = computed<Lobby[]>(() => this.clientService.lobbies());
 
   joinLobby(id: string) {
     this.clientService.join(id).then(x => {
