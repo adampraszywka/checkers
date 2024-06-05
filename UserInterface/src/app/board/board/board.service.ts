@@ -12,12 +12,12 @@ import {BoardData} from "../dto/board-data.interface";
 
 @Injectable()
 export class BoardService {
-  clientService = inject(BoardClientService);
-  idProvider = inject(PlayerIdProvider);
+  private readonly clientService = inject(BoardClientService);
+  private readonly idProvider = inject(PlayerIdProvider);
 
-  selectedSquare = signal<Square|null>(null)
-  possibleMoves = signal<PossibleMove[]>([] as PossibleMove[]);
-  board = computed<BoardData>(() => this.toBoardData(this.clientService.board()!));
+  readonly selectedSquare = signal<Square|null>(null)
+  readonly possibleMoves = signal<PossibleMove[]>([]);
+  readonly board = computed<BoardData>(() => this.toBoardData(this.clientService.board()!));
 
   private readonly errorNotificationSource: Subject<string> = new Subject<string>();
   public readonly errorNotificationRequested$: Observable<string> = this.errorNotificationSource.asObservable();

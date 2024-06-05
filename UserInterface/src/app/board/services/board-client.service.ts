@@ -10,18 +10,17 @@ import {PlayerIdProvider} from "../../shared/authorization/playerid-provider.ser
 import {ActionResult} from "../../shared/dto/action-result.interface";
 import {Color} from "../../shared/dto/piece.interface";
 
+const emptyBoard: Board = {
+  id: '', moveLog: [], participants: [], squares: [], currentPlayer: Color.White, columns: 0, rows: 0
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class BoardClientService {
-  config = inject(ApiConfiguration);
-  playerIdProvider = inject(PlayerIdProvider);
-
-  emptyBoard: Board = {
-    id: '', moveLog: [], participants: [], squares: [], currentPlayer: Color.White, columns: 0, rows: 0
-  }
-
-  board = signal<Board>(this.emptyBoard);
+  private readonly config = inject(ApiConfiguration);
+  private readonly playerIdProvider = inject(PlayerIdProvider);
+  readonly board = signal<Board>(emptyBoard);
 
   private hubConnection!: HubConnection;
 

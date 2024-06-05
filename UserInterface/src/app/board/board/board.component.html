@@ -1,10 +1,10 @@
-<div class="container" *ngIf="board() !== null">
+<div class="container" *ngIf="board().board.squares.length > 0">
   <div class="row">
     <div class="col-7">
 
       <div class="row">
-        <div [ngClass]="board()!.playerColor === Color.Black ? 'rotated' : ''">
-          @for(squares of board()!.board.squares; track squares; let row = $index) {
+        <div [ngClass]="board().playerColor === Color.Black ? 'rotated' : ''">
+          @for(squares of board().board.squares; track squares; let row = $index) {
             <div class="row g-0">
               @for (square of squares; track square; let column = $index) {
                 <app-square class="col" [square]="square" [row]="row" [column]="column"></app-square>
@@ -16,16 +16,16 @@
 
       @if (this.botPlayerParticipates()) {
         <div class="row">
-          <app-move-log [moveLog]="board()!.board.moveLog"></app-move-log>
+          <app-move-log [moveLog]="board().board.moveLog"></app-move-log>
         </div>
       }
 
     </div>
       <div class="col-5" >
         @if (this.botPlayerParticipates()) {
-          <app-ai-agent [boardId]="boardId"></app-ai-agent>
+          <app-ai-agent [boardId]="boardId()"></app-ai-agent>
         } @else {
-          <app-move-log [moveLog]="board()!.board.moveLog"></app-move-log>
+          <app-move-log [moveLog]="board().board.moveLog"></app-move-log>
         }
       </div>
   </div>

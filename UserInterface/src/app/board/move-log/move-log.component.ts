@@ -13,10 +13,10 @@ import {CommonModule} from "@angular/common";
   styleUrl: './move-log.component.scss'
 })
 export class MoveLogComponent {
-  moveLog = input([] as MoveLogEntry[], {
+  readonly moveLog = input([], {
     transform: (x: MoveLogEntry[]) => x.slice().reverse()
   });
-  moveLogLength = computed(() => this.moveLog().length);
+  readonly moveLogLength = computed(() => this.moveLog().length);
 
   protected readonly Color = Color;
   protected readonly Type = Type;

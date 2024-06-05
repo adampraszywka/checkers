@@ -13,8 +13,13 @@ import {ModalResult} from "../../shared/result/modal-result";
   styleUrl: './dashboard-lobby-create.component.scss'
 })
 export class DashboardLobbyCreateComponent {
-  modal = inject(NgbActiveModal);
+  private readonly modal = inject(NgbActiveModal);
   name: FormControl<string> = new FormControl<string>('', {nonNullable: true});
+
+
+  onDismiss(): void {
+    this.modal.dismiss();
+  }
 
   onCancel(): void {
     this.modal.close(new ModalResult(null));
