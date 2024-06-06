@@ -9,6 +9,7 @@ import {Move} from "../../shared/dto/move.interface";
 import {PlayerIdProvider} from "../../shared/authorization/playerid-provider.service";
 import {Color} from "../../shared/dto/piece.interface";
 import {BoardData} from "../dto/board-data.interface";
+import {BoardError} from "./board.error.interface";
 
 @Injectable()
 export class BoardService {
@@ -18,9 +19,7 @@ export class BoardService {
   readonly selectedSquare = signal<Square|null>(null)
   readonly possibleMoves = signal<PossibleMove[]>([]);
   readonly board = computed<BoardData>(() => this.toBoardData(this.clientService.board()!));
-
-  private readonly errorNotificationSource: Subject<string> = new Subject<string>();
-  public readonly errorNotificationRequested$: Observable<string> = this.errorNotificationSource.asObservable();
+  readonly error = signal<BoardError>({message: '', timestamp: 0});
 
   public initialize(boardId: string): void {
     this.clientService.initialize(boardId);
@@ -52,10 +51,10 @@ export class BoardService {
           } else {
             this.selectedSquare.set(null);
             this.possibleMoves.set([]);
-            this.errorNotificationSource.next(x.errorMessage);
+            this.error.set({message: x.errorMessage, timestamp: Date.now()});
           }
         },
-        error: err => this.errorNotificationSource.next(this.extractError(err))
+        error: err => this.error.set({message: this.extractError(err), timestamp: Date.now()})
     });
     }
 
@@ -70,10 +69,10 @@ export class BoardService {
           } else {
             this.selectedSquare.set(null);
             this.possibleMoves.set([]);
-            this.errorNotificationSource.next(x.errorMessage);
+            this.error.set({message: x.errorMessage, timestamp: Date.now()});
           }
         },
-        error: err => this.errorNotificationSource.next(this.extractError(err))
+        error: err => this.error.set({message: this.extractError(err), timestamp: Date.now()})
       });
     }
   }

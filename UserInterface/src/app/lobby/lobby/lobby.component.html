@@ -1,8 +1,8 @@
-@if (lobby) {
+@if (lobby().id.length > 0) {
   <div class="container">
     <div class="row">
       <h3>Checkers Lobby: Welcome Aboard!</h3>
-      <h5>{{lobby.name}}</h5>
+      <h5>{{lobby().name}}</h5>
 
       <div class="row mt-5">
         <div class="col">
@@ -28,7 +28,7 @@
             </tr>
             </thead>
             <tbody>
-              @for (participant of lobby.participants; track participant; let counter = $index) {
+              @for (participant of lobby().participants; track participant; let counter = $index) {
                 <tr>
                   <td>
                     <span class="badge" [ngClass]="participant.color === Color.Black ? 'bg-black' : 'bg-light text-dark'">{{counter + 1}}</span>
@@ -40,7 +40,7 @@
             </tbody>
           </table>
 
-          @if(lobby.status === LobbyStatus.WaitingForPlayers) {
+          @if(lobby().status === LobbyStatus.WaitingForPlayers) {
             <div class="text-center">
               <button class="btn btn-warning" (click)="onAddAiPlayer()">Add AI Player</button>
             </div>
@@ -48,7 +48,7 @@
         </div>
 
         <div class="row mt-5">
-          @if (lobby.status === LobbyStatus.ReadyToStart) {
+          @if (lobby().status === LobbyStatus.ReadyToStart) {
             <div class="text-center">
               <button type="button" class="btn btn-primary" (click)="onClose()">Start game!</button>
             </div>

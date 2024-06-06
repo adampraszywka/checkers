@@ -1,4 +1,4 @@
-import {Component, computed, inject, input, OnInit} from '@angular/core';
+import {Component, computed, effect, inject, input, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {SquareComponent} from "../square/square.component";
 import {BoardService} from "./board.service";
@@ -26,9 +26,12 @@ export class BoardComponent implements OnInit {
   readonly boardId = input('');
   readonly board = computed<BoardData>(() => this.service.board());
 
-  public constructor() {
-    this.service.errorNotificationRequested$.subscribe(x => this.toastr.error(x));
-  }
+  _ = effect(() => {
+    const error = this.service.error();
+    if (error.message.length > 0) {
+      this.toastr.error(error.message);
+    }
+  });
 
   ngOnInit(): void {
     this.service.initialize(this.boardId());

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, computed, effect, inject, input, Input, OnInit} from '@angular/core';
 import {LobbyClientService} from "./lobby-client-service";
 import {CommonModule} from "@angular/common";
 import {Router} from "@angular/router";
@@ -20,27 +20,26 @@ import {ToastrModule, ToastrService} from "ngx-toastr";
   styleUrl: './lobby.component.scss'
 })
 export class LobbyComponent implements OnInit {
-  @Input() lobbyId!: string;
-  public lobby: Lobby|null = null;
+  private readonly client = inject(LobbyClientService);
+  private readonly router = inject(Router);
+  private readonly modal = inject(NgbModal);
+  private readonly toastr = inject(ToastrService);
+
+  readonly lobbyId = input('');
+  readonly lobby = computed<Lobby>(() => this.client.lobby());
+
+  _ = effect(() => {
+    const lobby = this.lobby();
+    if (lobby.status === LobbyStatus.Closed && lobby.boardId !== null) {
+      this.router.navigate(['board/' + lobby.boardId]).then()
+    }
+  });
 
   protected readonly LobbyStatus = LobbyStatus;
   protected readonly Color = Color;
 
-  constructor(
-    private readonly client: LobbyClientService,
-    private readonly router: Router,
-    private readonly modal: NgbModal,
-    private readonly toastr: ToastrService) {}
-
   ngOnInit(): void {
-    this.client.initialize(this.lobbyId);
-    this.client.lobbyUpdatedRequested$.subscribe(x => {
-      if (x.status === LobbyStatus.Closed && x.boardId !== null) {
-        this.router.navigate(['board/' + x.boardId]).then()
-      } else {
-        this.lobby = x;
-      }
-    })
+    this.client.initialize(this.lobbyId());
   }
 
   onClose() {
@@ -67,8 +66,6 @@ export class LobbyComponent implements OnInit {
             this.toastr.error(x.errorMessage, 'Failed to add AI player');
             return;
           }
-
-          this.lobby = x.value;
         })
       });
     });
