@@ -19,7 +19,6 @@ export class LobbyAddAiPlayerComponent implements OnInit {
   public type: FormControl<string>;
   constructor(public readonly modal: NgbActiveModal) {
     this.type = new FormControl<string>(this.aiPlayers[0]?.type, {nonNullable: true});
-
   }
 
   ngOnInit(): void {
