@@ -193,7 +193,6 @@ That's all. Your AI player is ready to play. New entry will appear in the AI pla
 - [X] board UI PoC
 - [X] in-memory game state storage
 - [X] game log
-- [ ] persistent game state storage
 - [X] use SignalR for Board UI <-> Board API communication
 - [X] implementation of complex Man piece moves
 - [ ] implementation of complex King piece moves
@@ -204,10 +203,11 @@ That's all. Your AI player is ready to play. New entry will appear in the AI pla
 - [X] documentation how to write your own AI player
 - [X] LLM(s) driven AI player (it may be not the best option but might be funny)
 - [X] visualize conversation between BOT and LLM
-- [ ] algorithm driven AI player
 
 ## Future plans
 
+- [ ] persistent game state storage
+- [ ] algorithm driven AI player
 - [ ] TBD 
 
 This project is licensed under the [MIT License](LICENSE).
