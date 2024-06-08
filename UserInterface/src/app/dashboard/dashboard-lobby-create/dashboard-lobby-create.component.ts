@@ -1,7 +1,8 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
 import {ModalResult} from "../../shared/result/modal-result";
+import {NameProvider} from "./name-provider.service";
 
 @Component({
   selector: 'app-dashboard-lobby-create',
@@ -9,13 +10,18 @@ import {ModalResult} from "../../shared/result/modal-result";
   imports: [
     ReactiveFormsModule
   ],
+  providers: [
+    NameProvider
+  ],
   templateUrl: './dashboard-lobby-create.component.html',
   styleUrl: './dashboard-lobby-create.component.scss'
 })
 export class DashboardLobbyCreateComponent {
   private readonly modal = inject(NgbActiveModal);
-  name: FormControl<string> = new FormControl<string>('', {nonNullable: true});
+  private readonly nameProvider = inject(NameProvider);
 
+  nameFormControl: FormControl<string> = new FormControl<string>('', {nonNullable: true});
+  placeholderName = signal<string>(this.nameProvider.name);
 
   onDismiss(): void {
     this.modal.dismiss();
@@ -26,8 +32,12 @@ export class DashboardLobbyCreateComponent {
   }
 
   onCreate(): void {
-    const value = this.name.value;
-    this.modal.close(new ModalResult(value));
+    const userValue = this.nameFormControl.value;
+    if (userValue.length > 0) {
+      this.modal.close(new ModalResult(userValue));
+    }
+
+    this.modal.close(new ModalResult(this.placeholderName()));
   }
 }
 
