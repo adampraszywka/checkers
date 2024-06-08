@@ -33,6 +33,7 @@
     "ngx-toastr": "^18.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "unique-names-generator": "^4.7.1",
     "uuid": "^9.0.1",
     "zone.js": "~0.14.3"
   },
