@@ -1,5 +1,6 @@
 using AIPlayers.Algorithms.AnthropicClaude;
 using AIPlayers.Algorithms.Dummy;
+using AIPlayers.Algorithms.Llama;
 using AIPlayers.Algorithms.OpenAIGpt4o;
 using AIPlayers.Algorithms.OpenAIGpt4Turbo;
 using AIPlayers.Extensions;
@@ -9,6 +10,7 @@ using Anthropic.SDK;
 using Domain.Chessboard;
 using Domain.Lobby;
 using MassTransit;
+using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Options;
 using OpenAI;
 using OpenAI.Interfaces;
@@ -34,6 +36,10 @@ builder.Services.AddOptionsWithValidateOnStart<OpenAISettings>()
     .ValidateDataAnnotations()
     .Bind(builder.Configuration.GetSection(OpenAISettings.Key));
 
+builder.Services.AddOptionsWithValidateOnStart<LlamaSettings>()
+    .ValidateDataAnnotations()
+    .Bind(builder.Configuration.GetSection(LlamaSettings.Key));
+
 builder.Services.AddOptionsWithValidateOnStart<InMemoryStorageSettings>()
     .Bind(builder.Configuration.GetSection(InMemoryStorageSettings.Key));
 
@@ -50,10 +56,18 @@ builder.Services.AddTransient<GameLobbyListRepository>(x => x.GetRequiredService
 builder.Services.AddScoped<BoardService>();
 builder.Services.AddScoped<GameLobbyService>();
 
+builder.Services.AddTransient<GroqClient>(x =>
+{
+    var configuration = x.GetRequiredService<IOptions<LlamaSettings>>().Value;
+    var factory = x.GetRequiredService<IHttpClientFactory>();
+    return new GroqClient(configuration.ApiKey, "llama-3.1-70b-versatile", factory.CreateClient());
+});
+
 builder.Services.AddAiPlayer<OpenAiGpt4Turbo, OpenAiGpt4oConfiguration>();
 builder.Services.AddAiPlayer<OpenAiGpt4o>();
 builder.Services.AddAiPlayer<AntrophicClaude>();
 builder.Services.AddAiPlayer<DummyAi>();
+builder.Services.AddAiPlayer<Laama31, Laama31Configuration>();
 
 
 builder.Services.AddMassTransit(m =>
