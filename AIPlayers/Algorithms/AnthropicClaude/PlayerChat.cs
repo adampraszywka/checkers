@@ -31,9 +31,9 @@ public class PlayerChat(AnthropicClient client, StatusPublisher statusPublisher)
         
         var parameters = new MessageParameters
         {
-            SystemMessage = SystemPrompt, 
+            System = new List<SystemMessage> {new(SystemPrompt)}, 
             Temperature = 0,
-            Model = Model,
+            Model = Model,   
             MaxTokens = 500,
             Messages = _messages
         };
